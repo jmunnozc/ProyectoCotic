@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="content">
+
+	<div style="height: 500px">
+		<p:growl id="msgs" showDetail="true" />
+		<h:form id="formDataTable">
+
+			<p:dataTable id="basicDT" var="usuario"
+				value="#{usuarioBean.usuarios}">
+				<f:facet name="header">Basic</f:facet>
+				<p:column headerText="Código">
+					<h:outputText value="#{usuario.codigoUsuario}" />
+				</p:column>
+				<p:column headerText="Nombres">
+					<h:outputText value="#{usuario.nombres}" />
+				</p:column>
+				<p:column headerText="Apellido Paterno">
+					<h:outputText value="#{usuario.apellidoPaterno}" />
+				</p:column>
+				<p:column headerText="Apellido Materno">
+					<h:outputText value="#{usuario.apellidoMaterno}" />
+				</p:column>
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton update=":formUpdate"
+						oncomplete="PF('dialogUsuario').show()" icon="ui-icon-search"
+						title="Opciones">
+						<f:setPropertyActionListener value="#{usuario}"
+							target="#{usuarioBean.selectedUsuarios}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+		<h:form id="formUpdate">
+			<p:dialog header="Modificar Usuario" widgetVar="dialogUsuario" modal="true"
+				showEffect="fade" hideEffect="fade" resizable="false">
+				<p:outputPanel id="dlgUsuario" style="text-align:center;">
+					<p:panelGrid columns="2"
+						rendered="#{not empty usuarioBean.selectedUsuarios}"
+						columnClasses="label,value">
+						<h:outputText value="Código:" />
+						<h:outputText value="#{usuarioBean.selectedUsuarios.codigoUsuario}" />
+
+						<h:outputText value="Nombres:" />
+						<h:outputText value="#{usuarioBean.selectedUsuarios.nombres}" />
+
+						<h:outputText value="Apellido Paterno:" />
+						<h:outputText value="#{usuarioBean.selectedUsuarios.apellidoPaterno}" />
+
+						<h:outputText value="Apellido Materno:" />
+						<h:outputText value="#{usuarioBean.selectedUsuarios.apellidoMaterno}" />
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+
+<!-- 
+			<p:dialog header="Selected Cars" widgetVar="multiCarDialog"
+				modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+				width="220">
+				<p:outputPanel id="multiCarDetail" style="text-align:center;">
+					<ui:repeat value="#{dtSelectionView.selectedCars}" var="car">
+						<h:outputText value="#{car.id} - #{car.brand}"
+							style="display:block" />
+					</ui:repeat>
+				</p:outputPanel>
+			</p:dialog>
+ -->
+		</h:form>
+	</div>
+
+</ui:composition>
+</html>

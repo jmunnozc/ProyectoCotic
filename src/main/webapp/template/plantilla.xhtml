@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="../css/cssLayout.css"
+		media="screen" />
+	<title>Facelets Template</title>
+</h:head>
+
+<h:body>
+	<div id="top">
+		<div id="blockCabecera">
+			<div style="padding: 10px;" align="center">
+				<span class="author">Usuario : <a href="#"><span>Jorge
+							Ambrocio</span></a></span>
+				<h1>BIENVENIDO AL PORTAL DE LA APLICACION TEST</h1>
+			</div>
+		</div>
+
+		<div id="menuBar">
+			<h:form>
+				<p:growl id="messages" />
+				<p:menubar>
+					<p:submenu label="Mantenimiento" icon="ui-icon-document">
+						<p:submenu label="Seguridad" icon="ui-icon-refresh">
+							<p:menuitem value="Usuario" url="#{appBean.basePath}usuario/mantenimiento.jsf" icon="ui-icon-contact" />
+						</p:submenu>
+						<p:menuitem value="Usuarios" url="#" icon="ui-icon-contact" />
+						<p:menuitem value="Cursos" url="#" icon="ui-icon-contact" />
+						<p:menuitem value="Temas" url="#" />
+						<p:separator />
+						<p:menuitem value="Salir" url="#" icon="ui-icon-close" />
+					</p:submenu>
+
+					<p:submenu label="Edit" icon="ui-icon-pencil">
+						<p:menuitem value="Undo" url="#"
+							icon="ui-icon-arrowreturnthick-1-w" />
+						<p:menuitem value="Redo" url="#"
+							icon="ui-icon-arrowreturnthick-1-e" />
+					</p:submenu>
+
+					<p:submenu label="Help" icon="ui-icon-help">
+						<p:menuitem value="Contents" url="#" />
+						<p:submenu label="Search" icon="ui-icon-search">
+							<p:submenu label="Text">
+								<p:menuitem value="Workspace" url="#" />
+							</p:submenu>
+							<p:menuitem value="File" url="#" />
+						</p:submenu>
+					</p:submenu>
+
+					<p:submenu label="Actions" icon="ui-icon-gear">
+						<p:submenu label="Ajax" icon="ui-icon-refresh">
+							<p:menuitem value="Save" actionListener="#{menuView.save}"
+								icon="ui-icon-disk" update="messages" />
+							<p:menuitem value="Update" actionListener="#{menuView.update}"
+								icon="ui-icon-arrowrefresh-1-w" update="messages" />
+						</p:submenu>
+						<p:submenu label="Non-Ajax" icon="ui-icon-newwin">
+							<p:menuitem value="Delete" actionListener="#{menuView.delete}"
+								icon="ui-icon-close" update="messages" ajax="false" />
+						</p:submenu>
+					</p:submenu>
+
+					<p:menuitem value="Salir"
+						url="http://localhost:8080/ProyectoWeb/index.jsf"
+						icon="ui-icon-close" />
+
+				</p:menubar>
+			</h:form>
+		</div>
+
+	</div>
+	<div id="left_content">
+		<ui:insert name="content"></ui:insert>
+	</div>
+	<div id="bottom">
+		<ui:insert name="bottom">
+			<div align="center">© 2017 - Lima Perú</div>
+		</ui:insert>
+	</div>
+</h:body>
+</html>

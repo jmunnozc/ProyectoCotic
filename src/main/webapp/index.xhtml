@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:head>
+	<link rel="stylesheet" type="text/css" href="css/estilos.css"
+		media="screen" />
+	<script language="javascript" src="js/jquery-1.11.3.min.js"></script>
+	<script language="javascript" src="js/jquery.vide.js"></script>
+
+</h:head>
+
+<h:body style="text-align:center">
+
+	<div id="block" data-vide-bg="video/ocean"
+		data-vide-options="position 0% 50%" />
+
+	<div id="centrado">
+		<div id="mensajes">
+			<p:ajaxStatus style="display:block;  margin-top:.5em;">
+				<f:facet name="default">
+					<h:outputText value="Porfavor ingrese sus credenciales."
+						style="color:yellow" />
+				</f:facet>
+				<f:facet name="start">
+					<h:outputText
+						value="Porfavor espere... #{loginBean.usuario}, Conectando a la base de datos..."
+						style="color:yellow" />
+				</f:facet>
+				<f:facet name="complete">
+					<h:outputText
+						value="Porfavor intente nuevamente #{loginBean.usuario}, Conexión a la base de datos con error!!"
+						style="color:yellow" />
+				</f:facet>
+			</p:ajaxStatus>
+		</div>
+		<p:growl id="mensajes" showDetail="true" life="1000" />
+		<h:form id="loginForm">
+			<p:panel style="width:350px" styleClass="redColoredPanel"
+				id="loginPnl">
+				<f:facet name="header">
+					<p:graphicImage url="images/icons/icon_id_48x48.png" />Acceso a la aplicación
+         </f:facet>
+				<h:panelGrid columns="2" cellpadding="5">
+					<h:outputLabel for="usuario" value="Usuario:" />
+					<p:inputText value="#{usuarioBean.usuario.usuario}" id="usuario"
+						required="true" label="usuario" a:placeholder="ingrese su nombre" />
+					<h:outputLabel for="clave" value="Clave:" />
+					<p:password value="#{usuarioBean.usuario.clave}" id="clave"
+						required="true" label="clave" a:placeholder="ingrese su clave" />
+					<f:facet name="footer">
+						<p:commandButton id="loginButton" value="Login"
+							action="#{usuarioBean.verificarDatos()}" update=":mensajes"
+							oncomplete="manejarLogin(xhr, status, args)"
+							icon="images/icons/people_16x16.png" />
+
+					</f:facet>
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+	</div>
+
+	<script type="text/javascript">
+  //<![CDATA[
+  function manejarLogin(xhr, status, args) {
+	  
+    if (!args.validationFailed && args.loggedIn) {
+  	  	//alert("Flag Bien: " + args.ruta);
+    	//PF('dlg').jq.effect("shake", {times:5}, 100);
+      	/*setTimeout(function() {         
+        	window.location = args.ruta;
+      	}, 500);*/
+      	location.href = args.ruta;
+    }else{
+  	  	//alert("Flag Mal: " + args.ruta);
+    	//PF('dlg').hide();
+    	/*$('#loginForm').fadeOut();*/
+    	location.href = args.ruta;
+    }
+  }
+//]]>
+</script>
+
+</h:body>
+
+<!-- 
+<script	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+ -->
+
+</html>

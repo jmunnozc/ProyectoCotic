@@ -1,0 +1,26 @@
+@CHARSET "ISO-8859-1";
+
+#block {
+    height:100vh;
+}
+
+#centrado {
+    display:block; 
+    width:360px; 
+    height:200px; 
+    position:absolute; 
+    top:50%; 
+    left:50%; 
+    margin-top:-100px; 
+    margin-left:-150px;
+    border: 1px shadow #FFF;
+}
+
+.redColoredPanel .ui-panel-titlebar {
+   color: white;
+   background: blue;
+}
+
+.ui-state-default .icon-login {
+	background-image url(../images/icons/people_16x16.ico);
+}

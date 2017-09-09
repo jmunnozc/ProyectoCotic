@@ -1,0 +1,117 @@
+@CHARSET "ISO-8859-1";
+
+#top {
+	position: relative;
+	background-color: #C2DFEF;
+	color: black;
+	padding: 5px;
+	margin: 0px 0px, 1px 0px;
+	/*height: 100px;*/
+}
+
+#bottom {
+	position: relative;
+	background-color: #c2dfef;
+	padding: 5px;
+	margin: 1px 0px, 0px 0px;
+	height: 40px;
+}
+
+#left {
+	float: left;
+	background-color: #ece3a5;
+	padding: 5px;
+	width: 150px;
+}
+
+#right {
+	float: right;
+	background-color: #ece3a5;
+	padding: 5px;
+	width: 150px;
+}
+
+.center_content {
+	position: relative;
+	background-color: #dddddd;
+	padding: 5px;
+	margin-top: 1px;
+	min-heigh: 60px;
+}
+
+.left_content {
+	position: relative;
+	background-color: #dddddd;
+	margin-left: 170px;
+}
+
+.right_content {
+	position: relative;
+	background-color: #dddddd;
+	margin: 0px 170px, 0px 170px;
+}
+
+#top a:link, #top a:visited {
+	color: black;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#top a:link:hover, #top a:visited:hover {
+	color: blue;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+<!-- Cabecera del la pantalla principal -->
+
+#blockCabecera {
+    background:#27453A;
+    border:3px solid #D95B43;
+    color:#ECD078;
+    font-family:Georgia,"Times New Roman",Times,serif;
+    margin:20px 0px;
+    padding:20px;
+}  
+
+#blockCabecera .date_block {
+    border-left:1px solid #D95B43;
+    display:block;
+    float:rightright;
+    font-style:italic;
+    height:50px;
+    margin:0 10px;
+    padding:10px 20px;
+    width:90px;
+}  
+
+#blockCabecera .day {
+    font-size:22px;
+    font-weight:normal;
+    padding:0 0 20px;
+    text-align:center;
+}
+#blockCabecera .comments {
+    background:transparent url(images/comments.png) no-repeat scroll 0 5px;
+    font-size:11px;
+    padding:2px 0 0 20px;
+    text-align:center;
+}  
+
+#blockCabecera h2{
+    border-bottom:1px solid #D95B43;
+    font-size:24px;
+    font-weight:normal;
+    letter-spacing:-1px;
+    line-height:26px;
+}
+#blockCabecera h2 a {
+    border:medium none;
+    color:#468E76;
+    text-decoration:none;
+}
+#blockCabecera .author a {
+    color:#D95B43;
+    font-weight:bold;
+    text-decoration:none;
+}

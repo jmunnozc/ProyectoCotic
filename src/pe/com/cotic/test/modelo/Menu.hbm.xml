@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 07/09/2017 11:40:56 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="pe.com.cotic.test.modelo.Menu" table="menu" catalog="cotic">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="menuId" type="java.lang.Integer">
+            <column name="menuId" />
+        </property>
+        <property name="nivel" type="java.lang.Integer">
+            <column name="nivel" />
+        </property>
+        <property name="orden" type="java.lang.Integer">
+            <column name="orden" />
+        </property>
+        <property name="nombre" type="string">
+            <column name="nombre" length="80" />
+        </property>
+        <property name="url" type="string">
+            <column name="url" length="120" />
+        </property>
+        <property name="icono" type="string">
+            <column name="icono" length="30" />
+        </property>
+        <property name="estado" type="java.lang.Boolean">
+            <column name="estado" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 07/09/2017 11:40:56 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="pe.com.cotic.test.modelo.Usuario" table="usuario" catalog="cotic">
+        <id name="codigoUsuario" type="java.lang.Integer">
+            <column name="codigoUsuario" />
+            <generator class="identity" />
+        </id>
+        <property name="usuario" type="string">
+            <column name="usuario" length="45" unique="true" />
+        </property>
+        <property name="clave" type="string">
+            <column name="clave" length="45" not-null="true" />
+        </property>
+        <property name="dni" type="string">
+            <column name="dni" length="8" not-null="true" unique="true" />
+        </property>
+        <property name="apellidoPaterno" type="string">
+            <column name="apellidoPaterno" length="45" not-null="true" />
+        </property>
+        <property name="apellidoMaterno" type="string">
+            <column name="apellidoMaterno" length="45" />
+        </property>
+        <property name="nombres" type="string">
+            <column name="nombres" length="45" not-null="true" />
+        </property>
+        <property name="fechaNacimiento" type="date">
+            <column name="fechaNacimiento" length="10" not-null="true" />
+        </property>
+        <property name="correo" type="string">
+            <column name="correo" length="150" />
+        </property>
+        <property name="telefono" type="string">
+            <column name="telefono" length="45" />
+        </property>
+        <property name="celular" type="string">
+            <column name="celular" length="45" />
+        </property>
+        <property name="estado" type="int">
+            <column name="estado" not-null="true" />
+        </property>
+        <property name="usuarioCreacion" type="string">
+            <column name="usuarioCreacion" length="45" not-null="true" />
+        </property>
+        <property name="fechaCreacion" type="timestamp">
+            <column name="fechaCreacion" length="19" not-null="true" />
+        </property>
+        <property name="usuarioModificacion" type="string">
+            <column name="usuarioModificacion" length="45" />
+        </property>
+        <property name="fechaModificacion" type="timestamp">
+            <column name="fechaModificacion" length="19" />
+        </property>
+        <property name="sexo" type="string">
+            <column name="sexo" length="1" />
+        </property>
+        <set name="usuariocursos" table="usuariocurso" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="codigoUsuario" not-null="true" />
+            </key>
+            <one-to-many class="pe.com.cotic.test.modelo.Usuariocurso" />
+        </set>
+        <set name="usuariodispositivos" table="usuariodispositivo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="codigoUsuario" not-null="true" />
+            </key>
+            <one-to-many class="pe.com.cotic.test.modelo.Usuariodispositivo" />
+        </set>
+    </class>
+</hibernate-mapping>
