@@ -32,6 +32,7 @@ public class Usuario implements java.io.Serializable {
 	private Set usuariodispositivos = new HashSet(0);
 
 	public Usuario() {
+		this.codigoUsuario = 0;
 	}
 
 	public Usuario(String clave, String dni, String apellidoPaterno,

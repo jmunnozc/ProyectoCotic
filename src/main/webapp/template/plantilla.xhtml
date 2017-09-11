@@ -7,13 +7,15 @@
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<link rel="stylesheet" type="text/css" href="../css/cssLayout.css"
-		media="screen" />
-	<title>Facelets Template</title>
+	<link rel="stylesheet" type="text/css" href="../resources/css/cssLayout.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="../resources/css/login.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="../../resources/css/cssLayout.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="../../resources/css/login.css" media="screen" />
+	<title>Plantilla</title>
 </h:head>
 
 <h:body>
-	<div id="top">
+	<div id="top" class="ui-widget-header ui-corner-all" style="height: 50:px;">
 		<div id="blockCabecera">
 			<div style="padding: 10px;" align="center">
 				<span class="author">Usuario : <a href="#"><span>Jorge
@@ -67,22 +69,33 @@
 						</p:submenu>
 					</p:submenu>
 
-					<p:menuitem value="Salir"
-						url="http://localhost:8080/ProyectoWeb/index.jsf"
-						icon="ui-icon-close" />
+					<p:menuitem value="Salir" actionListener="#{usuarioBean.logout}" icon="ui-icon-close" oncomplete="manejarLogin(xhr, status, args)"/>
 
 				</p:menubar>
 			</h:form>
 		</div>
 
 	</div>
-	<div id="left_content">
+	<div id="content" class="center_content">
 		<ui:insert name="content"></ui:insert>
 	</div>
-	<div id="bottom">
+	<div id="bottom" class="ui-widget-header ui-corner-all" style="height: 40:px;">
 		<ui:insert name="bottom">
 			<div align="center">© 2017 - Lima Perú</div>
 		</ui:insert>
 	</div>
+	
+	<script type="text/javascript">
+  //<![CDATA[
+  function manejarLogin(xhr, status, args) {
+	  
+    if (args.loggetOut) {
+      	location.href = args.ruta;
+    }
+    
+  }
+//]]>
+</script>
+	
 </h:body>
 </html>

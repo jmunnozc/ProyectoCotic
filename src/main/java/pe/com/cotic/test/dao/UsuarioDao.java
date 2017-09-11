@@ -8,30 +8,7 @@ public interface UsuarioDao {
 	
 	public Usuario verificarDatos(Usuario usuario);
 	public List<Usuario> ListarUsuarios();
-	
-	/*private Session session;
-	
-	public Usuario verificarDatos(Usuario usuario) throws Exception {
-		Usuario us = null;
-		
-		try {
-			session = HibernateUtil.getSessionFactory().openSession();
-			if (usuario.getUsuario() == null) usuario.setUsuario("");
-			if (usuario.getClave() == null) usuario.setClave("");
-			
-			//hibernate query language
-			String hql = "FROM Usuario WHERE usuario = '" + usuario.getUsuario().toUpperCase() + "' and clave = '" + usuario.getClave().toUpperCase() + "'";
-			Query query = session.createQuery(hql);
-			
-			if (!query.list().isEmpty()) {
-				us = (Usuario) query.list().get(0);
-			}
-		} catch (Exception e) {
-			throw e;
-		}
-		
-		return us;
-		
-	}*/
-
+	public boolean grabarUsuario(Usuario usuario);
+	public boolean modificarUsuario(Usuario usuario);
+	public boolean eliminarUsuario(Integer codigoUsuario);
 }

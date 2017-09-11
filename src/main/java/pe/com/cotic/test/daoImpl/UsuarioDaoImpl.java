@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import pe.com.cotic.test.dao.UsuarioDao;
 import pe.com.cotic.test.modelo.Usuario;
@@ -15,7 +16,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 
 	@Override
 	public Usuario verificarDatos(Usuario usuario) {
-		// TODO Auto-generated method stub
+
 		Usuario us = null;
 
 		try {
@@ -43,21 +44,77 @@ public class UsuarioDaoImpl implements UsuarioDao {
 
 	@Override
 	public List<Usuario> ListarUsuarios() {
-		// TODO Auto-generated method stub
+
 		List<Usuario> listarUsuarios = null;
 		session = HibernateUtil.getSessionFactory().openSession();
-		// hibernate query language
+		Transaction transaction = session.beginTransaction();
+		// hibernate query language [FROM Usuario as u INNER JOIN FETCH
+		// u.usuariocursos LEFT JOIN FETCH u.usuariodispositivos]
 		String hql = "FROM Usuario ";
+
 		try {
-			session.beginTransaction();
 			listarUsuarios = session.createQuery(hql).list();
-			session.beginTransaction().commit();
-			
+			transaction.commit();
+			session.close();
+
 		} catch (Exception e) {
-			session.beginTransaction().rollback();
+			System.out.println(e.getMessage());
+			transaction.rollback();
 		}
 
 		return listarUsuarios;
+	}
+
+	@Override
+	public boolean grabarUsuario(Usuario usuario) {
+		boolean flag = false;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.save(usuario);
+			session.beginTransaction().commit();
+			flag = true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			flag = false;
+			session.beginTransaction().rollback();
+		}
+		return flag;
+	}
+
+	@Override
+	public boolean modificarUsuario(Usuario usuario) {
+		boolean flag = false;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.update(usuario);
+			session.beginTransaction().commit();
+			flag = true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			flag = false;
+			session.beginTransaction().rollback();
+		}
+		return flag;
+	}
+
+	@Override
+	public boolean eliminarUsuario(Integer codigoUsuario) {
+		boolean flag = false;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			Usuario usuario = (Usuario) session.load(Usuario.class, codigoUsuario);
+			session.delete(usuario);
+			session.beginTransaction().commit();
+			flag = true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			flag = false;
+			session.beginTransaction().rollback();
+		}
+		return flag;
 	}
 
 }

@@ -79,6 +79,14 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/javax.enterprise/cdi-api -->
+		<dependency>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+			<version>1.0-SP1</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- BASE64 -->
 		<dependency>
 			<groupId>commons-codec</groupId>

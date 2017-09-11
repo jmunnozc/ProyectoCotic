@@ -1,0 +1,72 @@
+@CHARSET "ISO-8859-1";
+
+#top {
+	position: relative;
+	background-color: #C2DFEF;
+	color: black;
+	padding: 5px;
+	margin: 0px 0px, 1px 0px;
+	/*height: 100px;*/
+}
+
+#bottom {
+	position: relative;
+	background-color: #c2dfef;
+	padding: 5px;
+	margin: 1px 0px, 0px 0px;
+	height: 40px;
+}
+
+#left {
+	float: left;
+	background-color: #ece3a5;
+	padding: 5px;
+	width: 150px;
+}
+
+#right {
+	float: right;
+	background-color: #ece3a5;
+	padding: 5px;
+	width: 150px;
+}
+
+.center_content {
+	position: relative;
+	background-color: #dddddd;
+	padding: 5px;
+	margin-top: 1px;
+	min-heigh: 60px;
+	font-size: 85%; 
+}
+
+.left_content {
+	position: relative;
+	background-color: #dddddd;
+	margin-left: 170px;
+}
+
+.right_content {
+	position: relative;
+	background-color: #dddddd;
+	margin: 0px 170px, 0px 170px;
+}
+
+#top a:link, #top a:visited {
+	color: black;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#top a:link:hover, #top a:visited:hover {
+	color: blue;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+#conteiner {
+	width: 1300px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
