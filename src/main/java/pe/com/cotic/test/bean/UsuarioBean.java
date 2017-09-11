@@ -1,6 +1,8 @@
 package pe.com.cotic.test.bean;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
@@ -36,6 +38,7 @@ public class UsuarioBean implements Serializable {
 			this.usuario = new Usuario();
 		}
 		this.listarUsuarios = new ArrayList<Usuario>();
+		this.selectedUsuario = new Usuario(); 
 	}
 		
 	public Usuario getUsuario() {
@@ -126,9 +129,20 @@ public class UsuarioBean implements Serializable {
 		context.addCallbackParam("ruta", ruta);
 	}
 	
-	public void btnGrabarUsuario(ActionEvent actionEvent) {
+	public void btnGrabarUsuario() {
 		UsuarioDao usuarioDao = new UsuarioDaoImpl();
 		String msg;
+		
+		//this.selectedUsuario.setUsuario(usuario.getNombres().substring(1,1).toUpperCase() + usuario.getApellidoPaterno().toUpperCase());
+		this.selectedUsuario.setUsuario(selectedUsuario.getNombres().substring(0,1).toUpperCase() + selectedUsuario.getApellidoPaterno().toUpperCase());
+		this.selectedUsuario.setClave("ADMIN");		
+		Date today = new Date();
+		String fechaActual = new SimpleDateFormat("yyyy-MM-dd").format(today);
+		//String fecNac = new SimpleDateFormat().format(CalendarBean);
+		//this.selectedUsuario.setFechaNacimiento(java.sql.Date.valueOf(fecNac));
+		this.selectedUsuario.setUsuarioCreacion("JAMBROCIO");
+		this.selectedUsuario.setFechaCreacion(java.sql.Date.valueOf(fechaActual));
+		
 		if (usuarioDao.grabarUsuario(this.selectedUsuario)) {
 			msg = "Se creó correctamente el registro...";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
@@ -141,7 +155,7 @@ public class UsuarioBean implements Serializable {
 		
 	}
 	
-	public void btnModificarUsuario(ActionEvent actionEvent) {
+	public void btnModificarUsuario() {
 		UsuarioDao usuarioDao = new UsuarioDaoImpl();
 		String msg;
 		if (usuarioDao.modificarUsuario(this.selectedUsuario)) {
@@ -155,7 +169,7 @@ public class UsuarioBean implements Serializable {
 		}		
 	}
 	
-	public void btnEliminarUsuario(ActionEvent actionEvent) {
+	public void btnEliminarUsuario(Usuario usuario) {
 		UsuarioDao usuarioDao = new UsuarioDaoImpl();
 		String msg;
 		if (usuarioDao.eliminarUsuario(this.selectedUsuario.getCodigoUsuario())) {

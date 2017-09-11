@@ -72,12 +72,13 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		Transaction transaction = session.beginTransaction();
 		try {
 			session.save(usuario);
-			session.beginTransaction().commit();
+			transaction.commit();
+			session.close();
 			flag = true;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			flag = false;
-			session.beginTransaction().rollback();
+			transaction.rollback();
 		}
 		return flag;
 	}
@@ -89,12 +90,12 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		Transaction transaction = session.beginTransaction();
 		try {
 			session.update(usuario);
-			session.beginTransaction().commit();
+			transaction.commit();
 			flag = true;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			flag = false;
-			session.beginTransaction().rollback();
+			transaction.rollback();
 		}
 		return flag;
 	}
@@ -107,12 +108,12 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		try {
 			Usuario usuario = (Usuario) session.load(Usuario.class, codigoUsuario);
 			session.delete(usuario);
-			session.beginTransaction().commit();
+			transaction.commit();
 			flag = true;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			flag = false;
-			session.beginTransaction().rollback();
+			transaction.rollback();
 		}
 		return flag;
 	}

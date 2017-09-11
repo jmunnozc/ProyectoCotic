@@ -27,7 +27,7 @@
 			<h:form id="formDataTable">
 
 				<p:dataTable id="basicDT" var="usuario" value="#{usuarioBean.listarUsuarios}">
-					<f:facet name="header">Listado de Usuarios</f:facet>
+					<f:facet name="header">LISTADO DE USUARIOS</f:facet>
 					<p:column headerText="Código" style="width:60px;text-align: center">
 						<h:outputText value="#{usuario.codigoUsuario}" />
 					</p:column>
@@ -62,29 +62,33 @@
 					<p:outputPanel id="usuarioDetailCreate" style="text-align:center;">
 						<p:panelGrid id="display" columns="2" cellpadding="4" columnClasses="label,value">
 
-							<h:outputText value="Código:" />
-							<p:inputText value="#{usuarioBean.selectedUsuario.codigoUsuario}" />
 							<h:outputText value="Dni:" />
-							<p:inputText value="#{usuarioBean.selectedUsuario.dni}" />
+							<p:inputText value="#{usuarioBean.selectedUsuario.dni}" style="text-legth:8" />
 							<h:outputText value="Nombres:" />
-							<p:inputText value="#{usuarioBean.selectedUsuario.nombres}" />
+							<p:inputText value="#{usuarioBean.selectedUsuario.nombres}" style="text-transform:uppercase;"/>
 							<h:outputText value="Apellido Paterno" />
-							<p:inputText value="#{usuarioBean.selectedUsuario.apellidoPaterno}" />					
+							<p:inputText value="#{usuarioBean.selectedUsuario.apellidoPaterno}" style="text-transform:uppercase;"/>					
 							<h:outputText value="Apellido Materno" />
-							<p:inputText value="#{usuarioBean.selectedUsuario.apellidoMaterno}" />
-							<h:outputText value="Fecha Nacimiento" />
-							<p:inputText value="#{usuarioBean.selectedUsuario.fechaNacimiento}" />
+							<p:inputText value="#{usuarioBean.selectedUsuario.apellidoMaterno}" style="text-transform:uppercase;"/>
+							<p:outputLabel for="button" value="Fecha Nacimiento" />
+        					<p:calendar id="button" value="#{calendarBean.date1}" showOn="button" pattern="dd/MM/yyyy" locale="sp_SP" navigator="true"/>							
 							<h:outputText value="Sexo" />
-							<p:inputText value="#{usuarioBean.selectedUsuario.sexo}" />
+							<p:selectOneMenu value="#{usuarioBean.selectedUsuario.sexo}">
+								<f:selectItem itemLabel="-- Seleccione --"/>
+							</p:selectOneMenu>
 							<h:outputText value="Teléfono" />
-							<p:inputText value="#{usuarioBean.selectedUsuario.telefono}" />
+							<p:inputText value="#{usuarioBean.selectedUsuario.telefono}"><f:validateLength maximum="7"/></p:inputText>
 							<h:outputText value="Correo" />
-							<p:inputText value="#{usuarioBean.selectedUsuario.correo}" />
+							<p:inputText value="#{usuarioBean.selectedUsuario.correo}" style="text-transform:lowercase;" />
+							<h:outputText value="Celular" />
+							<p:inputText value="#{usuarioBean.selectedUsuario.celular}" />							
 							<h:outputText value="Estado" />
-							<p:inputText value="#{usuarioBean.selectedUsuario.estado}" />
-							<p:separator/>
+							<p:selectOneMenu value="#{usuarioBean.selectedUsuario.estado}">
+								<f:selectItem itemLabel="-- Seleccione --"/>
+							</p:selectOneMenu>
+							<div style="height: 5px" />
 							<f:facet name="footer">
-								<p:commandButton id="btnCreateAceptar" update=":formDataTable :msgs" oncomplete="PF('dialogUsuarioCreate').hide()" actionListener="#{usuarioBean.btnGrabarUsuario(actionEvent)}" icon="icon-save" title="Guardar" value="Guardar"/>
+								<p:commandButton id="btnCreateAceptar" update=":formDataTable :msgs" oncomplete="PF('dialogUsuarioCreate').hide()" actionListener="#{usuarioBean.btnGrabarUsuario}" icon="icon-save" title="Guardar" value="Guardar"/>
 								<p:commandButton id="btnCreateCancelar" oncomplete="PF('dialogUsuarioCreate').hide()" icon="icon-cancel" title="Cancelar" value="Cancelar"/>							
 							</f:facet>
 						</p:panelGrid>
@@ -98,8 +102,6 @@
 					<p:outputPanel id="UsuarioDetailUpdate" style="text-align:center;">
 						<p:panelGrid id="display" columns="2" cellpadding="4" columnClasses="label,value" style="border-size: 0px">
 
-							<h:outputText value="Código:" />
-							<p:inputText value="#{usuarioBean.selectedUsuario.codigoUsuario}" style="font-weight:bold" />
 							<h:outputText value="Dni:" />
 							<p:inputText value="#{usuarioBean.selectedUsuario.dni}" style="font-weight:bold"/>
 							<h:outputText value="Nombres:" />
@@ -111,16 +113,21 @@
 							<h:outputText value="Fecha Nacimiento" />
 							<p:inputText value="#{usuarioBean.selectedUsuario.fechaNacimiento}" style="font-weight:bold"/>
 							<h:outputText value="Sexo" />
-							<p:inputText value="#{usuarioBean.selectedUsuario.sexo}" style="font-weight:bold"/>
+							<p:selectOneMenu value="#{usuarioBean.selectedUsuario.sexo}" style="font-weight:bold">
+								<f:selectItem itemLabel="-- Seleccione --"/>
+							</p:selectOneMenu>
 							<h:outputText value="Teléfono" />
 							<p:inputText value="#{usuarioBean.selectedUsuario.telefono}" style="font-weight:bold"/>
 							<h:outputText value="Correo" />
 							<p:inputText value="#{usuarioBean.selectedUsuario.correo}" style="font-weight:bold"/>
-							<h:outputText value="Estado" />
-							<p:inputText value="#{usuarioBean.selectedUsuario.estado}" style="font-weight:bold"/>
-							<p:separator/>
+							<h:outputText value="Celular" />
+							<p:inputText value="#{usuarioBean.selectedUsuario.celular}" style="font-weight:bold"/>
+							<p:selectOneMenu value="#{usuarioBean.selectedUsuario.estado}" style="font-weight:bold">
+								<f:selectItem itemLabel="-- Seleccione --"/>
+							</p:selectOneMenu>
+							<div style="height: 5px" />
 							<f:facet name="footer">
-								<p:commandButton id="btnUpdateAceptar" update=":formDataTable :msgs" oncomplete="PF('dialogUsuarioUpdate').hide()" actionListener="#{usuarioBean.btnModificarUsuario(actionEvent)}" icon="icon-save" title="Guardar" value="Guardar"/>
+								<p:commandButton id="btnUpdateAceptar" update=":formDataTable :msgs" oncomplete="PF('dialogUsuarioUpdate').hide()" actionListener="#{usuarioBean.btnModificarUsuario}" icon="icon-save" title="Guardar" value="Guardar"/>
 								<p:commandButton id="btnUpdateCancelar" oncomplete="PF('dialogUsuarioUpdate').hide()" icon="icon-cancel" title="Cancelar" value="Cancelar"/>							
 							</f:facet>
 						</p:panelGrid>
@@ -130,10 +137,10 @@
 			</h:form>
 			
 			<h:form id="formDelete">
-				<p:confirmDialog id="confirmDialog" message="¿Esta seguro de Eliminar el registro?" header="Iniciando proceso de eliminación..."
+				<p:confirmDialog id="confirmDialog" message="¿Esta seguro de Eliminar el registro?" header="Proceso de eliminación..."
 						severity="alert" widgetVar="dialogUsuarioDelete" showEffect="fade" hideEffect="explode">
 						<p:commandButton id="confirm" value="Aceptar" update=":msgs" oncomplete="PF('dialogUsuarioDelete').hide()"
-								actionListener="#{usuarioBean.btnDeleteUsurio}" icon="icon-acept-green"/>
+								actionListener="#{usuarioBean.btnEliminarUsuario(usuario)}" icon="icon-acept-green"/>
 						<p:commandButton id="decline" value="Cancelar" onclick="PF('dialogUsuarioDelete').hide()" type="button" icon="icon-cancel"/>
 				</p:confirmDialog>				
 			</h:form>
