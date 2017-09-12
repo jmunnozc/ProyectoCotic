@@ -11,13 +11,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
 /**
- * Home object for domain model class Rol.
- * @see pe.com.cotic.test.modelo.Rol
+ * Home object for domain model class Nivel.
+ * @see pe.com.cotic.test.modelo.Nivel
  * @author Hibernate Tools
  */
-public class RolHome {
+public class NivelHome {
 
-	private static final Log log = LogFactory.getLog(RolHome.class);
+	private static final Log log = LogFactory.getLog(NivelHome.class);
 
 	private final SessionFactory sessionFactory = getSessionFactory();
 
@@ -32,8 +32,8 @@ public class RolHome {
 		}
 	}
 
-	public void persist(Rol transientInstance) {
-		log.debug("persisting Rol instance");
+	public void persist(Nivel transientInstance) {
+		log.debug("persisting Nivel instance");
 		try {
 			sessionFactory.getCurrentSession().persist(transientInstance);
 			log.debug("persist successful");
@@ -43,8 +43,8 @@ public class RolHome {
 		}
 	}
 
-	public void attachDirty(Rol instance) {
-		log.debug("attaching dirty Rol instance");
+	public void attachDirty(Nivel instance) {
+		log.debug("attaching dirty Nivel instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -54,8 +54,8 @@ public class RolHome {
 		}
 	}
 
-	public void attachClean(Rol instance) {
-		log.debug("attaching clean Rol instance");
+	public void attachClean(Nivel instance) {
+		log.debug("attaching clean Nivel instance");
 		try {
 			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
@@ -65,8 +65,8 @@ public class RolHome {
 		}
 	}
 
-	public void delete(Rol persistentInstance) {
-		log.debug("deleting Rol instance");
+	public void delete(Nivel persistentInstance) {
+		log.debug("deleting Nivel instance");
 		try {
 			sessionFactory.getCurrentSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -76,10 +76,10 @@ public class RolHome {
 		}
 	}
 
-	public Rol merge(Rol detachedInstance) {
-		log.debug("merging Rol instance");
+	public Nivel merge(Nivel detachedInstance) {
+		log.debug("merging Nivel instance");
 		try {
-			Rol result = (Rol) sessionFactory.getCurrentSession().merge(
+			Nivel result = (Nivel) sessionFactory.getCurrentSession().merge(
 					detachedInstance);
 			log.debug("merge successful");
 			return result;
@@ -89,11 +89,11 @@ public class RolHome {
 		}
 	}
 
-	public Rol findById(java.lang.Integer id) {
-		log.debug("getting Rol instance with id: " + id);
+	public Nivel findById(java.lang.Integer id) {
+		log.debug("getting Nivel instance with id: " + id);
 		try {
-			Rol instance = (Rol) sessionFactory.getCurrentSession().get(
-					"pe.com.cotic.test.modelo.Rol", id);
+			Nivel instance = (Nivel) sessionFactory.getCurrentSession().get(
+					"pe.com.cotic.test.modelo.Nivel", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -106,11 +106,11 @@ public class RolHome {
 		}
 	}
 
-	public List findByExample(Rol instance) {
-		log.debug("finding Rol instance by example");
+	public List findByExample(Nivel instance) {
+		log.debug("finding Nivel instance by example");
 		try {
 			List results = sessionFactory.getCurrentSession()
-					.createCriteria("pe.com.cotic.test.modelo.Rol")
+					.createCriteria("pe.com.cotic.test.modelo.Nivel")
 					.add(Example.create(instance)).list();
 			log.debug("find by example successful, result size: "
 					+ results.size());

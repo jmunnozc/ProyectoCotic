@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 07/09/2017 11:40:56 PM by Hibernate Tools 4.0.0 -->
+<!-- Generated 12/09/2017 12:25:55 PM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
     <class name="pe.com.cotic.test.modelo.Version" table="version" catalog="cotic">
         <id name="codigoVersion" type="java.lang.Integer">
@@ -14,8 +14,11 @@
         <property name="versionUsuarios" type="int">
             <column name="versionUsuarios" not-null="true" />
         </property>
-        <property name="versionCursos" type="int">
-            <column name="versionCursos" not-null="true" />
+        <property name="versionPortafolio" type="int">
+            <column name="versionPortafolio" not-null="true" />
+        </property>
+        <property name="versionNivel" type="int">
+            <column name="versionNivel" not-null="true" />
         </property>
     </class>
 </hibernate-mapping>

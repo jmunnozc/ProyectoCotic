@@ -11,13 +11,14 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
 /**
- * Home object for domain model class Rol.
- * @see pe.com.cotic.test.modelo.Rol
+ * Home object for domain model class Usuariodispositivo.
+ * @see pe.com.cotic.test.modelo.Usuariodispositivo
  * @author Hibernate Tools
  */
-public class RolHome {
+public class UsuariodispositivoHome {
 
-	private static final Log log = LogFactory.getLog(RolHome.class);
+	private static final Log log = LogFactory
+			.getLog(UsuariodispositivoHome.class);
 
 	private final SessionFactory sessionFactory = getSessionFactory();
 
@@ -32,8 +33,8 @@ public class RolHome {
 		}
 	}
 
-	public void persist(Rol transientInstance) {
-		log.debug("persisting Rol instance");
+	public void persist(Usuariodispositivo transientInstance) {
+		log.debug("persisting Usuariodispositivo instance");
 		try {
 			sessionFactory.getCurrentSession().persist(transientInstance);
 			log.debug("persist successful");
@@ -43,8 +44,8 @@ public class RolHome {
 		}
 	}
 
-	public void attachDirty(Rol instance) {
-		log.debug("attaching dirty Rol instance");
+	public void attachDirty(Usuariodispositivo instance) {
+		log.debug("attaching dirty Usuariodispositivo instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -54,8 +55,8 @@ public class RolHome {
 		}
 	}
 
-	public void attachClean(Rol instance) {
-		log.debug("attaching clean Rol instance");
+	public void attachClean(Usuariodispositivo instance) {
+		log.debug("attaching clean Usuariodispositivo instance");
 		try {
 			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
@@ -65,8 +66,8 @@ public class RolHome {
 		}
 	}
 
-	public void delete(Rol persistentInstance) {
-		log.debug("deleting Rol instance");
+	public void delete(Usuariodispositivo persistentInstance) {
+		log.debug("deleting Usuariodispositivo instance");
 		try {
 			sessionFactory.getCurrentSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -76,11 +77,11 @@ public class RolHome {
 		}
 	}
 
-	public Rol merge(Rol detachedInstance) {
-		log.debug("merging Rol instance");
+	public Usuariodispositivo merge(Usuariodispositivo detachedInstance) {
+		log.debug("merging Usuariodispositivo instance");
 		try {
-			Rol result = (Rol) sessionFactory.getCurrentSession().merge(
-					detachedInstance);
+			Usuariodispositivo result = (Usuariodispositivo) sessionFactory
+					.getCurrentSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -89,11 +90,12 @@ public class RolHome {
 		}
 	}
 
-	public Rol findById(java.lang.Integer id) {
-		log.debug("getting Rol instance with id: " + id);
+	public Usuariodispositivo findById(java.lang.Integer id) {
+		log.debug("getting Usuariodispositivo instance with id: " + id);
 		try {
-			Rol instance = (Rol) sessionFactory.getCurrentSession().get(
-					"pe.com.cotic.test.modelo.Rol", id);
+			Usuariodispositivo instance = (Usuariodispositivo) sessionFactory
+					.getCurrentSession().get(
+							"pe.com.cotic.test.modelo.Usuariodispositivo", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -106,11 +108,13 @@ public class RolHome {
 		}
 	}
 
-	public List findByExample(Rol instance) {
-		log.debug("finding Rol instance by example");
+	public List findByExample(Usuariodispositivo instance) {
+		log.debug("finding Usuariodispositivo instance by example");
 		try {
-			List results = sessionFactory.getCurrentSession()
-					.createCriteria("pe.com.cotic.test.modelo.Rol")
+			List results = sessionFactory
+					.getCurrentSession()
+					.createCriteria(
+							"pe.com.cotic.test.modelo.Usuariodispositivo")
 					.add(Example.create(instance)).list();
 			log.debug("find by example successful, result size: "
 					+ results.size());

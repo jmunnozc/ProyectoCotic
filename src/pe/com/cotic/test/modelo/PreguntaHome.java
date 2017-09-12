@@ -11,13 +11,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
 /**
- * Home object for domain model class Rol.
- * @see pe.com.cotic.test.modelo.Rol
+ * Home object for domain model class Pregunta.
+ * @see pe.com.cotic.test.modelo.Pregunta
  * @author Hibernate Tools
  */
-public class RolHome {
+public class PreguntaHome {
 
-	private static final Log log = LogFactory.getLog(RolHome.class);
+	private static final Log log = LogFactory.getLog(PreguntaHome.class);
 
 	private final SessionFactory sessionFactory = getSessionFactory();
 
@@ -32,8 +32,8 @@ public class RolHome {
 		}
 	}
 
-	public void persist(Rol transientInstance) {
-		log.debug("persisting Rol instance");
+	public void persist(Pregunta transientInstance) {
+		log.debug("persisting Pregunta instance");
 		try {
 			sessionFactory.getCurrentSession().persist(transientInstance);
 			log.debug("persist successful");
@@ -43,8 +43,8 @@ public class RolHome {
 		}
 	}
 
-	public void attachDirty(Rol instance) {
-		log.debug("attaching dirty Rol instance");
+	public void attachDirty(Pregunta instance) {
+		log.debug("attaching dirty Pregunta instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -54,8 +54,8 @@ public class RolHome {
 		}
 	}
 
-	public void attachClean(Rol instance) {
-		log.debug("attaching clean Rol instance");
+	public void attachClean(Pregunta instance) {
+		log.debug("attaching clean Pregunta instance");
 		try {
 			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
@@ -65,8 +65,8 @@ public class RolHome {
 		}
 	}
 
-	public void delete(Rol persistentInstance) {
-		log.debug("deleting Rol instance");
+	public void delete(Pregunta persistentInstance) {
+		log.debug("deleting Pregunta instance");
 		try {
 			sessionFactory.getCurrentSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -76,11 +76,11 @@ public class RolHome {
 		}
 	}
 
-	public Rol merge(Rol detachedInstance) {
-		log.debug("merging Rol instance");
+	public Pregunta merge(Pregunta detachedInstance) {
+		log.debug("merging Pregunta instance");
 		try {
-			Rol result = (Rol) sessionFactory.getCurrentSession().merge(
-					detachedInstance);
+			Pregunta result = (Pregunta) sessionFactory.getCurrentSession()
+					.merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -89,11 +89,11 @@ public class RolHome {
 		}
 	}
 
-	public Rol findById(java.lang.Integer id) {
-		log.debug("getting Rol instance with id: " + id);
+	public Pregunta findById(java.lang.Integer id) {
+		log.debug("getting Pregunta instance with id: " + id);
 		try {
-			Rol instance = (Rol) sessionFactory.getCurrentSession().get(
-					"pe.com.cotic.test.modelo.Rol", id);
+			Pregunta instance = (Pregunta) sessionFactory.getCurrentSession()
+					.get("pe.com.cotic.test.modelo.Pregunta", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -106,11 +106,11 @@ public class RolHome {
 		}
 	}
 
-	public List findByExample(Rol instance) {
-		log.debug("finding Rol instance by example");
+	public List findByExample(Pregunta instance) {
+		log.debug("finding Pregunta instance by example");
 		try {
 			List results = sessionFactory.getCurrentSession()
-					.createCriteria("pe.com.cotic.test.modelo.Rol")
+					.createCriteria("pe.com.cotic.test.modelo.Pregunta")
 					.add(Example.create(instance)).list();
 			log.debug("find by example successful, result size: "
 					+ results.size());

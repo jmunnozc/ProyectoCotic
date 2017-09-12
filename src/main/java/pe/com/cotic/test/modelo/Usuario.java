@@ -1,6 +1,6 @@
 package pe.com.cotic.test.modelo;
 
-// Generated 07/09/2017 11:40:56 PM by Hibernate Tools 4.0.0
+// Generated 12/09/2017 12:25:55 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -12,6 +12,7 @@ import java.util.Set;
 public class Usuario implements java.io.Serializable {
 
 	private Integer codigoUsuario;
+	private Institucion institucion;
 	private String usuario;
 	private String clave;
 	private String dni;
@@ -28,16 +29,17 @@ public class Usuario implements java.io.Serializable {
 	private String usuarioModificacion;
 	private Date fechaModificacion;
 	private String sexo;
-	private Set usuariocursos = new HashSet(0);
+	private Set rolusuarios = new HashSet(0);
 	private Set usuariodispositivos = new HashSet(0);
+	private Set usuarioportafolios = new HashSet(0);
 
 	public Usuario() {
-		this.codigoUsuario = 0;
 	}
 
-	public Usuario(String clave, String dni, String apellidoPaterno,
-			String nombres, Date fechaNacimiento, int estado,
-			String usuarioCreacion, Date fechaCreacion) {
+	public Usuario(Institucion institucion, String clave, String dni,
+			String apellidoPaterno, String nombres, Date fechaNacimiento,
+			int estado, String usuarioCreacion, Date fechaCreacion) {
+		this.institucion = institucion;
 		this.clave = clave;
 		this.dni = dni;
 		this.apellidoPaterno = apellidoPaterno;
@@ -48,13 +50,14 @@ public class Usuario implements java.io.Serializable {
 		this.fechaCreacion = fechaCreacion;
 	}
 
-	public Usuario(String usuario, String clave, String dni,
-			String apellidoPaterno, String apellidoMaterno, String nombres,
-			Date fechaNacimiento, String correo, String telefono,
-			String celular, int estado, String usuarioCreacion,
-			Date fechaCreacion, String usuarioModificacion,
-			Date fechaModificacion, String sexo, Set usuariocursos,
-			Set usuariodispositivos) {
+	public Usuario(Institucion institucion, String usuario, String clave,
+			String dni, String apellidoPaterno, String apellidoMaterno,
+			String nombres, Date fechaNacimiento, String correo,
+			String telefono, String celular, int estado,
+			String usuarioCreacion, Date fechaCreacion,
+			String usuarioModificacion, Date fechaModificacion, String sexo,
+			Set rolusuarios, Set usuariodispositivos, Set usuarioportafolios) {
+		this.institucion = institucion;
 		this.usuario = usuario;
 		this.clave = clave;
 		this.dni = dni;
@@ -71,8 +74,9 @@ public class Usuario implements java.io.Serializable {
 		this.usuarioModificacion = usuarioModificacion;
 		this.fechaModificacion = fechaModificacion;
 		this.sexo = sexo;
-		this.usuariocursos = usuariocursos;
+		this.rolusuarios = rolusuarios;
 		this.usuariodispositivos = usuariodispositivos;
+		this.usuarioportafolios = usuarioportafolios;
 	}
 
 	public Integer getCodigoUsuario() {
@@ -81,6 +85,14 @@ public class Usuario implements java.io.Serializable {
 
 	public void setCodigoUsuario(Integer codigoUsuario) {
 		this.codigoUsuario = codigoUsuario;
+	}
+
+	public Institucion getInstitucion() {
+		return this.institucion;
+	}
+
+	public void setInstitucion(Institucion institucion) {
+		this.institucion = institucion;
 	}
 
 	public String getUsuario() {
@@ -211,12 +223,12 @@ public class Usuario implements java.io.Serializable {
 		this.sexo = sexo;
 	}
 
-	public Set getUsuariocursos() {
-		return this.usuariocursos;
+	public Set getRolusuarios() {
+		return this.rolusuarios;
 	}
 
-	public void setUsuariocursos(Set usuariocursos) {
-		this.usuariocursos = usuariocursos;
+	public void setRolusuarios(Set rolusuarios) {
+		this.rolusuarios = rolusuarios;
 	}
 
 	public Set getUsuariodispositivos() {
@@ -225,6 +237,14 @@ public class Usuario implements java.io.Serializable {
 
 	public void setUsuariodispositivos(Set usuariodispositivos) {
 		this.usuariodispositivos = usuariodispositivos;
+	}
+
+	public Set getUsuarioportafolios() {
+		return this.usuarioportafolios;
+	}
+
+	public void setUsuarioportafolios(Set usuarioportafolios) {
+		this.usuarioportafolios = usuarioportafolios;
 	}
 
 }

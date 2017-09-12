@@ -1,6 +1,6 @@
 package pe.com.cotic.test.modelo;
 
-// Generated 07/09/2017 11:40:56 PM by Hibernate Tools 4.0.0
+// Generated 12/09/2017 12:25:55 PM by Hibernate Tools 4.0.0
 
 import java.util.List;
 import javax.naming.InitialContext;
@@ -89,7 +89,7 @@ public class MenuHome {
 		}
 	}
 
-	public Menu findById(int id) {
+	public Menu findById(java.lang.Integer id) {
 		log.debug("getting Menu instance with id: " + id);
 		try {
 			Menu instance = (Menu) sessionFactory.getCurrentSession().get(

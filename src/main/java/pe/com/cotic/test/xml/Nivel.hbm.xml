@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 12/09/2017 12:25:55 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="pe.com.cotic.test.modelo.Nivel" table="nivel" catalog="cotic">
+        <id name="codigoNivel" type="java.lang.Integer">
+            <column name="codigoNivel" />
+            <generator class="identity" />
+        </id>
+        <property name="descripcionNivel" type="string">
+            <column name="descripcionNivel" length="45" not-null="true" unique="true" />
+        </property>
+        <set name="portafolios" table="portafolio" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="codigoNivel" not-null="true" />
+            </key>
+            <one-to-many class="pe.com.cotic.test.modelo.Portafolio" />
+        </set>
+        <set name="usuarioportafolios" table="usuarioportafolio" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="codigoNivel" not-null="true" />
+            </key>
+            <one-to-many class="pe.com.cotic.test.modelo.Usuarioportafolio" />
+        </set>
+    </class>
+</hibernate-mapping>

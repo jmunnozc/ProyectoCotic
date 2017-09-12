@@ -199,19 +199,14 @@ public class UsuarioBean implements Serializable {
 	public void btnModificarUsuario() {
 		UsuarioDao usuarioDao = new UsuarioDaoImpl();
 		String msg;		
-		String nuevoUsuario = this.selectedUsuario.getNombres().substring(0, 1) + this.selectedUsuario.getApellidoPaterno();		
-		this.selectedUsuario.setUsuario(nuevoUsuario.toUpperCase());
-		this.selectedUsuario.setClave("ADMIN");
-		this.selectedUsuario.setClave(this.selectedUsuario.getClave());
 		this.selectedUsuario.setNombres(this.selectedUsuario.getNombres().toUpperCase());
 		this.selectedUsuario.setApellidoPaterno(this.selectedUsuario.getApellidoPaterno().toUpperCase());
 		this.selectedUsuario.setApellidoMaterno(this.selectedUsuario.getApellidoMaterno().toUpperCase());
-		this.selectedUsuario.setCodigoUsuario(this.selectedUsuario.getCodigoUsuario());
+		
 		// Campos de Auditoria
 		Date today = new Date();
 		String fechaActual = new SimpleDateFormat("yyyy-MM-dd").format(today);
 		this.selectedUsuario.setFechaNacimiento(java.sql.Date.valueOf(fechaActual));
-		this.selectedUsuario.setUsuarioCreacion("JAMBROCIO");
 		this.selectedUsuario.setFechaCreacion(java.sql.Date.valueOf(fechaActual));		
 		this.selectedUsuario.setUsuarioModificacion("JAMBROCIO");
 		this.selectedUsuario.setFechaModificacion(java.sql.Date.valueOf(fechaActual));
@@ -227,24 +222,11 @@ public class UsuarioBean implements Serializable {
 		}		
 	}
 	
-	public void modificarUsuario(){
-		UsuarioDao usuarioDao = new UsuarioDaoImpl();
-		String msg;
-		if (usuarioDao.modificarUsuario(this.selectedUsuario)) {
-			msg = "Se modificó correctamente el registro...";
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
-			FacesContext.getCurrentInstance().addMessage(null, message);
-		} else {
-			msg = "Error al modificar el registro...";
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
-			FacesContext.getCurrentInstance().addMessage(null, message);
-		}
-	}
 	
 	public void btnEliminarUsuario() {
 		UsuarioDao usuarioDao = new UsuarioDaoImpl();
 		String msg;
-		if (usuarioDao.eliminarUsuario(this.usuario)) {
+		if (usuarioDao.eliminarUsuario(this.selectedUsuario)) {
 			msg = "Se eliminó correctamente el registro...";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
 			FacesContext.getCurrentInstance().addMessage(null, message);

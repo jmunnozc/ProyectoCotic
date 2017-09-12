@@ -28,14 +28,14 @@
 				<p:growl id="messages" />
 				<p:menubar>
 					<p:submenu label="Mantenimiento" icon="ui-icon-document">
-						<p:submenu label="Seguridad" icon="ui-icon-refresh">
-							<p:menuitem value="Usuario" url="#{appBean.basePath}usuario/mantenimiento.jsf" icon="ui-icon-contact" />
-						</p:submenu>
-						<p:menuitem value="Usuarios" url="#" icon="ui-icon-contact" />
-						<p:menuitem value="Cursos" url="#" icon="ui-icon-contact" />
-						<p:menuitem value="Temas" url="#" />
+						<p:menuitem value="Institución" url="#{appBean.basePath}institucion/mantenimiento.jsf" icon="ui-icon-contact" />
+						<p:menuitem value="Portafolio" url="#{appBean.basePath}portafolio/mantenimiento.jsf" icon="ui-icon-contact" />
 						<p:separator />
-						<p:menuitem value="Salir" url="#" icon="ui-icon-close" />
+						<p:menuitem value="Salir" actionListener="#{usuarioBean.logout}" icon="ui-icon-close" oncomplete="manejarLogin(xhr, status, args)" />
+					</p:submenu>
+
+					<p:submenu label="Seguridad" icon="ui-icon-document">
+						<p:menuitem value="Usuarios" url="#{appBean.basePath}usuario/mantenimiento.jsf" icon="ui-icon-contact" />
 					</p:submenu>
 
 					<p:submenu label="Edit" icon="ui-icon-pencil">

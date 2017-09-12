@@ -1,6 +1,6 @@
 package pe.com.cotic.test.modelo;
 
-// Generated 07/09/2017 11:40:56 PM by Hibernate Tools 4.0.0
+// Generated 12/09/2017 12:25:55 PM by Hibernate Tools 4.0.0
 
 import java.util.List;
 import javax.naming.InitialContext;
@@ -89,7 +89,7 @@ public class RolmenuHome {
 		}
 	}
 
-	public Rolmenu findById(int id) {
+	public Rolmenu findById(java.lang.Integer id) {
 		log.debug("getting Rolmenu instance with id: " + id);
 		try {
 			Rolmenu instance = (Rolmenu) sessionFactory.getCurrentSession()

@@ -1,6 +1,6 @@
 package pe.com.cotic.test.modelo;
 
-// Generated 07/09/2017 11:40:56 PM by Hibernate Tools 4.0.0
+// Generated 12/09/2017 12:25:55 PM by Hibernate Tools 4.0.0
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,25 +11,27 @@ import java.util.Set;
 public class Pregunta implements java.io.Serializable {
 
 	private Integer codigoPregunta;
-	private Curso curso;
+	private Portafolio portafolio;
 	private String tituloPregunta;
 	private int estado;
+	private byte[] imagenPregunta;
 	private Set alternativas = new HashSet(0);
 
 	public Pregunta() {
 	}
 
-	public Pregunta(Curso curso, String tituloPregunta, int estado) {
-		this.curso = curso;
+	public Pregunta(Portafolio portafolio, String tituloPregunta, int estado) {
+		this.portafolio = portafolio;
 		this.tituloPregunta = tituloPregunta;
 		this.estado = estado;
 	}
 
-	public Pregunta(Curso curso, String tituloPregunta, int estado,
-			Set alternativas) {
-		this.curso = curso;
+	public Pregunta(Portafolio portafolio, String tituloPregunta, int estado,
+			byte[] imagenPregunta, Set alternativas) {
+		this.portafolio = portafolio;
 		this.tituloPregunta = tituloPregunta;
 		this.estado = estado;
+		this.imagenPregunta = imagenPregunta;
 		this.alternativas = alternativas;
 	}
 
@@ -41,12 +43,12 @@ public class Pregunta implements java.io.Serializable {
 		this.codigoPregunta = codigoPregunta;
 	}
 
-	public Curso getCurso() {
-		return this.curso;
+	public Portafolio getPortafolio() {
+		return this.portafolio;
 	}
 
-	public void setCurso(Curso curso) {
-		this.curso = curso;
+	public void setPortafolio(Portafolio portafolio) {
+		this.portafolio = portafolio;
 	}
 
 	public String getTituloPregunta() {
@@ -63,6 +65,14 @@ public class Pregunta implements java.io.Serializable {
 
 	public void setEstado(int estado) {
 		this.estado = estado;
+	}
+
+	public byte[] getImagenPregunta() {
+		return this.imagenPregunta;
+	}
+
+	public void setImagenPregunta(byte[] imagenPregunta) {
+		this.imagenPregunta = imagenPregunta;
 	}
 
 	public Set getAlternativas() {

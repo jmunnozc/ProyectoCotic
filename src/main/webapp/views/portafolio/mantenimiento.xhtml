@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/cssLayout.css" media="screen" />
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/login.css" media="screen" />
+	<title>Mantenimiento Portafolio</title>
+</h:head>
+
+<body>
+
+	<ui:composition template="./../../template/plantilla.xhtml">
+		<ui:define name="content">
+			<div style="height: 15px"></div>
+			<div style="height: 800px">
+				<p:growl id="msgs" showDetail="true" />
+				<h:form>
+					<p:commandButton id="btnPortafolioCreate" update=":formCreate"
+						oncomplete="PF('dialogPortafolioCreate').show()" icon="icon-new"
+						title="Crear" value="Crear Portafolio" />
+				</h:form>
+								
+				<div style="height: 5px" />
+				<h:form id="formDataTable">
+
+					<p:dataTable id="tablaMostrarPortafolios" var="portafolio" emptyMessage="No hay datos de Portafolios..."
+						value="#{portafolioBean.listarPortafolios}">
+						<f:facet name="header">LISTADO DE PORTAFOLIOS</f:facet>
+						<p:column headerText="Código"
+							style="width:60px;text-align: center">
+							<h:outputText value="#{portafolio.codigoPortafolio}" />
+						</p:column>
+						<p:column headerText="Título" style="text-align: center">
+							<h:outputText value="#{portafolio.tituloPortafolio}" />
+						</p:column>
+						<p:column headerText="Descripción" style="text-align: center">
+							<h:outputText value="#{portafolio.descripcionPortafolio}" />
+						</p:column>
+						<p:column headerText="Fecha Portafolio" style="text-align: center">
+							<h:outputText value="#{portafolio.fechaInicioPortafolio}" />
+						</p:column>
+						<p:column headerText="Nivel" style="text-align: center">
+							<h:outputText value="#{portafolio.nivel.descripcionNivel}" />
+						</p:column>
+						<p:column headerText="Estado" style="text-align: center">
+							<h:outputText value="#{portafolio.estado}" />
+						</p:column>
+						<p:column headerText="Opciones"
+							style="width:80px;text-align: center">
+							<p:commandButton id="btnModificar" update=":formModificar" oncomplete="PF('dialogPortafolioModificar').show()"
+								icon="ui-icon-pencil" title="Modificar">
+								<f:setPropertyActionListener value="#{portafolio}" target="#{portafolioBean.selectedPortafolio}" />
+							</p:commandButton>
+							<p:commandButton id="btnDelete" update=":formEliminar" oncomplete="PF('dialogPortafolioEliminar').show()"
+								icon="ui-icon-trash" title="Eliminar">
+								<f:setPropertyActionListener value="#{portafolio}" target="#{portafolioBean.selectedPortafolio}" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</h:form>
+
+				<h:form id="formCreate">
+					<p:dialog header="Crear Portafolio" widgetVar="dialogPortafolioCreate"
+						modal="true" showEffect="fade" hideEffect="explode"
+						resizable="false" id="dlgPortafolioCreate">
+						<p:outputPanel id="PortafolioDetailCreate" style="text-align:center;">
+							<p:panelGrid id="display" columns="2" cellpadding="4"
+								columnClasses="label,value">
+								<h:outputText value="Título:" />
+								<p:inputText value="#{portafolioBean.selectedPortafolio.tituloPortafolio}" />
+								<h:outputText value="Descripción:" />
+								<p:inputText value="#{portafolioBean.selectedPortafolio.descripcionPortafolio}" />
+								<h:outputText value="Fecha Inicio:" />
+								<p:calendar id="button" value="#{calendarBean.date1}"
+									showOn="button" pattern="dd/MM/yyyy" locale="sp_SP"
+									navigator="true" />
+								<h:outputText value="Nivel:" />
+								<p:selectOneMenu id="nivel"
+									value="#{portafolioBean.selectedPortafolio.nivel}">
+									<f:selectItem itemLabel="-- Seleccione --" />
+									<f:selectItems value="#{portafolioBean.listarNivel}" />
+								</p:selectOneMenu>
+								<h:outputText value="Estado" />
+								<p:selectOneMenu id="estado"
+									value="#{portafolioBean.selectedPortafolio.estado}">
+									<f:selectItem itemLabel="-- Seleccione --" />
+									<f:selectItems value="#{portafolioBean.listarEstado}" />
+								</p:selectOneMenu>
+								<div style="height: 5px" />
+								<f:facet name="footer">
+									<p:commandButton id="btnCreateAceptar"
+										update=":formDataTable :msgs"
+										oncomplete="PF('dialogPortafolioCreate').hide()"
+										actionListener="#{portafolioBean.btnGrabarPortafolio()}"
+										icon="icon-save" title="Guardar" value="Guardar" />
+									<p:commandButton id="btnCreateCancelar"
+										oncomplete="PF('dialogPortafolioCreate').hide()"
+										icon="icon-cancel" title="Cancelar" value="Cancelar" />
+								</f:facet>								
+							</p:panelGrid>
+						</p:outputPanel>
+					</p:dialog>
+				</h:form>
+
+				<h:form id="formModificar">
+					<h:inputHidden value="#{portafolioBean.selectedPortafolio.codigoPortafolio}"/>
+					<p:dialog header="Modificar Portafolio" widgetVar="dialogPortafolioModificar"
+						modal="true" showEffect="fade" hideEffect="explode"
+						resizable="false" id="dlgPortafolioModificar">
+						<p:outputPanel id="PortafolioDetailModificar" style="text-align:center;">
+							<p:panelGrid id="display" columns="2" cellpadding="4"
+								columnClasses="label,value">
+					
+								<h:outputText value="Título:" />
+								<p:inputText value="#{portafolioBean.selectedPortafolio.tituloPortafolio}" />
+								<h:outputText value="Descripción:" />
+								<p:inputText value="#{portafolioBean.selectedPortafolio.descripcionPortafolio}" />
+								<h:outputText value="Fecha Inicio:" />
+								<p:calendar id="button" value="#{calendarBean.date1}"
+									showOn="button" pattern="dd/MM/yyyy" locale="sp_SP"
+									navigator="true" />
+								<h:outputText value="Nivel:" />
+								<p:selectOneMenu id="nivel"
+									value="#{portafolioBean.selectedPortafolio.nivel}">
+									<f:selectItem itemLabel="-- Seleccione --" />
+									<f:selectItems value="#{portafolioBean.listarNivel}" />
+								</p:selectOneMenu>									
+								<h:outputText value="Estado" />
+								<p:selectOneMenu id="estado"
+									value="#{portafolioBean.selectedPortafolio.estado}">
+									<f:selectItem itemLabel="-- Seleccione --" />
+									<f:selectItems value="#{portafolioBean.listarEstado}" />
+								</p:selectOneMenu>
+								<div style="height: 5px" />
+								<f:facet name="footer">
+									<p:commandButton id="btnModificarAceptar"
+										update=":formDataTable :msgs"
+										oncomplete="PF('dialogPortafolioModificar').hide()"
+										actionListener="#{portafolioBean.btnModificarPortafolio()}"
+										icon="icon-save" title="Guardar" value="Guardar Modificacion" />
+									<p:commandButton id="btnModificarCancelar"
+										oncomplete="PF('dialogPortafolioModificar').hide()"
+										icon="icon-cancel" title="Cancelar" value="Cancelar" />
+								</f:facet>
+							</p:panelGrid>
+						</p:outputPanel>
+					</p:dialog>
+				</h:form>
+
+				<h:form id="formEliminar">
+					<h:inputHidden value="#{portafolioBean.selectedPortafolio.codigoPortafolio}"/>
+					<p:confirmDialog id="confirmDialog"
+						message="¿Esta seguro de Eliminar el registro?"
+						header="Proceso de eliminación..." severity="alert"
+						widgetVar="dialogPortafolioEliminar" showEffect="fade"
+						hideEffect="explode">
+						<p:commandButton id="confirm" value="Aceptar" update=":formDataTable :msgs"
+							oncomplete="PF('dialogPortafolioEliminar').hide()"
+							actionListener="#{portafolioBean.btnEliminarPortafolio()}"
+							icon="icon-acept-green" />
+						<p:commandButton id="decline" value="Cancelar"
+							onclick="PF('dialogPortafolioEliminar').hide()" type="button"
+							icon="icon-cancel" />
+					</p:confirmDialog>
+				</h:form>
+			</div>
+		</ui:define>
+	</ui:composition>
+
+</body>
+</html>

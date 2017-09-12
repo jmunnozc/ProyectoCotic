@@ -11,7 +11,7 @@
 		href="../../resources/css/cssLayout.css" media="screen" />
 	<link rel="stylesheet" type="text/css"
 		href="../../resources/css/login.css" media="screen" />
-	<title>Pagina Cliente</title>
+	<title>Mantenimiento Usuario</title>
 </h:head>
 
 <body>
@@ -19,7 +19,7 @@
 	<ui:composition template="./../../template/plantilla.xhtml">
 		<ui:define name="content">
 			<div style="height: 15px"></div>
-			<div style="height: 500px">
+			<div style="height: 800px">
 				<p:growl id="msgs" showDetail="true" />
 				<h:form>
 					<p:commandButton id="btnUsuarioCreate" update=":formCreate"
@@ -52,17 +52,13 @@
 						</p:column>
 						<p:column headerText="Opciones"
 							style="width:80px;text-align: center">
-							<p:commandButton id="btnModificar" update=":formModificar"
-								oncomplete="PF('dialogUsuarioModificar').show()"
+							<p:commandButton id="btnModificar" update=":formModificar" oncomplete="PF('dialogUsuarioModificar').show()"
 								icon="ui-icon-pencil" title="Modificar">
-								<f:setPropertyActionListener value="#{usuario}"
-									target="#{usuarioBean.selectedUsuario}" />
+								<f:setPropertyActionListener value="#{usuario}" target="#{usuarioBean.selectedUsuario}" />
 							</p:commandButton>
-							<p:commandButton id="btnDelete" update=":formEliminar"
-								oncomplete="PF('dialogUsuarioEliminar').show()"
+							<p:commandButton id="btnDelete" update=":formEliminar" oncomplete="PF('dialogUsuarioEliminar').show()"
 								icon="ui-icon-trash" title="Eliminar">
-								<f:setPropertyActionListener value="#{usuario}"
-									target="#{usuarioBean.selectedUsuario}" />
+								<f:setPropertyActionListener value="#{usuario}" target="#{usuarioBean.selectedUsuario}" />
 							</p:commandButton>
 						</p:column>
 					</p:dataTable>
@@ -75,7 +71,6 @@
 						<p:outputPanel id="usuarioDetailCreate" style="text-align:center;">
 							<p:panelGrid id="display" columns="2" cellpadding="4"
 								columnClasses="label,value">
-
 								<h:outputText value="Dni:" />
 								<p:inputText value="#{usuarioBean.selectedUsuario.dni}"
 									style="text-legth:8" />
@@ -132,6 +127,10 @@
 				</h:form>
 
 				<h:form id="formModificar">
+					<h:inputHidden value="#{usuarioBean.selectedUsuario.codigoUsuario}"/>
+					<h:inputHidden value="#{usuarioBean.selectedUsuario.usuario}"/>
+					<h:inputHidden value="#{usuarioBean.selectedUsuario.clave}" />
+					<h:inputHidden value="#{usuarioBean.selectedUsuario.usuarioCreacion}" />
 					<p:dialog header="Modificar Usuario" widgetVar="dialogUsuarioModificar"
 						modal="true" showEffect="fade" hideEffect="explode"
 						resizable="false" id="dlgUsuarioModificar">
@@ -139,11 +138,9 @@
 							<p:panelGrid id="display" columns="2" cellpadding="4"
 								columnClasses="label,value">
 
-								<h:outputText value="Código:" />
-								<p:inputText value="#{usuarioBean.selectedUsuario.codigoUsuario}"/>
+					
 								<h:outputText value="Dni:" />
-								<p:inputText value="#{usuarioBean.selectedUsuario.dni}"
-									style="text-legth:8" />
+								<p:inputText value="#{usuarioBean.selectedUsuario.dni}" />
 								<h:outputText value="Nombres:" />
 								<p:inputText value="#{usuarioBean.selectedUsuario.nombres}"
 									style="text-transform:uppercase;" />
@@ -185,7 +182,7 @@
 									<p:commandButton id="btnModificarAceptar"
 										update=":formDataTable :msgs"
 										oncomplete="PF('dialogUsuarioModificar').hide()"
-										actionListener="#{usuarioBean.btnModificarUsuario()}"
+										actionListener="#{usuarioBean.btnModificarUsuario}"
 										icon="icon-save" title="Guardar" value="Guardar Modificacion" />
 									<p:commandButton id="btnModificarCancelar"
 										oncomplete="PF('dialogUsuarioModificar').hide()"
@@ -197,6 +194,7 @@
 				</h:form>
 				
 				<h:form id="formEliminar">
+					<h:inputHidden value="#{usuarioBean.selectedUsuario.codigoUsuario}"/>
 					<p:confirmDialog id="confirmDialog"
 						message="¿Esta seguro de Eliminar el registro?"
 						header="Proceso de eliminación..." severity="alert"
