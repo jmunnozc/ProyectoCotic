@@ -91,6 +91,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		try {
 			session.update(usuario);
 			transaction.commit();
+			session.close();
 			flag = true;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -101,12 +102,11 @@ public class UsuarioDaoImpl implements UsuarioDao {
 	}
 
 	@Override
-	public boolean eliminarUsuario(Integer codigoUsuario) {
+	public boolean eliminarUsuario(Usuario usuario) {
 		boolean flag = false;
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
-			Usuario usuario = (Usuario) session.load(Usuario.class, codigoUsuario);
 			session.delete(usuario);
 			transaction.commit();
 			flag = true;

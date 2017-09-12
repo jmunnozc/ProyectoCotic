@@ -9,6 +9,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 
 import org.primefaces.context.RequestContext;
@@ -31,6 +32,9 @@ public class UsuarioBean implements Serializable {
 	private UsuarioDao usuarioDao;
 	private List<Usuario> listarUsuarios;
 	private Usuario selectedUsuario;
+	
+	private List<SelectItem> listarSexo;
+	private List<SelectItem> listarEstado;
 	
 	public UsuarioBean() {
 		this.usuarioDao = new UsuarioDaoImpl();
@@ -61,6 +65,40 @@ public class UsuarioBean implements Serializable {
 
 	public void setSelectedUsuario(Usuario selectedUsuario) {
 		this.selectedUsuario = selectedUsuario;
+	}
+	
+	public List<SelectItem> getListarSexo() {
+		
+		this.listarSexo = new ArrayList<SelectItem>();
+		listarSexo.clear();
+		
+		SelectItem sexoItem1 = new SelectItem("M","MASCULINO");
+		this.listarSexo.add(sexoItem1);
+		SelectItem sexoItem2 = new SelectItem("F","FEMENINO");
+		this.listarSexo.add(sexoItem2);
+		
+		return listarSexo;
+	}
+
+	public void setListarSexo(List<SelectItem> listarSexo) {
+		this.listarSexo = listarSexo;
+	}	
+	
+	public List<SelectItem> getListarEstado() {
+		
+		this.listarEstado = new ArrayList<SelectItem>();
+		listarEstado.clear();
+		
+		SelectItem estadoItem1 = new SelectItem(1,"ACTIVO");
+		this.listarEstado.add(estadoItem1);
+		SelectItem estadoItem2 = new SelectItem(0,"INACTIVO");
+		this.listarEstado.add(estadoItem2);
+		
+		return listarEstado;
+	}
+
+	public void setListarEstado(List<SelectItem> listarEstado) {
+		this.listarEstado = listarEstado;
 	}
 
 	public void verificarDatos() throws Exception {			
@@ -133,13 +171,16 @@ public class UsuarioBean implements Serializable {
 		UsuarioDao usuarioDao = new UsuarioDaoImpl();
 		String msg;
 		
-		//this.selectedUsuario.setUsuario(usuario.getNombres().substring(1,1).toUpperCase() + usuario.getApellidoPaterno().toUpperCase());
-		this.selectedUsuario.setUsuario(selectedUsuario.getNombres().substring(0,1).toUpperCase() + selectedUsuario.getApellidoPaterno().toUpperCase());
-		this.selectedUsuario.setClave("ADMIN");		
+		String nuevoUsuario = this.selectedUsuario.getNombres().substring(0, 1) + this.selectedUsuario.getApellidoPaterno();		
+		this.selectedUsuario.setUsuario(nuevoUsuario.toUpperCase());
+		this.selectedUsuario.setClave("ADMIN");
+		this.selectedUsuario.setNombres(this.selectedUsuario.getNombres().toUpperCase());
+		this.selectedUsuario.setApellidoPaterno(this.selectedUsuario.getApellidoPaterno().toUpperCase());
+		this.selectedUsuario.setApellidoMaterno(this.selectedUsuario.getApellidoMaterno().toUpperCase());
+		// Campos de Auditoria
 		Date today = new Date();
 		String fechaActual = new SimpleDateFormat("yyyy-MM-dd").format(today);
-		//String fecNac = new SimpleDateFormat().format(CalendarBean);
-		//this.selectedUsuario.setFechaNacimiento(java.sql.Date.valueOf(fecNac));
+		this.selectedUsuario.setFechaNacimiento(java.sql.Date.valueOf(fechaActual));
 		this.selectedUsuario.setUsuarioCreacion("JAMBROCIO");
 		this.selectedUsuario.setFechaCreacion(java.sql.Date.valueOf(fechaActual));
 		
@@ -157,7 +198,24 @@ public class UsuarioBean implements Serializable {
 	
 	public void btnModificarUsuario() {
 		UsuarioDao usuarioDao = new UsuarioDaoImpl();
-		String msg;
+		String msg;		
+		String nuevoUsuario = this.selectedUsuario.getNombres().substring(0, 1) + this.selectedUsuario.getApellidoPaterno();		
+		this.selectedUsuario.setUsuario(nuevoUsuario.toUpperCase());
+		this.selectedUsuario.setClave("ADMIN");
+		this.selectedUsuario.setClave(this.selectedUsuario.getClave());
+		this.selectedUsuario.setNombres(this.selectedUsuario.getNombres().toUpperCase());
+		this.selectedUsuario.setApellidoPaterno(this.selectedUsuario.getApellidoPaterno().toUpperCase());
+		this.selectedUsuario.setApellidoMaterno(this.selectedUsuario.getApellidoMaterno().toUpperCase());
+		this.selectedUsuario.setCodigoUsuario(this.selectedUsuario.getCodigoUsuario());
+		// Campos de Auditoria
+		Date today = new Date();
+		String fechaActual = new SimpleDateFormat("yyyy-MM-dd").format(today);
+		this.selectedUsuario.setFechaNacimiento(java.sql.Date.valueOf(fechaActual));
+		this.selectedUsuario.setUsuarioCreacion("JAMBROCIO");
+		this.selectedUsuario.setFechaCreacion(java.sql.Date.valueOf(fechaActual));		
+		this.selectedUsuario.setUsuarioModificacion("JAMBROCIO");
+		this.selectedUsuario.setFechaModificacion(java.sql.Date.valueOf(fechaActual));
+		
 		if (usuarioDao.modificarUsuario(this.selectedUsuario)) {
 			msg = "Se modificó correctamente el registro...";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
@@ -169,10 +227,24 @@ public class UsuarioBean implements Serializable {
 		}		
 	}
 	
-	public void btnEliminarUsuario(Usuario usuario) {
+	public void modificarUsuario(){
 		UsuarioDao usuarioDao = new UsuarioDaoImpl();
 		String msg;
-		if (usuarioDao.eliminarUsuario(this.selectedUsuario.getCodigoUsuario())) {
+		if (usuarioDao.modificarUsuario(this.selectedUsuario)) {
+			msg = "Se modificó correctamente el registro...";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		} else {
+			msg = "Error al modificar el registro...";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+	}
+	
+	public void btnEliminarUsuario() {
+		UsuarioDao usuarioDao = new UsuarioDaoImpl();
+		String msg;
+		if (usuarioDao.eliminarUsuario(this.usuario)) {
 			msg = "Se eliminó correctamente el registro...";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
 			FacesContext.getCurrentInstance().addMessage(null, message);

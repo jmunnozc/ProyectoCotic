@@ -10,5 +10,5 @@ public interface UsuarioDao {
 	public List<Usuario> ListarUsuarios();
 	public boolean grabarUsuario(Usuario usuario);
 	public boolean modificarUsuario(Usuario usuario);
-	public boolean eliminarUsuario(Integer codigoUsuario);
+	public boolean eliminarUsuario(Usuario usuario);
 }
