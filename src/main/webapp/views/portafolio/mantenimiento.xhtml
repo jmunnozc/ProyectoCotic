@@ -7,11 +7,10 @@
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<link rel="stylesheet" type="text/css"
-		href="../../resources/css/cssLayout.css" media="screen" />
-	<link rel="stylesheet" type="text/css"
-		href="../../resources/css/login.css" media="screen" />
+	<link rel="stylesheet" type="text/css"	href="../../resources/css/cssLayout.css" media="screen" />
+	<link rel="stylesheet" type="text/css"	href="../../resources/css/login.css" media="screen" />
 	<title>Mantenimiento Portafolio</title>
+    
 </h:head>
 
 <body>
@@ -83,7 +82,7 @@
 									navigator="true" />
 								<h:outputText value="Nivel:" />
 								<p:selectOneMenu id="nivel"
-									value="#{portafolioBean.selectedPortafolio.nivel}">
+									value="#{portafolioBean.selectedPortafolio.nivel.codigoNivel}">
 									<f:selectItem itemLabel="-- Seleccione --" />
 									<f:selectItems value="#{portafolioBean.listarNivel}" />
 								</p:selectOneMenu>
@@ -111,12 +110,14 @@
 
 				<h:form id="formModificar">
 					<h:inputHidden value="#{portafolioBean.selectedPortafolio.codigoPortafolio}"/>
+					<h:inputHidden value="#{portafolioBean.selectedPortafolio.fechaInicioPortafolio}" />
+					<h:inputHidden value="#{portafolioBean.selectedPortafolio.fechaFinPortafolio}" />
 					<p:dialog header="Modificar Portafolio" widgetVar="dialogPortafolioModificar"
 						modal="true" showEffect="fade" hideEffect="explode"
 						resizable="false" id="dlgPortafolioModificar">
 						<p:outputPanel id="PortafolioDetailModificar" style="text-align:center;">
-							<p:panelGrid id="display" columns="2" cellpadding="4"
-								columnClasses="label,value">
+							<p:panelGrid id="display" columns="2" cellpadding="4" style="border: none"
+								columnClasses="label,value" rowIndexVar="rowIndex">
 					
 								<h:outputText value="Título:" />
 								<p:inputText value="#{portafolioBean.selectedPortafolio.tituloPortafolio}" />
@@ -126,19 +127,37 @@
 								<p:calendar id="button" value="#{calendarBean.date1}"
 									showOn="button" pattern="dd/MM/yyyy" locale="sp_SP"
 									navigator="true" />
+									
 								<h:outputText value="Nivel:" />
-								<p:selectOneMenu id="nivel"
-									value="#{portafolioBean.selectedPortafolio.nivel}">
+								<p:selectOneMenu id="id" value="#{portafolioBean.selectedPortafolio.nivel.codigoNivel}">
 									<f:selectItem itemLabel="-- Seleccione --" />
 									<f:selectItems value="#{portafolioBean.listarNivel}" />
-								</p:selectOneMenu>									
+									<f:ajax render="mostrarRespuesta mostrarSelectRespuesta mostrarTiempo mostrarValorTiempo"  event="change" listener="#{portafolioBean.updateOutputLabels()}"/>
+								</p:selectOneMenu>
+								<h:panelGroup id="mostrarRespuesta" >								
+									<h:outputText value="¿Mostrar respuesta?" rendered="#{portafolioBean.hideFields}"/>
+								</h:panelGroup>
+								<h:panelGroup id="mostrarSelectRespuesta" >
+									<p:selectOneMenu id="rpta" rendered="#{portafolioBean.hideFields}"
+										value="#{portafolioBean.selectedPortafolio.flagMostrarRespuestaCorrectaPortafolio}">
+										<f:selectItem itemLabel="-- Seleccione --" />
+										<f:selectItems value="#{portafolioBean.listarSiNo}" />
+									</p:selectOneMenu>
+								</h:panelGroup>
+								<h:panelGroup id="mostrarTiempo">								
+									<h:outputText value="Tiempo:" rendered="#{portafolioBean.hideFields}"/>
+								</h:panelGroup>
+								<h:panelGroup id="mostrarValorTiempo" >
+									<p:inputNumber id="tiempo" value="#{portafolioBean.selectedPortafolio.tiempoPortafolio}" decimalPlaces="0" rendered="#{portafolioBean.hideFields}"/>
+								</h:panelGroup>								
+																								
 								<h:outputText value="Estado" />
 								<p:selectOneMenu id="estado"
 									value="#{portafolioBean.selectedPortafolio.estado}">
 									<f:selectItem itemLabel="-- Seleccione --" />
 									<f:selectItems value="#{portafolioBean.listarEstado}" />
 								</p:selectOneMenu>
-								<div style="height: 5px" />
+								<div style="height: 5px"/>
 								<f:facet name="footer">
 									<p:commandButton id="btnModificarAceptar"
 										update=":formDataTable :msgs"
@@ -154,7 +173,7 @@
 					</p:dialog>
 				</h:form>
 
-				<h:form id="formEliminar">
+ 				<h:form id="formEliminar">
 					<h:inputHidden value="#{portafolioBean.selectedPortafolio.codigoPortafolio}"/>
 					<p:confirmDialog id="confirmDialog"
 						message="¿Esta seguro de Eliminar el registro?"
@@ -173,6 +192,6 @@
 			</div>
 		</ui:define>
 	</ui:composition>
-
+	
 </body>
 </html>

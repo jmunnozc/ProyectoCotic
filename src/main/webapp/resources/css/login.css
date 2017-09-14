@@ -12,6 +12,10 @@ body {
 	font-size: 85%;
 }
 
+.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}
+
 .ui-state-default .icon-login {
 	background-image: url(../images/icons/people_16x16.png);
 }

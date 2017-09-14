@@ -1,7 +1,9 @@
 package pe.com.cotic.test.bean;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
@@ -12,6 +14,7 @@ import javax.faces.model.SelectItem;
 
 import pe.com.cotic.test.dao.PortafolioDao;
 import pe.com.cotic.test.daoImpl.PortafolioDaoImpl;
+import pe.com.cotic.test.modelo.Nivel;
 import pe.com.cotic.test.modelo.Portafolio;
 
 @ManagedBean
@@ -27,15 +30,30 @@ private static final long serialVersionUID = 1L;
 	
 	private List<SelectItem> listarNivel;
 	private List<SelectItem> listarEstado;
+	private List<SelectItem> listarSiNo;
+
+	private boolean hideFields;
 	
 	
 	public PortafolioBean() {
+		portafolio = new Portafolio(); 
 		this.portafolioDao = new PortafolioDaoImpl();
-		if (this.portafolio == null) {
-			this.portafolio = new Portafolio();
+		if (this.portafolio == null) { 
+			this.portafolio = new Portafolio(); 
 		}
 		this.listarPortafolios = new ArrayList<Portafolio>();
 		this.selectedPortafolio = new Portafolio(); 
+		
+	}
+
+
+	public boolean isHideFields() {
+		return hideFields;
+	}
+
+
+	public void setHideFields(boolean hideFields) {
+		this.hideFields = hideFields;
 	}
 
 
@@ -78,17 +96,36 @@ private static final long serialVersionUID = 1L;
 	}
 
 
+	public List<SelectItem> getListarSiNo() {
+
+		this.listarSiNo = new ArrayList<SelectItem>();
+		listarSiNo.clear();
+		
+		SelectItem estadoItem1 = new SelectItem(1,"SI");
+		this.listarSiNo.add(estadoItem1);
+		SelectItem estadoItem2 = new SelectItem(0,"NO");
+		this.listarSiNo.add(estadoItem2);
+		
+		return listarSiNo;
+	}
+
+
+	public void setListarSiNo(List<SelectItem> listarSiNo) {
+		this.listarSiNo = listarSiNo;
+	}
+
+
 	public List<SelectItem> getListarNivel() {
 		
 		this.listarNivel = new ArrayList<SelectItem>();
+		PortafolioDao portafolioDao = new PortafolioDaoImpl();
+		List<Nivel> n = portafolioDao.ListarNiveles(portafolio);
 		listarNivel.clear();
 		
-		SelectItem estadoItem1 = new SelectItem(1,"TEMA");
-		this.listarNivel.add(estadoItem1);
-		SelectItem estadoItem2 = new SelectItem(2,"MODULO");
-		this.listarNivel.add(estadoItem2);
-		SelectItem estadoItem3 = new SelectItem(3,"CURSO");
-		this.listarNivel.add(estadoItem3);	
+		for (Nivel nivel : n){
+			SelectItem nivelItem = new SelectItem(nivel.getCodigoNivel(), nivel.getDescripcionNivel());
+			this.listarNivel.add(nivelItem);
+		}
 		
 		return listarNivel;
 	}
@@ -111,8 +148,9 @@ private static final long serialVersionUID = 1L;
 		PortafolioDao portafolioDao = new PortafolioDaoImpl();
 		String msg;
 		
-		this.selectedPortafolio.setTituloPortafolio(this.selectedPortafolio.getTituloPortafolio().toUpperCase());
-		this.selectedPortafolio.setDescripcionPortafolio(this.selectedPortafolio.getDescripcionPortafolio().toUpperCase());
+		Date today = new Date();
+		String fechaActual = new SimpleDateFormat("yyyy-MM-dd").format(today);
+		this.selectedPortafolio.setFechaInicioPortafolio(fechaActual);		
 		
 		if (portafolioDao.grabarPortafolio(this.selectedPortafolio)) {
 			msg = "Se creó correctamente el registro...";
@@ -130,8 +168,8 @@ private static final long serialVersionUID = 1L;
 		PortafolioDao portafolioDao = new PortafolioDaoImpl();
 		String msg;
 		
-		this.selectedPortafolio.setTituloPortafolio(this.selectedPortafolio.getTituloPortafolio().toUpperCase());
-		this.selectedPortafolio.setDescripcionPortafolio(this.selectedPortafolio.getDescripcionPortafolio().toUpperCase());	
+		/*this.selectedPortafolio.setTituloPortafolio(this.selectedPortafolio.getTituloPortafolio().toUpperCase());
+		this.selectedPortafolio.setDescripcionPortafolio(this.selectedPortafolio.getDescripcionPortafolio().toUpperCase());*/			
 		
 		if (portafolioDao.modificarPortafolio(this.selectedPortafolio)) {
 			msg = "Se modificó correctamente el registro...";
@@ -158,4 +196,19 @@ private static final long serialVersionUID = 1L;
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
+	
+	public void btnCancelar() {
+		
+		portafolio = new Portafolio();
+	}
+	
+	
+	public void updateOutputLabels(){
+        
+        if ( this.selectedPortafolio.getNivel().getCodigoNivel() == 3 ){
+            this.hideFields = true;
+        } else {  
+            this.hideFields = false;
+        }
+    }
 }

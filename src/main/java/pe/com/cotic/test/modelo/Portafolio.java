@@ -25,6 +25,7 @@ public class Portafolio implements java.io.Serializable {
 	private Set preguntas = new HashSet(0);
 
 	public Portafolio() {
+		nivel = new Nivel();
 	}
 
 	public Portafolio(Nivel nivel, String tituloPortafolio,
