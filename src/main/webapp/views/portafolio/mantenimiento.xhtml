@@ -33,29 +33,32 @@
 						value="#{portafolioBean.listarPortafolios}">
 						<f:facet name="header">LISTADO DE PORTAFOLIOS</f:facet>
 						<p:column headerText="Código"
-							style="width:60px;text-align: center">
+							style="width:60px;text-align: center; width: 50px;">
 							<h:outputText value="#{portafolio.codigoPortafolio}" />
 						</p:column>
 						<p:column headerText="Título" style="text-align: center">
 							<h:outputText value="#{portafolio.tituloPortafolio}" />
 						</p:column>
-						<p:column headerText="Descripción" style="text-align: center">
+						<p:column headerText="Descripción" style="text-align: center; width: 500px;">
 							<h:outputText value="#{portafolio.descripcionPortafolio}" />
 						</p:column>
 						<p:column headerText="Fecha Portafolio" style="text-align: center">
 							<h:outputText value="#{portafolio.fechaInicioPortafolio}" />
 						</p:column>
-						<p:column headerText="Nivel" style="text-align: center">
+						<p:column headerText="Nivel" style="text-align: center; width: 70px;">
 							<h:outputText value="#{portafolio.nivel.descripcionNivel}" />
 						</p:column>
-						<p:column headerText="Estado" style="text-align: center">
+						<p:column headerText="Muestra Pregunta" style="text-align: center; width: 60px;">
+							<h:outputText value="#{portafolio.flagMostrarRespuestaCorrectaPortafolio}" />
+						</p:column>
+						<p:column headerText="Estado" style="text-align: center; width: 50px;">
 							<h:outputText value="#{portafolio.estado}" />
 						</p:column>
 						<p:column headerText="Opciones"
 							style="width:80px;text-align: center">
 							<p:commandButton id="btnModificar" update=":formModificar" oncomplete="PF('dialogPortafolioModificar').show()"
 								icon="ui-icon-pencil" title="Modificar">
-								<f:setPropertyActionListener value="#{portafolio}" target="#{portafolioBean.selectedPortafolio}" />
+								<f:setPropertyActionListener value="#{portafolio}" target="#{portafolioBean.selectedPortafolio}" />								
 							</p:commandButton>
 							<p:commandButton id="btnDelete" update=":formEliminar" oncomplete="PF('dialogPortafolioEliminar').show()"
 								icon="ui-icon-trash" title="Eliminar">
@@ -112,12 +115,15 @@
 					<h:inputHidden value="#{portafolioBean.selectedPortafolio.codigoPortafolio}"/>
 					<h:inputHidden value="#{portafolioBean.selectedPortafolio.fechaInicioPortafolio}" />
 					<h:inputHidden value="#{portafolioBean.selectedPortafolio.fechaFinPortafolio}" />
+					<h:inputHidden value="#{portafolioBean.selectedPortafolio.flagMostrarRespuestaCorrectaPortafolio}" />
+					<h:inputHidden value="#{portafolioBean.selectedPortafolio.tiempoPortafolio}" />
+
 					<p:dialog header="Modificar Portafolio" widgetVar="dialogPortafolioModificar"
 						modal="true" showEffect="fade" hideEffect="explode"
 						resizable="false" id="dlgPortafolioModificar">
-						<p:outputPanel id="PortafolioDetailModificar" style="text-align:center;">
-							<p:panelGrid id="display" columns="2" cellpadding="4" style="border: none"
-								columnClasses="label,value" rowIndexVar="rowIndex">
+					<!-- f:ajax render="PortafolioDetailModificar"  event="open"  listener="{portafolioBean.updateOutputLabels}"/ -->
+						<p:outputPanel id="PortafolioDetailModificar" style="text-align:center;" >						
+							<p:panelGrid id="display" columns="2" cellpadding="3" columnClasses="label,value" rowIndexVar="rowIndex">
 					
 								<h:outputText value="Título:" />
 								<p:inputText value="#{portafolioBean.selectedPortafolio.tituloPortafolio}" />
@@ -132,7 +138,7 @@
 								<p:selectOneMenu id="id" value="#{portafolioBean.selectedPortafolio.nivel.codigoNivel}">
 									<f:selectItem itemLabel="-- Seleccione --" />
 									<f:selectItems value="#{portafolioBean.listarNivel}" />
-									<f:ajax render="mostrarRespuesta mostrarSelectRespuesta mostrarTiempo mostrarValorTiempo"  event="change" listener="#{portafolioBean.updateOutputLabels()}"/>
+									<f:ajax render="mostrarRespuesta mostrarSelectRespuesta mostrarTiempo mostrarValorTiempo"  event="change" listener="#{portafolioBean.updateOutputLabels}"/>
 								</p:selectOneMenu>
 								<h:panelGroup id="mostrarRespuesta" >								
 									<h:outputText value="¿Mostrar respuesta?" rendered="#{portafolioBean.hideFields}"/>

@@ -139,7 +139,7 @@ private static final long serialVersionUID = 1L;
 	public List<Portafolio> getListarPortafolios() {
 		PortafolioDao portafolioDao = new PortafolioDaoImpl();
 		this.listarPortafolios = portafolioDao.ListarPortafolios();
-		
+				
 		return listarPortafolios;
 	}
 	
@@ -203,8 +203,8 @@ private static final long serialVersionUID = 1L;
 	}
 	
 	
-	public void updateOutputLabels(){
-        
+	public void updateOutputLabels(){        
+		
         if ( this.selectedPortafolio.getNivel().getCodigoNivel() == 3 ){
             this.hideFields = true;
         } else {  
