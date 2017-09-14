@@ -21,7 +21,7 @@ import pe.com.cotic.test.modelo.Portafolio;
 @SessionScoped
 public class PortafolioBean implements Serializable {
 
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	
 	private Portafolio portafolio;
 	private PortafolioDao portafolioDao;
@@ -42,8 +42,8 @@ private static final long serialVersionUID = 1L;
 			this.portafolio = new Portafolio(); 
 		}
 		this.listarPortafolios = new ArrayList<Portafolio>();
-		this.selectedPortafolio = new Portafolio(); 
-		
+		this.selectedPortafolio = new Portafolio();
+		this.hideFields = true;
 	}
 
 
@@ -205,9 +205,11 @@ private static final long serialVersionUID = 1L;
 	
 	public void updateOutputLabels(){        
 		
-        if ( this.selectedPortafolio.getNivel().getCodigoNivel() == 3 ){
+        if ( this.selectedPortafolio.getNivel().getCodigoNivel() == 3 ){ 
             this.hideFields = true;
         } else {  
+        	this.selectedPortafolio.setFlagMostrarRespuestaCorrectaPortafolio(0);
+        	this.selectedPortafolio.setTiempoPortafolio(0);
             this.hideFields = false;
         }
     }

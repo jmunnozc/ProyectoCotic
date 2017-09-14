@@ -30,7 +30,9 @@
 				<h:form id="formDataTable">
 
 					<p:dataTable id="tablaMostrarPortafolios" var="portafolio" emptyMessage="No hay datos de Portafolios..."
-						value="#{portafolioBean.listarPortafolios}">
+						value="#{portafolioBean.listarPortafolios}" rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">
 						<f:facet name="header">LISTADO DE PORTAFOLIOS</f:facet>
 						<p:column headerText="Código"
 							style="width:60px;text-align: center; width: 50px;">
@@ -39,10 +41,10 @@
 						<p:column headerText="Título" style="text-align: center">
 							<h:outputText value="#{portafolio.tituloPortafolio}" />
 						</p:column>
-						<p:column headerText="Descripción" style="text-align: center; width: 500px;">
+						<p:column headerText="Descripción" style="text-align: center; width: 900px;">
 							<h:outputText value="#{portafolio.descripcionPortafolio}" />
 						</p:column>
-						<p:column headerText="Fecha Portafolio" style="text-align: center">
+						<p:column headerText="Fecha Portafolio" style="text-align: center; width: 100px;">
 							<h:outputText value="#{portafolio.fechaInicioPortafolio}" />
 						</p:column>
 						<p:column headerText="Nivel" style="text-align: center; width: 70px;">
@@ -83,12 +85,30 @@
 								<p:calendar id="button" value="#{calendarBean.date1}"
 									showOn="button" pattern="dd/MM/yyyy" locale="sp_SP"
 									navigator="true" />
+								
 								<h:outputText value="Nivel:" />
-								<p:selectOneMenu id="nivel"
-									value="#{portafolioBean.selectedPortafolio.nivel.codigoNivel}">
+								<p:selectOneMenu id="nivel" value="#{portafolioBean.selectedPortafolio.nivel.codigoNivel}">
 									<f:selectItem itemLabel="-- Seleccione --" />
 									<f:selectItems value="#{portafolioBean.listarNivel}" />
+									<f:ajax render="mostrarRespuesta mostrarSelectRespuesta mostrarTiempo mostrarValorTiempo"  event="change" listener="#{portafolioBean.updateOutputLabels}"/>
 								</p:selectOneMenu>
+								<h:panelGroup id="mostrarRespuesta" >								
+									<h:outputText value="¿Mostrar respuesta?" rendered="#{portafolioBean.hideFields}"/>
+								</h:panelGroup>
+								<h:panelGroup id="mostrarSelectRespuesta" >
+									<p:selectOneMenu rendered="#{portafolioBean.hideFields}"
+										value="#{portafolioBean.selectedPortafolio.flagMostrarRespuestaCorrectaPortafolio}" update="#{portafolioBean.selectedPortafolio.flagMostrarRespuestaCorrectaPortafolio}">
+										<f:selectItem itemLabel="-- Seleccione --" />
+										<f:selectItems value="#{portafolioBean.listarSiNo}" />
+									</p:selectOneMenu>
+								</h:panelGroup>
+								<h:panelGroup id="mostrarTiempo">								
+									<h:outputText value="Tiempo:" rendered="#{portafolioBean.hideFields}"/>
+								</h:panelGroup>
+								<h:panelGroup id="mostrarValorTiempo" >
+									<p:spinner value="#{portafolioBean.selectedPortafolio.tiempoPortafolio}" rendered="#{portafolioBean.hideFields}" update="#{portafolioBean.selectedPortafolio.tiempoPortafolio}"/>
+								</h:panelGroup>
+								
 								<h:outputText value="Estado" />
 								<p:selectOneMenu id="estado"
 									value="#{portafolioBean.selectedPortafolio.estado}">
@@ -113,17 +133,17 @@
 
 				<h:form id="formModificar">
 					<h:inputHidden value="#{portafolioBean.selectedPortafolio.codigoPortafolio}"/>
-					<h:inputHidden value="#{portafolioBean.selectedPortafolio.fechaInicioPortafolio}" />
-					<h:inputHidden value="#{portafolioBean.selectedPortafolio.fechaFinPortafolio}" />
-					<h:inputHidden value="#{portafolioBean.selectedPortafolio.flagMostrarRespuestaCorrectaPortafolio}" />
-					<h:inputHidden value="#{portafolioBean.selectedPortafolio.tiempoPortafolio}" />
-
-					<p:dialog header="Modificar Portafolio" widgetVar="dialogPortafolioModificar"
+					<h:inputHidden value="#{portafolioBean.selectedPortafolio.fechaInicioPortafolio}"/>
+					<h:inputHidden value="#{portafolioBean.selectedPortafolio.fechaFinPortafolio}"/>				
+					<h:inputHidden value="#{portafolioBean.selectedPortafolio.tiempoPortafolio}"/>
+					<h:inputHidden value="#{portafolioBean.selectedPortafolio.flagMostrarRespuestaCorrectaPortafolio}"/>
+					<h:inputHidden value="#{portafolioBean.selectedPortafolio.tiempoPortafolio}"/>
+									
+						<p:dialog header="Modificar Portafolio" widgetVar="dialogPortafolioModificar"
 						modal="true" showEffect="fade" hideEffect="explode"
 						resizable="false" id="dlgPortafolioModificar">
-					<!-- f:ajax render="PortafolioDetailModificar"  event="open"  listener="{portafolioBean.updateOutputLabels}"/ -->
-						<p:outputPanel id="PortafolioDetailModificar" style="text-align:center;" >						
-							<p:panelGrid id="display" columns="2" cellpadding="3" columnClasses="label,value" rowIndexVar="rowIndex">
+							<p:outputPanel id="PortafolioDetailModificar" style="text-align:center;" >						
+							<p:panelGrid id="display" columns="2" cellpadding="3" columnClasses="label,value">				
 					
 								<h:outputText value="Título:" />
 								<p:inputText value="#{portafolioBean.selectedPortafolio.tituloPortafolio}" />
@@ -135,7 +155,7 @@
 									navigator="true" />
 									
 								<h:outputText value="Nivel:" />
-								<p:selectOneMenu id="id" value="#{portafolioBean.selectedPortafolio.nivel.codigoNivel}">
+								<p:selectOneMenu id="nivel" value="#{portafolioBean.selectedPortafolio.nivel.codigoNivel}">
 									<f:selectItem itemLabel="-- Seleccione --" />
 									<f:selectItems value="#{portafolioBean.listarNivel}" />
 									<f:ajax render="mostrarRespuesta mostrarSelectRespuesta mostrarTiempo mostrarValorTiempo"  event="change" listener="#{portafolioBean.updateOutputLabels}"/>
@@ -144,8 +164,8 @@
 									<h:outputText value="¿Mostrar respuesta?" rendered="#{portafolioBean.hideFields}"/>
 								</h:panelGroup>
 								<h:panelGroup id="mostrarSelectRespuesta" >
-									<p:selectOneMenu id="rpta" rendered="#{portafolioBean.hideFields}"
-										value="#{portafolioBean.selectedPortafolio.flagMostrarRespuestaCorrectaPortafolio}">
+									<p:selectOneMenu rendered="#{portafolioBean.hideFields}"
+										value="#{portafolioBean.selectedPortafolio.flagMostrarRespuestaCorrectaPortafolio}" update="#{portafolioBean.selectedPortafolio.flagMostrarRespuestaCorrectaPortafolio}">
 										<f:selectItem itemLabel="-- Seleccione --" />
 										<f:selectItems value="#{portafolioBean.listarSiNo}" />
 									</p:selectOneMenu>
@@ -154,9 +174,9 @@
 									<h:outputText value="Tiempo:" rendered="#{portafolioBean.hideFields}"/>
 								</h:panelGroup>
 								<h:panelGroup id="mostrarValorTiempo" >
-									<p:inputNumber id="tiempo" value="#{portafolioBean.selectedPortafolio.tiempoPortafolio}" decimalPlaces="0" rendered="#{portafolioBean.hideFields}"/>
-								</h:panelGroup>								
-																								
+									<p:spinner value="#{portafolioBean.selectedPortafolio.tiempoPortafolio}" rendered="#{portafolioBean.hideFields}" update="#{portafolioBean.selectedPortafolio.tiempoPortafolio}"/>
+								</h:panelGroup>
+																																
 								<h:outputText value="Estado" />
 								<p:selectOneMenu id="estado"
 									value="#{portafolioBean.selectedPortafolio.estado}">
@@ -168,7 +188,7 @@
 									<p:commandButton id="btnModificarAceptar"
 										update=":formDataTable :msgs"
 										oncomplete="PF('dialogPortafolioModificar').hide()"
-										actionListener="#{portafolioBean.btnModificarPortafolio()}"
+										actionListener="#{portafolioBean.btnModificarPortafolio}"
 										icon="icon-save" title="Guardar" value="Guardar Modificacion" />
 									<p:commandButton id="btnModificarCancelar"
 										oncomplete="PF('dialogPortafolioModificar').hide()"
@@ -181,6 +201,7 @@
 
  				<h:form id="formEliminar">
 					<h:inputHidden value="#{portafolioBean.selectedPortafolio.codigoPortafolio}"/>
+					<h:inputHidden value="#{portafolioBean.selectedPortafolio.nivel.codigoNivel}"/>					
 					<p:confirmDialog id="confirmDialog"
 						message="¿Esta seguro de Eliminar el registro?"
 						header="Proceso de eliminación..." severity="alert"

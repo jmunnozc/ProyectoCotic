@@ -5,23 +5,101 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import pe.com.cotic.test.dao.PortafolioDao;
+import pe.com.cotic.test.dao.PreguntaDao;
 import pe.com.cotic.test.modelo.Nivel;
 import pe.com.cotic.test.modelo.Portafolio;
+import pe.com.cotic.test.modelo.Pregunta;
 import pe.com.cotic.test.util.HibernateUtil;
 
-public class PortafolioDaoImpl implements PortafolioDao {
-
-	private Session session;
+public class PreguntaDaoImpl implements PreguntaDao {
 	
+	private Session session;
+
 	@Override
-	public List<Portafolio> ListarPortafolios() {
+	public List<Pregunta> ListarPreguntas() {
+
+		List<Pregunta> listarPreguntas = null;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		String hql = "FROM Pregunta AS pr INNER JOIN FETCH pr.portafolio ORDER BY pr.codigoPregunta";
+		try {
+			listarPreguntas = session.createQuery(hql).list();
+			transaction.commit();
+			session.close();
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			transaction.rollback();
+		}
 		
+		return listarPreguntas;
+	}
+
+	@Override
+	public boolean grabarPregunta(Pregunta pregunta) {
+
+		boolean flag = false;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.save(pregunta);
+			transaction.commit();
+			session.close();
+			flag = true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			flag = false;
+			transaction.rollback();
+		}
+		return flag;
+	}
+
+	@Override
+	public boolean modificarPregunta(Pregunta pregunta) {
+
+		boolean flag = false;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.update(pregunta);
+			transaction.commit();
+			session.close();
+			flag = true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			flag = false;
+			transaction.rollback();
+		}
+		return flag;
+		
+	}
+
+	@Override
+	public boolean eliminarPregunta(Pregunta pregunta) {
+
+		boolean flag = false;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.delete(pregunta);
+			transaction.commit();
+			flag = true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			flag = false;
+			transaction.rollback();
+		}
+		return flag;
+		
+	}
+
+	@Override
+	public List<Portafolio> ListarPortafolios(Pregunta pregunta) {
 		List<Portafolio> listarPortafolios = null;
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
-		String hql = "FROM Portafolio AS p INNER JOIN FETCH p.nivel ORDER BY codigoPortafolio";
-		//FROM Portafolio as p JOIN p.Nivel
+		String hql = "FROM Portafolio ";
+
 		try {
 			listarPortafolios = session.createQuery(hql).list();
 			transaction.commit();
@@ -31,89 +109,8 @@ public class PortafolioDaoImpl implements PortafolioDao {
 			System.out.println(e.getMessage());
 			transaction.rollback();
 		}
-
+		
 		return listarPortafolios;
-	}
-
-	@Override
-	public boolean grabarPortafolio(Portafolio portafolio) {
-		
-		boolean flag = false;
-		session = HibernateUtil.getSessionFactory().openSession();
-		Transaction transaction = session.beginTransaction();
-		try {
-			session.save(portafolio);
-			transaction.commit();
-			session.close();
-			flag = true;
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			flag = false;
-			transaction.rollback();
-		}
-		return flag;
-		
-	}
-
-	@Override
-	public boolean modificarPortafolio(Portafolio portafolio) {
-
-		boolean flag = false;
-		session = HibernateUtil.getSessionFactory().openSession();
-		Transaction transaction = session.beginTransaction();
-		try {
-			session.update(portafolio);
-			transaction.commit();
-			session.close();
-			flag = true;
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			flag = false;
-			transaction.rollback();
-		}
-		return flag;
-		
-	}
-
-	@Override
-	public boolean eliminarPortafolio(Portafolio portafolio) {
-
-		boolean flag = false;
-		session = HibernateUtil.getSessionFactory().openSession();
-		Transaction transaction = session.beginTransaction();
-		try {
-			session.delete(portafolio);
-			transaction.commit();
-			flag = true;
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			flag = false;
-			transaction.rollback();
-		}
-		return flag;
-		
-	}
-
-	@Override
-	public List<Nivel> ListarNiveles(Portafolio portafolio) {
-
-		List<Nivel> listarNiveles = null;
-		session = HibernateUtil.getSessionFactory().openSession();
-		Transaction transaction = session.beginTransaction();
-		//String hql = "FROM Niveles WHERE codigoNivel = '" + portafolio.getNivel().getCodigoNivel() + "'";
-		String hql = "FROM Nivel ";
-
-		try {
-			listarNiveles = session.createQuery(hql).list();
-			transaction.commit();
-			session.close();
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			transaction.rollback();
-		}
-		
-		return listarNiveles;
 	}
 
 }

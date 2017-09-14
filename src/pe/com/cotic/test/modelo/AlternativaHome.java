@@ -1,6 +1,6 @@
 package pe.com.cotic.test.modelo;
 
-// Generated 12/09/2017 12:25:55 PM by Hibernate Tools 4.0.0
+// Generated 14/09/2017 09:19:37 AM by Hibernate Tools 4.0.0
 
 import java.util.List;
 import javax.naming.InitialContext;

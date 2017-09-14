@@ -1,6 +1,6 @@
 package pe.com.cotic.test.modelo;
 
-// Generated 12/09/2017 12:25:55 PM by Hibernate Tools 4.0.0
+// Generated 14/09/2017 09:19:37 AM by Hibernate Tools 4.0.0
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,11 +23,8 @@ public class Portafolio implements java.io.Serializable {
 	private Set usuarioportafoliosForCodigoPortafolioEnlace = new HashSet(0);
 	private Set usuarioportafoliosForCodigoPortafolio = new HashSet(0);
 	private Set preguntas = new HashSet(0);
-	private boolean mostrarCampos;
-	
 
 	public Portafolio() {
-		nivel = new Nivel();
 	}
 
 	public Portafolio(Nivel nivel, String tituloPortafolio,
@@ -168,14 +165,6 @@ public class Portafolio implements java.io.Serializable {
 
 	public void setPreguntas(Set preguntas) {
 		this.preguntas = preguntas;
-	}
-
-	public boolean isMostrarCampos() {
-		return mostrarCampos;
-	}
-
-	public void setMostrarCampos(boolean mostrarCampos) {
-		this.mostrarCampos = mostrarCampos;
 	}
 
 }

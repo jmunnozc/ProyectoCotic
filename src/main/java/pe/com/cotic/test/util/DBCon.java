@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DBCon {
 
-	public Connection getConnection() {
+	public Connection getConnection() throws SQLException {
 		Connection con = null;
 
 		try {
@@ -16,7 +16,8 @@ public class DBCon {
 			Class.forName(dbDriver);
 			con = DriverManager.getConnection(dbURL,"root","admin");
 			System.out.println("DB Connecting");
-		} catch (ClassNotFoundException | SQLException e) {
+		//} catch (ClassNotFoundException | SQLException e) {
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("Database.getConnection() Error -->"
 					+ e.getMessage());

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory name="MySessionFactory">
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.password">admin</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/cotic</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+
+		<property name="hibernate.current_session_context_class">thread</property>
+		<property name="hibernate.enable_lazy_load_no_trans">true</property>
+		<property name="hibernate.show_sql">false</property>
+
+		<mapping resource="pe/com/cotic/test/xml/Alternativa.hbm.xml" />
+		<mapping resource="pe/com/cotic/test/xml/Curso.hbm.xml" />
+		<mapping resource="pe/com/cotic/test/xml/Institucion.hbm.xml" />
+		<mapping resource="pe/com/cotic/test/xml/Institucionrol.hbm.xml" />
+		<mapping resource="pe/com/cotic/test/xml/Menu.hbm.xml" />
+		<mapping resource="pe/com/cotic/test/xml/Nivel.hbm.xml" />
+		<mapping resource="pe/com/cotic/test/xml/Portafolio.hbm.xml" />
+		<mapping resource="pe/com/cotic/test/xml/Pregunta.hbm.xml" />
+		<mapping resource="pe/com/cotic/test/xml/Rol.hbm.xml" />
+		<mapping resource="pe/com/cotic/test/xml/Rolmenu.hbm.xml" />
+		<mapping resource="pe/com/cotic/test/xml/Rolusuario.hbm.xml" />
+		<mapping resource="pe/com/cotic/test/xml/Usuario.hbm.xml" />
+		<mapping resource="pe/com/cotic/test/xml/Usuariocurso.hbm.xml" />
+		<mapping resource="pe/com/cotic/test/xml/Usuariodispositivo.hbm.xml" />
+		<mapping resource="pe/com/cotic/test/xml/Usuarioportafolio.hbm.xml" />
+		<mapping resource="pe/com/cotic/test/xml/Version.hbm.xml" />
+
+	</session-factory>
+</hibernate-configuration>

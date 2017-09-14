@@ -36,7 +36,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 				us = (Usuario) query.list().get(0);
 			}
 		} catch (Exception e) {
-			throw e;
+			System.out.println(e.getMessage());
 		}
 
 		return us;
