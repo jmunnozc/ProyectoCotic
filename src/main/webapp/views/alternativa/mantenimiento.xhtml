@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/cssLayout.css" media="screen" />
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/login.css" media="screen" />
+	<title>Mantenimiento Alternativa</title>
+</h:head>
+
+<body>
+
+	<ui:composition template="./../../template/plantilla.xhtml">
+		<ui:define name="content">
+			<div style="height: 15px"></div>
+			<div style="height: 800px">
+				<p:growl id="msgs" showDetail="true" />
+				<h:form>
+					<p:commandButton id="btnAlternativaCreate" update=":formCreate"
+						oncomplete="PF('dialogAlternativaCreate').show()" icon="icon-new"
+						title="Crear" value="Crear Alternativa" />
+				</h:form>
+				<div style="height: 5px" />
+				<h:form id="formDataTable">
+
+					<p:dataTable id="tablaMostrarAlternativa" var="alternativa" emptyMessage="No hay datos de alternativa..." 
+						value="#{alternativaBean.listarAlternativas}" rows="10" paginator="true" 
+						 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">
+						<f:facet name="header">LISTADO DE ALTERNATIVAS</f:facet>
+						<p:column headerText="Código" style="width:60px;text-align: center">
+							<h:outputText value="#{alternativa.codigoAlternativa}" />
+						</p:column>
+						<p:column headerText="Título Alternativa" style="width:600px;text-align: center">
+							<h:outputText value="#{alternativa.tituloAlternativa}" />
+						</p:column>
+						<p:column headerText="Respuesta Correcta" style="text-align: center">
+							<h:outputText value="#{alternativa.flagRespuestaCorrectaAlternativa}" />
+						</p:column>
+						<p:column headerText="Pregunta" style="text-align: center">
+							<h:outputText value="#{alternativa.pregunta.tituloPregunta}" />
+						</p:column>
+						<p:column headerText="Estado" style="width:100px;">
+							<h:outputText value="#{alternativa.estado}" />
+						</p:column>
+						<p:column headerText="Opciones"
+							style="width:80px;text-align: center">
+							<p:commandButton id="btnModificar" update=":formModificar" oncomplete="PF('dialogAlternativaModificar').show()"
+								icon="ui-icon-pencil" title="Modificar">
+								<f:setPropertyActionListener value="#{alternativa}" target="#{alternativaBean.selectedAlternativa}" />
+							</p:commandButton>
+							<p:commandButton id="btnDelete" update=":formEliminar" oncomplete="PF('dialogAlternativaEliminar').show()"
+								icon="ui-icon-trash" title="Eliminar">
+								<f:setPropertyActionListener value="#{alternativa}" target="#{alternativaBean.selectedAlternativa}" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</h:form>
+
+				<h:form id="formCreate">
+					<p:dialog header="Crear Alternativa" widgetVar="dialogAlternativaCreate"
+						modal="true" showEffect="fade" hideEffect="explode"
+						resizable="false" id="dlgAlternativaCreate">
+						<p:outputPanel id="alternativaDetailCreate" style="text-align:center;">
+							<p:panelGrid id="display" columns="2" cellpadding="4"
+								columnClasses="label,value">
+								<h:outputText value="Título Alternativa:" />
+								<p:inputText value="#{alternativaBean.selectedAlternativa.tituloAlternativa}" />
+								<h:outputText value="Respuesta Correcta:" />
+								<p:selectOneMenu id="respuestaCorrecta"
+									value="#{alternativaBean.selectedAlternativa.flagRespuestaCorrectaAlternativa}">
+									<f:selectItem itemLabel="-- Seleccione --" />
+									<f:selectItems value="#{alternativaBean.listarSiNo}" />
+								</p:selectOneMenu>
+								<h:outputText value="Pregunta:" />
+								<p:selectOneMenu id="pregunta"
+									value="#{alternativaBean.selectedAlternativa.pregunta.tituloPregunta}">
+									<f:selectItem itemLabel="-- Seleccione --" />
+									<f:selectItems value="#{alternativaBean.listarPregunta}" />
+								</p:selectOneMenu>								
+								<h:outputText value="Estado" />
+								<p:selectOneMenu id="estado"
+									value="#{alternativaBean.selectedAlternativa.estado}">
+									<f:selectItem itemLabel="-- Seleccione --" />
+									<f:selectItems value="#{alternativaBean.listarEstado}" />
+								</p:selectOneMenu>
+								<div style="height: 5px" />
+								<f:facet name="footer">
+									<p:commandButton id="btnCreateAceptar"
+										update=":formDataTable :msgs"
+										oncomplete="PF('dialogAlternativaCreate').hide()"
+										actionListener="#{alternativaBean.btnGrabarAlternativa}"
+										icon="icon-save" title="Guardar" value="Guardar" />
+									<p:commandButton id="btnCreateCancelar"
+										oncomplete="PF('dialogAlternativaCreate').hide()"
+										icon="icon-cancel" title="Cancelar" value="Cancelar" />
+								</f:facet>
+							</p:panelGrid>
+						</p:outputPanel>
+					</p:dialog>
+				</h:form>
+
+				<h:form id="formModificar">
+					<h:inputHidden value="#{alternativaBean.selectedAlternativa.codigoAlternativa}"/>
+					<h:inputHidden value="#{alternativaBean.selectedAlternativa.pregunta.codigoPregunta}"/>
+					<p:dialog header="Modificar Alternativa" widgetVar="dialogAlternativaModificar"
+						modal="true" showEffect="fade" hideEffect="explode"
+						resizable="false" id="dlgAlternativaModificar">
+						<p:outputPanel id="alternativaDetailModificar" style="text-align:center;">
+							<p:panelGrid id="display" columns="2" cellpadding="4"
+								columnClasses="label,value">
+					
+								<h:outputText value="Título Alternativa:" />
+								<p:inputText value="#{alternativaBean.selectedAlternativa.tituloAlternativa}" />
+								<h:outputText value="Respuesta Correcta:" />
+								<p:inputText value="#{alternativaBean.selectedAlternativa.flagRespuestaCorrectaAlternativa}" />
+								<h:outputText value="Pregunta:" />
+								<p:selectOneMenu id="pregunta"
+									value="#{alternativaBean.selectedAlternativa.pregunta.tituloPregunta}">
+									<f:selectItem itemLabel="-- Seleccione --" />
+									<f:selectItems value="#{alternativaBean.listarPregunta}" />
+								</p:selectOneMenu>																
+								<h:outputText value="Estado" />
+								<p:selectOneMenu id="estado"
+									value="#{alternativaBean.selectedAlternativa.estado}">
+									<f:selectItem itemLabel="-- Seleccione --" />
+									<f:selectItems value="#{alternativaBean.listarEstado}" />
+								</p:selectOneMenu>
+								<div style="height: 5px" />
+								<f:facet name="footer">
+									<p:commandButton id="btnModificarAceptar"
+										update=":formDataTable :msgs"
+										oncomplete="PF('dialogAlternativaModificar').hide()"
+										actionListener="#{alternativaBean.btnModificarAlternativa}"
+										icon="icon-save" title="Guardar" value="Guardar Modificacion" />
+									<p:commandButton id="btnModificarCancelar"
+										oncomplete="PF('dialogAlternativaModificar').hide()"
+										icon="icon-cancel" title="Cancelar" value="Cancelar" />
+								</f:facet>
+							</p:panelGrid>
+						</p:outputPanel>
+					</p:dialog>
+				</h:form>
+				
+				<h:form id="formEliminar">
+					<h:inputHidden value="#{alternativaBean.selectedAlternativa.codigoAlternativa}"/>
+					<h:inputHidden value="#{alternativaBean.selectedAlternativa.pregunta.codigoPregunta}"/>
+					<p:confirmDialog id="confirmDialog"
+						message="¿Esta seguro de Eliminar el registro?"
+						header="Proceso de eliminación..." severity="alert"
+						widgetVar="dialogAlternativaEliminar" showEffect="fade"
+						hideEffect="explode">
+						<p:commandButton id="confirm" value="Aceptar" update=":formDataTable :msgs"
+							oncomplete="PF('dialogAlternativaEliminar').hide()"
+							actionListener="#{alternativaBean.btnEliminarAlternativa()}"
+							icon="icon-acept-green" />
+						<p:commandButton id="decline" value="Cancelar"
+							onclick="PF('dialogAlternativaEliminar').hide()" type="button"
+							icon="icon-cancel" />
+					</p:confirmDialog>
+				</h:form>
+
+			</div>
+		</ui:define>
+	</ui:composition>
+
+</body>
+
+</html>

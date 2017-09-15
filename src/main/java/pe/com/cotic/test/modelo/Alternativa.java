@@ -14,6 +14,7 @@ public class Alternativa implements java.io.Serializable {
 	private int estado;
 
 	public Alternativa() {
+		pregunta = new Pregunta();
 	}
 
 	public Alternativa(Pregunta pregunta, String tituloAlternativa,

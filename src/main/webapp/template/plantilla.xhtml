@@ -30,15 +30,16 @@
 				<p:growl id="messages" />
 				<p:menubar>
 					<p:submenu label="Mantenimiento" icon="ui-icon-document">
-						<p:menuitem value="Institución" url="#{appBean.basePath}institucion/mantenimiento.jsf" icon="ui-icon-contact" />
-						<p:menuitem value="Portafolio" url="#{appBean.basePath}portafolio/mantenimiento.jsf" icon="ui-icon-contact" />
-						<p:menuitem value="Pregunta" url="#{appBean.basePath}pregunta/mantenimiento.jsf" icon="ui-icon-contact" />
+						<p:menuitem value="Institución" url="#{appBean.basePath}institucion/mantenimiento.jsf" icon="ui-icon-home" />
+						<p:menuitem value="Portafolio" url="#{appBean.basePath}portafolio/mantenimiento.jsf" icon="ui-icon-suitcase" />
+						<p:menuitem value="Pregunta" url="#{appBean.basePath}pregunta/mantenimiento.jsf" icon="ui-icon-help" />
+						<p:menuitem value="Alternativa" url="#{appBean.basePath}alternativa/mantenimiento.jsf" icon="ui-icon-contact" />
 						<p:separator />
 						<p:menuitem value="Salir" actionListener="#{usuarioBean.logout}" icon="ui-icon-close" oncomplete="manejarLogin(xhr, status, args)" />
 					</p:submenu>
 
-					<p:submenu label="Seguridad" icon="ui-icon-document">
-						<p:menuitem value="Usuarios" url="#{appBean.basePath}usuario/mantenimiento.jsf" icon="ui-icon-contact" />
+					<p:submenu label="Seguridad" icon="ui-icon-locked">
+						<p:menuitem value="Usuarios" url="#{appBean.basePath}usuario/mantenimiento.jsf" icon="ui-icon-person" />
 					</p:submenu>
 					
 

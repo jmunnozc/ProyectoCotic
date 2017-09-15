@@ -100,7 +100,7 @@ public class PreguntaBean implements Serializable {
 		listarPortafolio.clear();
 		
 		for (Portafolio portafolio : n){
-			SelectItem portafolioItem = new SelectItem(portafolio.getCodigoPortafolio(), portafolio.getDescripcionPortafolio());
+			SelectItem portafolioItem = new SelectItem(portafolio.getCodigoPortafolio(), portafolio.getTituloPortafolio());
 			this.listarPortafolio.add(portafolioItem);
 		}
 		

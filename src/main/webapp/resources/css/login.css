@@ -51,3 +51,27 @@ body {
 .ui-state-default .icon-acept-green {
 	background-image: url(../images/icons/icon_user_acept_green_16x16.png);
 }
+
+.ui-state-default .icon-alternative {
+	background-image: url(../images/icons/icon_user_alternative_16x16.png);
+}
+
+.ui-state-default .icon-institution {
+	background-image: url(../../images/icons/icon_user_institution_16x16.png);
+}
+
+.ui-state-default .icon-portfolio {
+	background-image: url(../images/icons/icon_user_portfolio_16x16.png);
+}
+
+.ui-state-default .icon-question {
+	background-image: url(../images/icons/icon_user_question_16x16.png);
+}
+
+.ui-state-default .icon-security {
+	background-image: url(../images/icons/icon_user_security_16x16.png);
+}
+
+.ui-state-default .icon-users {
+	background-image: url(../images/icons/icon_user_users_16x16.png);
+}
