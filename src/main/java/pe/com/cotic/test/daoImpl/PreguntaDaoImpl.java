@@ -20,7 +20,7 @@ public class PreguntaDaoImpl implements PreguntaDao {
 		List<Pregunta> listarPreguntas = null;
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
-		String hql = "FROM Pregunta AS pr INNER JOIN FETCH pr.portafolio ORDER BY pr.codigoPregunta";
+		String hql = "FROM Pregunta AS pr INNER JOIN fetch pr.portafolio ";
 		try {
 			listarPreguntas = session.createQuery(hql).list();
 			transaction.commit();

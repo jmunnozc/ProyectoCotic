@@ -30,10 +30,17 @@
 				<h:form id="formDataTable">
 
 					<p:dataTable id="tablaMostrarPregunta" var="pregunta" emptyMessage="No hay datos de preguntas..." 
-						value="#{preguntaBean.listarPreguntas}" rows="10" paginator="true" 
+						value="#{preguntaBean.listarPreguntas}" rows="10" paginator="true" draggableColumns="true"
 						 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15">
-						<f:facet name="header">LISTADO DE PREGUNTAS</f:facet>
+						<f:facet name="header">
+					        LISTADO DE PREGUNTAS					 
+					        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+					        <p:columnToggler datasource="tablaMostrarPregunta" trigger="toggler" />
+					    </f:facet>
+						<p:column style="width:16px">
+				            <p:rowToggler />
+				        </p:column>					    
 						<p:column headerText="Código" style="width:60px;text-align: center">
 							<h:outputText value="#{pregunta.codigoPregunta}" />
 						</p:column>
@@ -57,6 +64,17 @@
 								<f:setPropertyActionListener value="#{pregunta}" target="#{preguntaBean.selectedPregunta}" />
 							</p:commandButton>
 						</p:column>
+												
+						<p:rowExpansion>
+				            <p:panelGrid  columns="2" columnClasses="label,value" style="width:300px">
+				                <f:facet name="header">LISTADO DE ALTERNATIVAS</f:facet>
+				 
+				                <h:outputText value="Descripción:" />
+				                <h:outputText value="#{pregunta.portafolio.descripcionPortafolio}" />
+				 
+				            </p:panelGrid>
+				        </p:rowExpansion>
+						
 					</p:dataTable>
 				</h:form>
 

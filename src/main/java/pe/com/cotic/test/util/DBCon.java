@@ -11,7 +11,7 @@ public class DBCon {
 
 		try {
 			String dbDriver = "com.mysql.jdbc.Driver";
-			String dbURL = "jdbc:mysql:localhost:3306/cotic";
+			String dbURL = "jdbc:mysql:xx.xx.xx.xx:3306/cotic";
 
 			Class.forName(dbDriver);
 			con = DriverManager.getConnection(dbURL,"root","admin");

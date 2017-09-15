@@ -28,6 +28,7 @@ public class AlternativaBean implements Serializable {
 	
 	private List<SelectItem> listarPregunta;
 	private List<SelectItem> listarEstado;
+	private List<SelectItem> listarSiNo;
 
 	public AlternativaBean() {
 		alternativa = new Alternativa(); 
@@ -99,6 +100,24 @@ public class AlternativaBean implements Serializable {
 		this.listarEstado = listarEstado;
 	}
 
+	public List<SelectItem> getListarSiNo() {
+
+		this.listarSiNo = new ArrayList<SelectItem>();
+		listarSiNo.clear();
+		
+		SelectItem estadoItem1 = new SelectItem(1,"SI");
+		this.listarSiNo.add(estadoItem1);
+		SelectItem estadoItem2 = new SelectItem(0,"NO");
+		this.listarSiNo.add(estadoItem2);
+		
+		return listarSiNo;
+	}
+
+
+	public void setListarSiNo(List<SelectItem> listarSiNo) {
+		this.listarSiNo = listarSiNo;
+	}
+	
 	public List<Alternativa> getListarAlternativas() {
 		
 		AlternativaDao alternativaDao = new AlternativaDaoImpl();
@@ -143,7 +162,7 @@ public class AlternativaBean implements Serializable {
 	}
 	
 	
-	public void btnEliminarPregunta() {
+	public void btnEliminarAlternativa() {
 		AlternativaDao alternativaDao = new AlternativaDaoImpl();
 		String msg;
 		

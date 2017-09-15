@@ -131,6 +131,7 @@ public class UsuarioBean implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null, message);
 		context.addCallbackParam("loggedIn", loggedIn);
 		context.addCallbackParam("ruta", ruta);
+		context.addCallbackParam("us", usuario);
 	}
 
 	public boolean verificarSesion() {

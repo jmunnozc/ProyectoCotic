@@ -10,11 +10,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import pe.com.cotic.test.dao.PortafolioDao;
 import pe.com.cotic.test.dao.PreguntaDao;
-import pe.com.cotic.test.daoImpl.PortafolioDaoImpl;
 import pe.com.cotic.test.daoImpl.PreguntaDaoImpl;
-import pe.com.cotic.test.modelo.Nivel;
+import pe.com.cotic.test.modelo.Alternativa;
 import pe.com.cotic.test.modelo.Portafolio;
 import pe.com.cotic.test.modelo.Pregunta;
 
@@ -24,11 +22,12 @@ import pe.com.cotic.test.modelo.Pregunta;
 public class PreguntaBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Pregunta pregunta;
 	private PreguntaDao preguntaDao;
 	private List<Pregunta> listarPreguntas;
 	private Pregunta selectedPregunta;
+	private Alternativa alternativa;
 	
 	private List<SelectItem> listarPortafolio;
 	private List<SelectItem> listarEstado;
@@ -51,6 +50,14 @@ public class PreguntaBean implements Serializable {
 		this.pregunta = pregunta;
 	}
 
+	public Alternativa getAlternativa() {
+		return alternativa;
+	}
+
+	public void setAlternativa(Alternativa alternativa) {
+		this.alternativa = alternativa;
+	}
+	
 	public PreguntaDao getPreguntaDao() {
 		return preguntaDao;
 	}

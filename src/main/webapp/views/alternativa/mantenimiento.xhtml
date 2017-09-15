@@ -30,7 +30,7 @@
 				<h:form id="formDataTable">
 
 					<p:dataTable id="tablaMostrarAlternativa" var="alternativa" emptyMessage="No hay datos de alternativa..." 
-						value="#{alternativaBean.listarAlternativas}" rows="10" paginator="true" 
+						value="#{alternativaBean.listarAlternativas}" rows="10" paginator="true" draggableColumns="true"
 						 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15">
 						<f:facet name="header">LISTADO DE ALTERNATIVAS</f:facet>
@@ -64,6 +64,7 @@
 				</h:form>
 
 				<h:form id="formCreate">
+					<h:inputHidden value="#{alternativaBean.selectedAlternativa.pregunta.codigoPregunta}"/>
 					<p:dialog header="Crear Alternativa" widgetVar="dialogAlternativaCreate"
 						modal="true" showEffect="fade" hideEffect="explode"
 						resizable="false" id="dlgAlternativaCreate">
@@ -79,8 +80,8 @@
 									<f:selectItems value="#{alternativaBean.listarSiNo}" />
 								</p:selectOneMenu>
 								<h:outputText value="Pregunta:" />
-								<p:selectOneMenu id="pregunta"
-									value="#{alternativaBean.selectedAlternativa.pregunta.tituloPregunta}">
+								<p:selectOneMenu id="pregunta" style="width: 500px"
+									value="#{alternativaBean.selectedAlternativa.pregunta.codigoPregunta}">
 									<f:selectItem itemLabel="-- Seleccione --" />
 									<f:selectItems value="#{alternativaBean.listarPregunta}" />
 								</p:selectOneMenu>								
@@ -119,10 +120,14 @@
 								<h:outputText value="Título Alternativa:" />
 								<p:inputText value="#{alternativaBean.selectedAlternativa.tituloAlternativa}" />
 								<h:outputText value="Respuesta Correcta:" />
-								<p:inputText value="#{alternativaBean.selectedAlternativa.flagRespuestaCorrectaAlternativa}" />
+								<p:selectOneMenu id="respuestaCorrecta"
+									value="#{alternativaBean.selectedAlternativa.flagRespuestaCorrectaAlternativa}">
+									<f:selectItem itemLabel="-- Seleccione --" />
+									<f:selectItems value="#{alternativaBean.listarSiNo}" />
+								</p:selectOneMenu>
 								<h:outputText value="Pregunta:" />
-								<p:selectOneMenu id="pregunta"
-									value="#{alternativaBean.selectedAlternativa.pregunta.tituloPregunta}">
+								<p:selectOneMenu id="pregunta" style="width: 500px"
+									value="#{alternativaBean.selectedAlternativa.pregunta.codigoPregunta}">
 									<f:selectItem itemLabel="-- Seleccione --" />
 									<f:selectItems value="#{alternativaBean.listarPregunta}" />
 								</p:selectOneMenu>																
