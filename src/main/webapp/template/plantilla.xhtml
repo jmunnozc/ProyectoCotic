@@ -13,6 +13,20 @@
 	<link rel="stylesheet" type="text/css" href="../../resources/css/login.css" media="screen" />
 	
 	<title>Plantilla</title>
+
+	<script type="text/javascript">
+	    function handleMessage(data) {
+	        var series = [],
+	        chart = PF('browserChart').plot;
+	 
+	        for(var key in data) {
+	            series.push([key, data[key]]);
+	        }
+	 
+	        chart.series[0].data = series;
+	        chart.replot();
+	    }
+	</script>
 		
 </h:head>
 
