@@ -3,7 +3,7 @@ package pe.com.cotic.test.util;
 public class MyUtil {
 	
 	public static String baseurl() {
-		return "http://localhost:8080/ProyectoWeb/";
+		return "http://localhost:8088/ProyectoWeb/";
 	}
 
 	public static String basepathlogin() {
@@ -11,6 +11,6 @@ public class MyUtil {
 	}
 	
 	public static String basepath() {
-		return "http://localhost:8080/ProyectoWeb/views/";
+		return "http://localhost:8088/ProyectoWeb/views/";
 	}
 }

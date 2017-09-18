@@ -116,4 +116,24 @@ public class AlternativaDaoImpl implements AlternativaDao {
 		
 	}
 
+	@Override
+	public List<Alternativa> ListarAlternativasPregunta(Pregunta pregunta) {
+
+		List<Alternativa> listarAlternativasPregunta = null;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		String hql = "FROM Alternativa al WHERE al.codigoPregunta = '" + pregunta.getCodigoPregunta() + "'";
+		
+		try {
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			transaction.rollback();
+		}
+		
+		return listarAlternativasPregunta;
+	}
+
+	
+
 }

@@ -11,6 +11,7 @@
 		href="../../resources/css/cssLayout.css" media="screen" />
 	<link rel="stylesheet" type="text/css"
 		href="../../resources/css/login.css" media="screen" />
+	
 	<title>Mantenimiento Pregunta</title>
 </h:head>
 
@@ -37,6 +38,7 @@
 					        LISTADO DE PREGUNTAS					 
 					        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
 					        <p:columnToggler datasource="tablaMostrarPregunta" trigger="toggler" />
+			
 					    </f:facet>
 						<p:column style="width:16px">
 				            <p:rowToggler />
@@ -51,7 +53,8 @@
 							<h:outputText value="#{pregunta.portafolio.tituloPortafolio}" />
 						</p:column>
 						<p:column headerText="Estado" style="width:100px;">
-							<h:outputText value="#{pregunta.estado}" />
+							<h:outputText value="#{pregunta.estado}" >
+							</h:outputText>
 						</p:column>
 						<p:column headerText="Opciones"
 							style="width:80px;text-align: center">
@@ -66,11 +69,13 @@
 						</p:column>
 												
 						<p:rowExpansion>
-				            <p:panelGrid  columns="2" columnClasses="label,value" style="width:300px">
+				            <p:panelGrid  columns="2" columnClasses="label,value" style="width:600px">
 				                <f:facet name="header">LISTADO DE ALTERNATIVAS</f:facet>
 				 
-				                <h:outputText value="Descripción:" />
-				                <h:outputText value="#{pregunta.portafolio.descripcionPortafolio}" />
+				                <h:outputText value="Total Alternativas:" />
+				                <h:outputText value="#{pregunta.alternativas.size()}"/>
+				                
+				                <h:outputText value="#{preguntaBean.listarAlternativas.get(1).tituloAlternativa}" />
 				 
 				            </p:panelGrid>
 				        </p:rowExpansion>
@@ -173,6 +178,7 @@
 		</ui:define>
 	</ui:composition>
 
+<h:outputScript library="js" name="calendar_es.js" />
 </body>
 
 </html>

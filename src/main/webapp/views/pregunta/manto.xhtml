@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/cssLayout.css" media="screen" />
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/login.css" media="screen" />
+	<title>Mantenimiento Usuario</title>
+</h:head>
+
+<body>
+	<ui:composition template="./../../template/plantilla.xhtml">
+		<ui:define name="content">
+			<div style="height: 15px"></div>
+			<div style="height: 800px">
+				<p:growl id="msgs" showDetail="true" />
+
+				<div style="height: 5px" />
+				<h:form id="formDataTable">
+
+					<p:dataTable id="tablaMostrarPregunta" var="pregunta"
+						emptyMessage="No hay datos de preguntas..."
+						value="#{pregunta1Bean.listarPreguntas}" rows="10"
+						paginator="true" draggableColumns="true"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+						<f:ajax event="rowToggle" listener="#{pregunta1Bean.listarAlternativas(pregunta)}" />
+						<f:facet name="header">
+					        LISTADO DE PREGUNTAS					 
+					        <p:commandButton id="toggler" type="button"
+								value="Columnas" style="float:right" icon="ui-icon-calculator" />
+							<p:columnToggler datasource="tablaMostrarPregunta"
+								trigger="toggler" />
+
+						</f:facet>
+						<p:column style="width:16px">
+							<p:rowToggler />
+						</p:column>
+						<p:column headerText="Código"
+							style="width:60px;text-align: center">
+							<h:outputText value="#{pregunta.codigoPregunta}" />
+						</p:column>
+						<p:column headerText="Título Pregunta"
+							style="width:600px;text-align: center">
+							<h:outputText value="#{pregunta.tituloPregunta}" />
+						</p:column>
+						<p:column headerText="Portafolio" style="text-align: center">
+							<h:outputText value="#{pregunta.portafolio.tituloPortafolio}" />
+						</p:column>
+						<p:column headerText="Estado" style="width:100px;">
+							<h:outputText value="#{pregunta.estado}">
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Opciones"
+							style="width:80px;text-align: center" />
+
+						<p:rowExpansion>
+							<p:dataTable id="tablaMostrarDetalle" var="detalle"
+								value="#{alternativaBean.listarAlternativas}"
+								style="width:500px">
+								<f:facet name="header">LISTADO DE ALTERNATIVAS</f:facet>
+								<p:column headerText="Campo1">
+									<h:outputText value="#{detalle.tituloAlternativa}" />
+								</p:column>
+							</p:dataTable>
+						</p:rowExpansion>
+
+					</p:dataTable>
+				</h:form>
+			</div>
+		</ui:define>
+	</ui:composition>
+</body>
+
+</html>

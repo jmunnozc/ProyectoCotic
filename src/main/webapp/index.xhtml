@@ -28,12 +28,12 @@
 				</f:facet>
 				<f:facet name="start">
 					<h:outputText
-						value="Porfavor espere... #{loginBean.usuario}, Conectando a la base de datos..."
+						value="Porfavor espere... #{usuarioBean.usuario.usuario}, Conectando a la base de datos..."
 						style="color:yellow" />
 				</f:facet>
 				<f:facet name="complete">
 					<h:outputText
-						value="Porfavor intente nuevamente #{loginBean.usuario}, Conexión a la base de datos con error!!"
+						value="Porfavor intente nuevamente #{usuarioBean.usuario.usuario}, Conexión a la base de datos con error!!"
 						style="color:yellow" />
 				</f:facet>
 			</p:ajaxStatus>
@@ -54,7 +54,7 @@
 						required="true" label="clave" a:placeholder="ingrese su clave" />
 					<f:facet name="footer">
 						<p:commandButton id="loginButton" value="Login"
-							action="#{usuarioBean.verificarDatos()}" update=":mensajes"
+							action="#{usuarioBean.verificarDatos}" update=":mensajes"
 							oncomplete="manejarLogin(xhr, status, args)"
 							icon="icon-login" />
 

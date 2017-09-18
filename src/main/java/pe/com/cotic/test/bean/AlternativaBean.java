@@ -125,6 +125,8 @@ public class AlternativaBean implements Serializable {
 		
 		return listarAlternativas;
 	}
+	
+	
 
 	public void btnGrabarAlternativa() {
 		AlternativaDao alternativaDao = new AlternativaDaoImpl();

@@ -1,5 +1,7 @@
 package pe.com.cotic.test.bean;
 
+import java.io.Serializable;
+
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -7,7 +9,7 @@ import pe.com.cotic.test.util.MyUtil;
 
 @ManagedBean
 @ApplicationScoped
-public class AppBean {
+public class AppBean implements Serializable {
 
 	public AppBean(){
 		

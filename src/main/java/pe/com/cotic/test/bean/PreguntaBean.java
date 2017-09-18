@@ -1,6 +1,7 @@
 package pe.com.cotic.test.bean;
 
 import java.io.Serializable;
+import java.nio.charset.CodingErrorAction;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,9 @@ public class PreguntaBean implements Serializable {
 	private PreguntaDao preguntaDao;
 	private List<Pregunta> listarPreguntas;
 	private Pregunta selectedPregunta;
-	private Alternativa alternativa;
+	
+	//private Alternativa alternativa;
+	private List<Alternativa> listarAlternativas;
 	
 	private List<SelectItem> listarPortafolio;
 	private List<SelectItem> listarEstado;
@@ -50,6 +53,7 @@ public class PreguntaBean implements Serializable {
 		this.pregunta = pregunta;
 	}
 
+	/*
 	public Alternativa getAlternativa() {
 		return alternativa;
 	}
@@ -57,6 +61,7 @@ public class PreguntaBean implements Serializable {
 	public void setAlternativa(Alternativa alternativa) {
 		this.alternativa = alternativa;
 	}
+	*/
 	
 	public PreguntaDao getPreguntaDao() {
 		return preguntaDao;
@@ -95,9 +100,21 @@ public class PreguntaBean implements Serializable {
 		
 		PreguntaDao preguntaDao = new PreguntaDaoImpl();
 		this.listarPreguntas = preguntaDao.ListarPreguntas();
-		
+		//this.listarAlternativas = preguntaDao.ListarAlternativas(pregunta);
+	
 		return listarPreguntas;
 	}
+
+	
+	public List<Alternativa> getListarAlternativas() {
+		
+		PreguntaDao preguntaDao = new PreguntaDaoImpl();
+		this.pregunta.setCodigoPregunta(1);
+		//this.listarAlternativas = preguntaDao.ListarAlternativas(this.listarPreguntas);
+		
+		return listarAlternativas;
+	}
+	
 	
 	public List<SelectItem> getListarPortafolio() {
 		
@@ -167,5 +184,10 @@ public class PreguntaBean implements Serializable {
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
+	}
+	
+	private boolean isPostBack() {
+		boolean rpta; 
+		return FacesContext.getCurrentInstance().isPostback();
 	}
 }
