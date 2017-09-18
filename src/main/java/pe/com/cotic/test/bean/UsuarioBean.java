@@ -14,8 +14,10 @@ import javax.servlet.http.HttpSession;
 
 import org.primefaces.context.RequestContext;
 
+import pe.com.cotic.test.dao.InstitucionDao;
 import pe.com.cotic.test.dao.UsuarioDao;
 import pe.com.cotic.test.daoImpl.UsuarioDaoImpl;
+import pe.com.cotic.test.modelo.Institucion;
 import pe.com.cotic.test.modelo.Usuario;
 import pe.com.cotic.test.util.MyUtil;
 
@@ -165,6 +167,7 @@ public class UsuarioBean implements Serializable {
 
 	public void btnGrabarUsuario() {
 		UsuarioDao usuarioDao = new UsuarioDaoImpl();
+		Institucion institucion = new Institucion();
 		String msg;
 
 		String nuevoUsuario = this.selectedUsuario.getNombres().substring(0, 1)
@@ -180,6 +183,9 @@ public class UsuarioBean implements Serializable {
 		this.selectedUsuario.setFechaNacimiento(java.sql.Date.valueOf(fechaActual));
 		this.selectedUsuario.setUsuarioCreacion("JAMBROCIO");
 		this.selectedUsuario.setFechaCreacion(java.sql.Date.valueOf(fechaActual));
+		
+		institucion.setCodigoInstitucion(1);
+		this.selectedUsuario.setInstitucion(institucion);
 
 		if (usuarioDao.grabarUsuario(this.selectedUsuario)) {
 			msg = "Se creó correctamente el registro...";
@@ -195,6 +201,7 @@ public class UsuarioBean implements Serializable {
 
 	public void btnModificarUsuario() {
 		UsuarioDao usuarioDao = new UsuarioDaoImpl();
+		Institucion institucion = new Institucion();
 		String msg;
 		this.selectedUsuario.setNombres(this.selectedUsuario.getNombres().toUpperCase());
 		this.selectedUsuario.setApellidoPaterno(this.selectedUsuario.getApellidoPaterno().toUpperCase());
@@ -207,6 +214,9 @@ public class UsuarioBean implements Serializable {
 		this.selectedUsuario.setFechaCreacion(java.sql.Date.valueOf(fechaActual));
 		this.selectedUsuario.setUsuarioModificacion("JAMBROCIO");
 		this.selectedUsuario.setFechaModificacion(java.sql.Date.valueOf(fechaActual));
+		
+		institucion.setCodigoInstitucion(1);
+		this.selectedUsuario.setInstitucion(institucion);
 
 		if (usuarioDao.modificarUsuario(this.selectedUsuario)) {
 			msg = "Se modificó correctamente el registro...";
@@ -221,7 +231,11 @@ public class UsuarioBean implements Serializable {
 
 	public void btnEliminarUsuario() {
 		UsuarioDao usuarioDao = new UsuarioDaoImpl();
+		Institucion institucion = new Institucion();
 		String msg;
+		
+		institucion.setCodigoInstitucion(1);
+		this.selectedUsuario.setInstitucion(institucion);
 		if (usuarioDao.eliminarUsuario(this.selectedUsuario)) {
 			msg = "Se eliminó correctamente el registro...";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);

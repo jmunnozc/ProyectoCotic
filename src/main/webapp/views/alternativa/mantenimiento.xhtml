@@ -41,13 +41,13 @@
 							<h:outputText value="#{alternativa.tituloAlternativa}" />
 						</p:column>
 						<p:column headerText="Respuesta Correcta" style="text-align: center">
-							<h:outputText value="#{alternativa.flagRespuestaCorrectaAlternativa}" />
+							<h:outputText value="#{alternativa.flagRespuestaCorrectaAlternativa}" converter="sinoConverter"/>
 						</p:column>
 						<p:column headerText="Pregunta" style="text-align: center">
 							<h:outputText value="#{alternativa.pregunta.tituloPregunta}" />
 						</p:column>
 						<p:column headerText="Estado" style="width:100px;">
-							<h:outputText value="#{alternativa.estado}" />
+							<h:outputText value="#{alternativa.estado}" converter="estadoConverter"/>
 						</p:column>
 						<p:column headerText="Opciones"
 							style="width:80px;text-align: center">

@@ -117,15 +117,17 @@ public class AlternativaDaoImpl implements AlternativaDao {
 	}
 
 	@Override
-	public List<Alternativa> ListarAlternativasPregunta(Pregunta pregunta) {
+	public List<Alternativa> buscarAlternativasPregunta(Pregunta pregunta) {
 
 		List<Alternativa> listarAlternativasPregunta = null;
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
-		String hql = "FROM Alternativa al WHERE al.codigoPregunta = '" + pregunta.getCodigoPregunta() + "'";
+		String hql = "FROM Alternativa AS al INNER JOIN FETCH al.pregunta WHERE al.pregunta.codigoPregunta = " + pregunta.getCodigoPregunta();
 		
 		try {
-			
+			listarAlternativasPregunta = session.createQuery(hql).list();
+			transaction.commit();
+			session.close();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			transaction.rollback();

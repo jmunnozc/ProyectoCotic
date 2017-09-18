@@ -1,5 +1,6 @@
 package pe.com.cotic.test.bean;
 
+import java.io.Console;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -179,4 +180,23 @@ public class AlternativaBean implements Serializable {
 		}
 	}
 
+	public List<Alternativa> btnBuscarAlternativa(Pregunta pregunta) {
+		AlternativaDao alternativaDao = new AlternativaDaoImpl();
+		String msg;
+		
+		this.listarAlternativas = alternativaDao.buscarAlternativasPregunta(pregunta);
+		
+		if (this.listarAlternativas != null) {
+			msg = "Se muestra correctamente el listado...";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		} else {
+			msg = "Error al mostrar el listado...";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+
+		return listarAlternativas;
+		
+	}
 }

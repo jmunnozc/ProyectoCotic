@@ -53,7 +53,7 @@
 							<h:outputText value="#{pregunta.portafolio.tituloPortafolio}" />
 						</p:column>
 						<p:column headerText="Estado" style="width:100px;">
-							<h:outputText value="#{pregunta.estado}" >
+							<h:outputText value="#{pregunta.estado}" converter="estadoConverter">
 							</h:outputText>
 						</p:column>
 						<p:column headerText="Opciones"
@@ -69,15 +69,15 @@
 						</p:column>
 												
 						<p:rowExpansion>
-				            <p:panelGrid  columns="2" columnClasses="label,value" style="width:600px">
-				                <f:facet name="header">LISTADO DE ALTERNATIVAS</f:facet>
-				 
-				                <h:outputText value="Total Alternativas:" />
-				                <h:outputText value="#{pregunta.alternativas.size()}"/>
-				                
-				                <h:outputText value="#{preguntaBean.listarAlternativas.get(1).tituloAlternativa}" />
-				 
-				            </p:panelGrid>
+			                <f:facet name="header">LISTADO DE ALTERNATIVAS</f:facet>
+				                <p:dataTable id="tablaMostrarDetalle" var="detalle" value="#{alternativaBean.btnBuscarAlternativa(pregunta)}" style="width:1000px">
+									<p:column headerText="Título">
+										<h:outputText value="#{detalle.tituloAlternativa}" />
+									</p:column>
+									<p:column headerText="Respuesta">
+										<h:outputText value="#{detalle.flagRespuestaCorrectaAlternativa}" converter="sinoConverter"/>
+									</p:column>
+							</p:dataTable>				               				 
 				        </p:rowExpansion>
 						
 					</p:dataTable>

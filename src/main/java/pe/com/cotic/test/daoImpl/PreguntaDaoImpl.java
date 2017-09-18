@@ -34,49 +34,7 @@ public class PreguntaDaoImpl implements PreguntaDao {
 		}
 		
 		return listarPreguntas;
-	}
-
-/*	@Override
-	public List<Alternativa> ListarAlternativas(List<Pregunta> listarPreguntas) {
-
-		List<Alternativa> listarAlternativas = null;
-		session = HibernateUtil.getSessionFactory().openSession();
-		Transaction transaction = session.beginTransaction();
-		String hql = "FROM Pregunta AS pr INNER JOIN fetch pr.alternativas WHERE  pr.codigoPregunta = '" + listarPreguntas.get(1).getCodigoPregunta() + "'";
-		try {
-			listarAlternativas = session.createQuery(hql).list();
-			transaction.commit();
-			session.close();
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			transaction.rollback();
-		}
-		
-		return listarAlternativas;
-	}*/
-	
-	
-	@Override
-	public List<Alternativa> ListarAlternativas(int codigoPregunta) {
-
-		List<Alternativa> listarAlternativas = null;
-		session = HibernateUtil.getSessionFactory().openSession();
-		Transaction transaction = session.beginTransaction();
-		String hql = "FROM Pregunta AS pr INNER JOIN fetch pr.alternativas WHERE  pr.codigoPregunta = '" + codigoPregunta + "'";
-		try {
-			listarAlternativas = session.createQuery(hql).list();
-			transaction.commit();
-			session.close();
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			transaction.rollback();
-		}
-		
-		return listarAlternativas;
-	}
-	
+	}	
 	
 	@Override
 	public boolean grabarPregunta(Pregunta pregunta) {

@@ -5,8 +5,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-@FacesConverter("estadoConverter")
-public class EstadoConverter implements Converter {
+@FacesConverter("sinoConverter")
+public class SiNoConverter implements Converter {
 
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
@@ -22,10 +22,10 @@ public class EstadoConverter implements Converter {
 			estado = value.toString();
 			switch (estado) {
 			case "1":
-				estado = "ACTIVO";
+				estado = "SI";
 				break;
 			case "0":
-				estado = "INACTIVO";
+				estado = "NO";
 				break;
 			default:
 				break;

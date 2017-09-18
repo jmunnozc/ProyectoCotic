@@ -28,10 +28,7 @@ public class PreguntaBean implements Serializable {
 	private PreguntaDao preguntaDao;
 	private List<Pregunta> listarPreguntas;
 	private Pregunta selectedPregunta;
-	
-	//private Alternativa alternativa;
-	private List<Alternativa> listarAlternativas;
-	
+		
 	private List<SelectItem> listarPortafolio;
 	private List<SelectItem> listarEstado;
 
@@ -53,16 +50,6 @@ public class PreguntaBean implements Serializable {
 		this.pregunta = pregunta;
 	}
 
-	/*
-	public Alternativa getAlternativa() {
-		return alternativa;
-	}
-
-	public void setAlternativa(Alternativa alternativa) {
-		this.alternativa = alternativa;
-	}
-	*/
-	
 	public PreguntaDao getPreguntaDao() {
 		return preguntaDao;
 	}
@@ -103,18 +90,7 @@ public class PreguntaBean implements Serializable {
 		//this.listarAlternativas = preguntaDao.ListarAlternativas(pregunta);
 	
 		return listarPreguntas;
-	}
-
-	
-	public List<Alternativa> getListarAlternativas() {
-		
-		PreguntaDao preguntaDao = new PreguntaDaoImpl();
-		this.pregunta.setCodigoPregunta(1);
-		//this.listarAlternativas = preguntaDao.ListarAlternativas(this.listarPreguntas);
-		
-		return listarAlternativas;
-	}
-	
+	}	
 	
 	public List<SelectItem> getListarPortafolio() {
 		

@@ -13,6 +13,6 @@ public interface AlternativaDao {
 	public boolean eliminarAlternativa(Alternativa alternativa);
 
 	public List<Pregunta> ListarPreguntas(Alternativa alternativa);
-	public List<Alternativa> ListarAlternativasPregunta(Pregunta pregunta);
+	public List<Alternativa> buscarAlternativasPregunta(Pregunta pregunta);
 
 }
