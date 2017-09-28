@@ -3,7 +3,8 @@ package pe.com.cotic.test.util;
 public class MyUtil {
 	
 	public static String baseurl() {
-		return "http://localhost:8088/ProyectoWeb/";
+		String ruta = System.getProperty("ruta_server") != null ? System.getProperty("ruta_server") : "";
+		return  ruta + "/ProyectoWeb/"; //"http://localhost:8080/ProyectoWeb/";
 	}
 
 	public static String basepathlogin() {
@@ -11,6 +12,7 @@ public class MyUtil {
 	}
 	
 	public static String basepath() {
-		return "http://localhost:8088/ProyectoWeb/views/";
+		String ruta = System.getProperty("ruta_server") != null ? System.getProperty("ruta_server") : "";
+		return  ruta + "/ProyectoWeb/views/";  //"http://localhost:8080/ProyectoWeb/views/";
 	}
 }
