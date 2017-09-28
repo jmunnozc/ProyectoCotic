@@ -11,9 +11,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import pe.com.cotic.test.dao.PortafolioDao;
 import pe.com.cotic.test.dao.PreguntaDao;
+import pe.com.cotic.test.daoImpl.PortafolioDaoImpl;
 import pe.com.cotic.test.daoImpl.PreguntaDaoImpl;
 import pe.com.cotic.test.modelo.Alternativa;
+import pe.com.cotic.test.modelo.Nivel;
 import pe.com.cotic.test.modelo.Portafolio;
 import pe.com.cotic.test.modelo.Pregunta;
 
@@ -31,6 +34,7 @@ public class PreguntaBean implements Serializable {
 		
 	private List<SelectItem> listarPortafolio;
 	private List<SelectItem> listarEstado;
+	private List<SelectItem> listarPreguntaXCodigo;
 
 	public PreguntaBean() {
 		pregunta = new Pregunta(); 
@@ -65,7 +69,7 @@ public class PreguntaBean implements Serializable {
 	public void setSelectedPregunta(Pregunta selectedPregunta) {
 		this.selectedPregunta = selectedPregunta;
 	}
-
+	
 	public List<SelectItem> getListarEstado() {
 		
 		this.listarEstado = new ArrayList<SelectItem>();
@@ -109,6 +113,25 @@ public class PreguntaBean implements Serializable {
 
 	public void setListarPortafolio(List<SelectItem> listarPortafolio) {
 		this.listarPortafolio = listarPortafolio;
+	}
+	
+	public List<SelectItem> getListarPreguntaXCodigo() {
+		
+		this.listarPreguntaXCodigo = new ArrayList<SelectItem>();
+		PreguntaDao preguntaDao = new PreguntaDaoImpl();
+		List<Pregunta> n = preguntaDao.buscarPreguntaXCodigo(pregunta);
+		listarPreguntaXCodigo.clear();
+		
+		for (Pregunta pregunta : n){
+			SelectItem preguntaItem = new SelectItem(pregunta.getCodigoPregunta(), pregunta.getTituloPregunta());
+			this.listarPreguntaXCodigo.add(preguntaItem);
+		}
+		
+		return listarPreguntaXCodigo;
+	}
+
+	public void setListarPreguntaXCodigo(List<SelectItem> listarPreguntaXCodigo) {
+		this.listarPreguntaXCodigo = listarPreguntaXCodigo;
 	}
 
 	public void btnGrabarPregunta() {

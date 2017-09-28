@@ -114,5 +114,26 @@ public class PreguntaDaoImpl implements PreguntaDao {
 		return listarPortafolios;
 	}
 
+	@Override
+	public List<Pregunta> buscarPreguntaXCodigo(Pregunta pregunta) {
+
+		List<Pregunta> listarPreguntaXCodigo = null;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		String hql = "FROM Pregunta AS al WHERE al.pregunta.codigoPregunta = " + pregunta.getCodigoPregunta();
+		
+		try {
+			listarPreguntaXCodigo = session.createQuery(hql).list();
+			transaction.commit();
+			session.close();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			transaction.rollback();
+		}
+		
+		return listarPreguntaXCodigo;
+		
+	}
+
 
 }

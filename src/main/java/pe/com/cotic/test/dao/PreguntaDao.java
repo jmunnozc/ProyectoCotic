@@ -14,4 +14,5 @@ public interface PreguntaDao {
 	public boolean eliminarPregunta(Pregunta pregunta);
 
 	public List<Portafolio> ListarPortafolios(Pregunta pregunta);
+	public List<Pregunta> buscarPreguntaXCodigo(Pregunta pregunta);
 }

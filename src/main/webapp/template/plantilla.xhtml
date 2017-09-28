@@ -42,6 +42,9 @@
 			<h:form>
 				<p:growl id="messages" />
 				<p:menubar>
+					
+					<p:menuitem value="Inicio" url="#{appBean.basePath}paginaCliente.jsf" icon="ui-icon-home" />
+					
 					<p:submenu label="Mantenimiento" icon="ui-icon-document">
 						<p:menuitem value="Institución" url="#{appBean.basePath}institucion/mantenimiento.jsf" icon="ui-icon-home" />
 						<p:menuitem value="Portafolio" url="#{appBean.basePath}portafolio/mantenimiento.jsf" icon="ui-icon-suitcase" />
@@ -54,7 +57,10 @@
 					<p:submenu label="Seguridad" icon="ui-icon-locked">
 						<p:menuitem value="Usuarios" url="#{appBean.basePath}usuario/mantenimiento.jsf" icon="ui-icon-person" />
 					</p:submenu>
-					
+
+					<p:submenu label="Gestión" icon="ui-icon-locked">
+						<p:menuitem value="Preguntas" url="#{appBean.basePath}gestor/gestion.jsf" icon="ui-icon-person" />
+					</p:submenu>					
 
 					<p:menuitem value="Salir" actionListener="#{usuarioBean.logout}" icon="ui-icon-close" oncomplete="manejarLogin(xhr, status, args)"/>
 

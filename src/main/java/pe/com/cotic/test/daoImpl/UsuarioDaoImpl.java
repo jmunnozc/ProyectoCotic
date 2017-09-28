@@ -7,6 +7,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import pe.com.cotic.test.dao.UsuarioDao;
+import pe.com.cotic.test.modelo.Institucion;
+import pe.com.cotic.test.modelo.Portafolio;
 import pe.com.cotic.test.modelo.Usuario;
 import pe.com.cotic.test.util.HibernateUtil;
 
@@ -116,6 +118,27 @@ public class UsuarioDaoImpl implements UsuarioDao {
 			transaction.rollback();
 		}
 		return flag;
+	}
+
+	@Override
+	public List<Institucion> ListarInstituciones(Usuario usuario) {
+
+		List<Institucion> listarInstituciones = null;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		String hql = "FROM Institucion ";
+
+		try {
+			listarInstituciones = session.createQuery(hql).list();
+			transaction.commit();
+			session.close();
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			transaction.rollback();
+		}
+		
+		return listarInstituciones;
 	}
 
 }

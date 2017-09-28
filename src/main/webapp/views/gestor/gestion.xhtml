@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/cssLayout.css" media="screen" />
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/login.css" media="screen" />
+
+	<title>Gestión de las Sesiones</title>
+</h:head>
+<body>
+
+	<ui:composition template="./../../template/plantilla.xhtml">
+		<ui:define name="content">
+			<div style="height: 15px"></div>
+
+			<p:panelGrid style="margin-top:20px; width:1300px">
+				<f:facet name="header">
+					<p:row style="height:30px">
+						<p:column colspan="20">GESTIÓN DE PREGUNTAS 1</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="10">Sesiones</p:column>
+						<p:column colspan="10">Listado de Preguntas</p:column>
+					</p:row>
+				</f:facet>
+				
+				<p:row>
+					<p:column>1</p:column>
+					<p:column>2</p:column>
+					<p:column>3</p:column>
+					<p:column>4</p:column>
+					<p:column>5</p:column>
+					<p:column colspan="10" style="font-size: 12px;">
+						<center>
+						<p:dataTable id="tablaMostrarPregunta" var="pregunta"
+								value="#{preguntaBean.listarPreguntas}"
+								selection="#{preguntaBean.listarPreguntas}"
+								rowKey="#{pregunta.codigoPregunta}"
+								style="margin-bottom:0; width:800px">
+							<f:facet name="header">Preguntas</f:facet>
+							<p:column selectionMode="multiple" style="width:16px;text-align:center" />
+							<p:column>2</p:column>
+							<p:column>3</p:column>
+							<p:column>4</p:column>
+							<p:column>5</p:column>
+						</p:dataTable>
+						</center>
+					</p:column>
+				</p:row>
+	
+	<!-- 
+					<p:row>
+						<p:column style="font-weight: bold;">Seattle</p:column>
+						<p:column style="font-weight: bold;">4</p:column>
+					</p:row>
+	 -->			
+			</p:panelGrid>
+
+			<p:growl id="msgs" showDetail="true" />
+
+			<div style="height: 5px" />
+			<h:form id="formDataTable">
+			</h:form>
+
+
+			<p:dialog header="Seleccion de Preguntas" widgetVar="multiCarDialog"
+				modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+				width="220">
+				<p:outputPanel id="multiCarDetail" style="text-align:center;">
+					<ui:repeat value="#{preguntaBean.listarPreguntas}" var="pregunta">
+						<h:outputText
+							value="#{pregunta.codigoPregunta} - #{pregunta.tituloPregunta}"
+							style="display:block" />
+					</ui:repeat>
+				</p:outputPanel>
+			</p:dialog>
+
+		</ui:define>
+	</ui:composition>
+
+</body>
+</html>

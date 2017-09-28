@@ -15,9 +15,12 @@ import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 
 import pe.com.cotic.test.dao.InstitucionDao;
+import pe.com.cotic.test.dao.PreguntaDao;
 import pe.com.cotic.test.dao.UsuarioDao;
+import pe.com.cotic.test.daoImpl.PreguntaDaoImpl;
 import pe.com.cotic.test.daoImpl.UsuarioDaoImpl;
 import pe.com.cotic.test.modelo.Institucion;
+import pe.com.cotic.test.modelo.Portafolio;
 import pe.com.cotic.test.modelo.Usuario;
 import pe.com.cotic.test.util.MyUtil;
 
@@ -36,6 +39,7 @@ public class UsuarioBean implements Serializable {
 
 	private List<SelectItem> listarSexo;
 	private List<SelectItem> listarEstado;
+	private List<SelectItem> listarInstitucion;
 
 	public UsuarioBean() {
 		this.usuarioDao = new UsuarioDaoImpl();
@@ -100,6 +104,25 @@ public class UsuarioBean implements Serializable {
 
 	public void setListarEstado(List<SelectItem> listarEstado) {
 		this.listarEstado = listarEstado;
+	}
+
+	public List<SelectItem> getListarInstitucion() {
+		
+		this.listarInstitucion = new ArrayList<SelectItem>();
+		UsuarioDao usuarioDao = new UsuarioDaoImpl();
+		List<Institucion> n = usuarioDao.ListarInstituciones(usuario);
+		listarInstitucion.clear();
+		
+		for (Institucion institucion : n){
+			SelectItem institucionItem = new SelectItem(institucion.getCodigoInstitucion(), institucion.getNombreInstitucion());
+			this.listarInstitucion.add(institucionItem);
+		}
+		
+		return listarInstitucion;
+	}
+
+	public void setListarInstitucion(List<SelectItem> listarInstitucion) {
+		this.listarInstitucion = listarInstitucion;
 	}
 
 	public void verificarDatos() throws Exception {
@@ -184,8 +207,8 @@ public class UsuarioBean implements Serializable {
 		this.selectedUsuario.setUsuarioCreacion("JAMBROCIO");
 		this.selectedUsuario.setFechaCreacion(java.sql.Date.valueOf(fechaActual));
 		
-		institucion.setCodigoInstitucion(1);
-		this.selectedUsuario.setInstitucion(institucion);
+		/*institucion.setCodigoInstitucion(1);
+		this.selectedUsuario.setInstitucion(institucion);*/
 
 		if (usuarioDao.grabarUsuario(this.selectedUsuario)) {
 			msg = "Se creó correctamente el registro...";
@@ -215,8 +238,8 @@ public class UsuarioBean implements Serializable {
 		this.selectedUsuario.setUsuarioModificacion("JAMBROCIO");
 		this.selectedUsuario.setFechaModificacion(java.sql.Date.valueOf(fechaActual));
 		
-		institucion.setCodigoInstitucion(1);
-		this.selectedUsuario.setInstitucion(institucion);
+		/*institucion.setCodigoInstitucion(1);
+		this.selectedUsuario.setInstitucion(institucion);*/
 
 		if (usuarioDao.modificarUsuario(this.selectedUsuario)) {
 			msg = "Se modificó correctamente el registro...";
@@ -234,8 +257,8 @@ public class UsuarioBean implements Serializable {
 		Institucion institucion = new Institucion();
 		String msg;
 		
-		institucion.setCodigoInstitucion(1);
-		this.selectedUsuario.setInstitucion(institucion);
+		/*institucion.setCodigoInstitucion(1);
+		this.selectedUsuario.setInstitucion(institucion);*/
 		if (usuarioDao.eliminarUsuario(this.selectedUsuario)) {
 			msg = "Se eliminó correctamente el registro...";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);

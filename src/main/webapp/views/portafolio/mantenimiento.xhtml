@@ -55,7 +55,7 @@
 							<h:outputText value="#{portafolio.nivel.descripcionNivel}" />
 						</p:column>
 						<p:column headerText="Muestra Pregunta" style="text-align: center; width: 60px;">
-							<h:outputText value="#{portafolio.flagMostrarRespuestaCorrectaPortafolio}" />
+							<h:outputText value="#{portafolio.flagMostrarRespuestaCorrectaPortafolio}" converter="sinoConverter"/>
 						</p:column>
 						<p:column headerText="Estado" style="text-align: center; width: 50px;">
 							<h:outputText value="#{portafolio.estado}" converter="estadoConverter"/>

@@ -2,6 +2,7 @@ package pe.com.cotic.test.daoImpl;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -41,6 +42,12 @@ public class AlternativaDaoImpl implements AlternativaDao {
 		boolean flag = false;
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
+		
+		Query query = session.createQuery("update Alternativa al set al.flagRespuestaCorrectaAlternativa = :newFlag where al.codigoPregunta = :oldCodigo");
+		query.setParameter("newFlag", 0);
+		query.setParameter("oldCodigo", alternativa.getPregunta().getCodigoPregunta());
+		int result = query.executeUpdate();
+
 		try {
 			session.save(alternativa);
 			transaction.commit();
