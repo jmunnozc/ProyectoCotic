@@ -170,12 +170,12 @@ public class UsuarioBean implements Serializable {
 		return estado;
 	}
 
-/*	public String cerrarSesion() {
+	public String cerrarSesion() {
 
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 		return "index?faces-redirect=true";
 		// return "index";
-	}*/
+	}
 
 	public void logout() {
 		String ruta = MyUtil.basepathlogin() + "index.jsf";

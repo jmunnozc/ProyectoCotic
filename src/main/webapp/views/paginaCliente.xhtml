@@ -20,7 +20,8 @@
 		<ui:define name="content">
 
 			<div style="height: 400px">
-				<h:form>
+				<h:form >
+				<h:outputLabel value="#{usuarioBean.usuario.nombres}" />
 					<p:growl id="msgs" showDetail="true" />
 
 					<p:dashboard id="board" model="#{dashboardBean.model}">
