@@ -20,18 +20,17 @@
 		<property name="hibernate.show_sql">false</property>
 
 		<mapping resource="pe/com/cotic/test/xml/Alternativa.hbm.xml" />
-		<mapping resource="pe/com/cotic/test/xml/Curso.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Institucion.hbm.xml" />
-		<mapping resource="pe/com/cotic/test/xml/Institucionrol.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Menu.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Nivel.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Portafolio.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Pregunta.hbm.xml" />
+		<mapping resource="pe/com/cotic/test/xml/Respuestacabecera.hbm.xml" />
+		<mapping resource="pe/com/cotic/test/xml/Respuestadetalle.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Rol.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Rolmenu.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Rolusuario.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Usuario.hbm.xml" />
-		<mapping resource="pe/com/cotic/test/xml/Usuariocurso.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Usuariodispositivo.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Usuarioportafolio.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Version.hbm.xml" />

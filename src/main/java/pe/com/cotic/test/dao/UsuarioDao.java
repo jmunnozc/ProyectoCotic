@@ -8,6 +8,7 @@ import pe.com.cotic.test.modelo.Usuario;
 public interface UsuarioDao {
 	
 	public Usuario verificarDatos(Usuario usuario);
+	public Usuario verificarDatosSP(Usuario usuario);
 	public List<Usuario> ListarUsuarios();
 	public boolean grabarUsuario(Usuario usuario);
 	public boolean modificarUsuario(Usuario usuario);

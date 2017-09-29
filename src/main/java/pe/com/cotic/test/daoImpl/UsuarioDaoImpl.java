@@ -8,7 +8,6 @@ import org.hibernate.Transaction;
 
 import pe.com.cotic.test.dao.UsuarioDao;
 import pe.com.cotic.test.modelo.Institucion;
-import pe.com.cotic.test.modelo.Portafolio;
 import pe.com.cotic.test.modelo.Usuario;
 import pe.com.cotic.test.util.HibernateUtil;
 
@@ -44,6 +43,32 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		return us;
 	}
 
+	@Override
+	public Usuario verificarDatosSP(Usuario usuario) {
+		
+		Usuario us = null;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		
+		try {
+			Query callStoredProcedure_MYSQL = session.createSQLQuery("CALL autenticarUsuario (:param1, :param2)").addEntity(Usuario.class);
+			callStoredProcedure_MYSQL.setString("param1", usuario.getUsuario().toUpperCase());
+			callStoredProcedure_MYSQL.setString("param2", usuario.getClave().toUpperCase());
+			transaction.commit();
+			
+			if (!callStoredProcedure_MYSQL.list().isEmpty()) {
+				us = (Usuario) callStoredProcedure_MYSQL.list().get(0);
+			}		
+			session.close();
+			
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	
+		return us;
+	}
+	
 	@Override
 	public List<Usuario> ListarUsuarios() {
 

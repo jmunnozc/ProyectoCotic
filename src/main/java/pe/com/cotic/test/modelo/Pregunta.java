@@ -1,6 +1,6 @@
 package pe.com.cotic.test.modelo;
 
-// Generated 12/09/2017 12:25:55 PM by Hibernate Tools 4.0.0
+// Generated 28/09/2017 10:33:35 AM by Hibernate Tools 3.4.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +16,7 @@ public class Pregunta implements java.io.Serializable {
 	private int estado;
 	private byte[] imagenPregunta;
 	private Set alternativas = new HashSet(0);
+	private Set respuestadetalles = new HashSet(0);
 
 	public Pregunta() {
 		portafolio = new Portafolio();
@@ -28,12 +29,13 @@ public class Pregunta implements java.io.Serializable {
 	}
 
 	public Pregunta(Portafolio portafolio, String tituloPregunta, int estado,
-			byte[] imagenPregunta, Set alternativas) {
+			byte[] imagenPregunta, Set alternativas, Set respuestadetalles) {
 		this.portafolio = portafolio;
 		this.tituloPregunta = tituloPregunta;
 		this.estado = estado;
 		this.imagenPregunta = imagenPregunta;
 		this.alternativas = alternativas;
+		this.respuestadetalles = respuestadetalles;
 	}
 
 	public Integer getCodigoPregunta() {
@@ -82,6 +84,14 @@ public class Pregunta implements java.io.Serializable {
 
 	public void setAlternativas(Set alternativas) {
 		this.alternativas = alternativas;
+	}
+
+	public Set getRespuestadetalles() {
+		return this.respuestadetalles;
+	}
+
+	public void setRespuestadetalles(Set respuestadetalles) {
+		this.respuestadetalles = respuestadetalles;
 	}
 
 }

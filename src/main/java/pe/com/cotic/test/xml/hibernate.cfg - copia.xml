@@ -5,9 +5,14 @@
 <hibernate-configuration>
 	<session-factory name="MySessionFactory">
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<!-- 
 		<property name="hibernate.connection.password">admin</property>
 		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/cotic</property>
 		<property name="hibernate.connection.username">root</property>
+		 -->		 
+		<!-- property name="hibernate.connection.datasource">java:comp/env/jdbc/TestDb</property -->
+		<property name="hibernate.connection.datasource">java:jboss/datasources/CoticDS</property>		
+		
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 
 		<property name="hibernate.current_session_context_class">thread</property>
@@ -24,6 +29,7 @@
 		<mapping resource="pe/com/cotic/test/xml/Pregunta.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Rol.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Rolmenu.hbm.xml" />
+		<mapping resource="pe/com/cotic/test/xml/Rolusuario.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Usuario.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Usuariocurso.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Usuariodispositivo.hbm.xml" />

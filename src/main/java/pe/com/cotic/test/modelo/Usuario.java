@@ -1,6 +1,6 @@
 package pe.com.cotic.test.modelo;
 
-// Generated 12/09/2017 12:25:55 PM by Hibernate Tools 4.0.0
+// Generated 28/09/2017 10:33:35 AM by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -32,6 +32,7 @@ public class Usuario implements java.io.Serializable {
 	private Set rolusuarios = new HashSet(0);
 	private Set usuariodispositivos = new HashSet(0);
 	private Set usuarioportafolios = new HashSet(0);
+	private Set respuestacabeceras = new HashSet(0);
 
 	public Usuario() {
 		institucion = new Institucion();
@@ -57,7 +58,8 @@ public class Usuario implements java.io.Serializable {
 			String telefono, String celular, int estado,
 			String usuarioCreacion, Date fechaCreacion,
 			String usuarioModificacion, Date fechaModificacion, String sexo,
-			Set rolusuarios, Set usuariodispositivos, Set usuarioportafolios) {
+			Set rolusuarios, Set usuariodispositivos, Set usuarioportafolios,
+			Set respuestacabeceras) {
 		this.institucion = institucion;
 		this.usuario = usuario;
 		this.clave = clave;
@@ -78,6 +80,7 @@ public class Usuario implements java.io.Serializable {
 		this.rolusuarios = rolusuarios;
 		this.usuariodispositivos = usuariodispositivos;
 		this.usuarioportafolios = usuarioportafolios;
+		this.respuestacabeceras = respuestacabeceras;
 	}
 
 	public Integer getCodigoUsuario() {
@@ -246,6 +249,14 @@ public class Usuario implements java.io.Serializable {
 
 	public void setUsuarioportafolios(Set usuarioportafolios) {
 		this.usuarioportafolios = usuarioportafolios;
+	}
+
+	public Set getRespuestacabeceras() {
+		return this.respuestacabeceras;
+	}
+
+	public void setRespuestacabeceras(Set respuestacabeceras) {
+		this.respuestacabeceras = respuestacabeceras;
 	}
 
 }

@@ -135,7 +135,8 @@ public class UsuarioBean implements Serializable {
 		RequestContext context = RequestContext.getCurrentInstance();
 
 		try {
-			us = usuarioDao.verificarDatos(this.usuario);
+			//us = usuarioDao.verificarDatos(this.usuario);
+			us = usuarioDao.verificarDatosSP(this.usuario);
 
 			if (us != null) {
 				loggedIn = true;
