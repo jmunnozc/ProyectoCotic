@@ -67,7 +67,6 @@
 	<script type="text/javascript">
   //<![CDATA[
   function manejarLogin(xhr, status, args) {
-	  
     if (!args.validationFailed && args.loggedIn) {
   	  	//alert("Flag Bien: " + args.ruta);
     	//PF('dlg').jq.effect("shake", {times:5}, 100);
@@ -79,7 +78,7 @@
   	  	//alert("Flag Mal: " + args.ruta);
     	//PF('dlg').hide();
     	/*$('#loginForm').fadeOut();*/
-    	location.href = args.ruta;
+  		location.href = "index.jsf";
     }
   }
 //]]>

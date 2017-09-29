@@ -14,13 +14,9 @@ import javax.servlet.http.HttpSession;
 
 import org.primefaces.context.RequestContext;
 
-import pe.com.cotic.test.dao.InstitucionDao;
-import pe.com.cotic.test.dao.PreguntaDao;
 import pe.com.cotic.test.dao.UsuarioDao;
-import pe.com.cotic.test.daoImpl.PreguntaDaoImpl;
 import pe.com.cotic.test.daoImpl.UsuarioDaoImpl;
 import pe.com.cotic.test.modelo.Institucion;
-import pe.com.cotic.test.modelo.Portafolio;
 import pe.com.cotic.test.modelo.Usuario;
 import pe.com.cotic.test.util.MyUtil;
 
@@ -32,7 +28,7 @@ public class UsuarioBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Usuario usuario;
+	public Usuario usuario;
 	private UsuarioDao usuarioDao;
 	private List<Usuario> listarUsuarios;
 	private Usuario selectedUsuario;
@@ -142,7 +138,7 @@ public class UsuarioBean implements Serializable {
 				loggedIn = true;
 				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", us);
 				message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Bienvenido", this.usuario.getUsuario());
-				ruta = MyUtil.baseurl() + "views/paginaCliente.jsf";
+				ruta = MyUtil.baseurl() + "views/paginaPrincipal.jsf";
 			} else {
 				loggedIn = false;
 				message = new FacesMessage(FacesMessage.SEVERITY_WARN,"Error de Acceso", "Credenciales Invalidas...");
@@ -160,8 +156,10 @@ public class UsuarioBean implements Serializable {
 
 	public boolean verificarSesion() {
 		boolean estado;
+		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
 
-		if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario") == null) {
+		/*if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario") == null) {*/
+		if (usuario == null) {
 			estado = false;
 		} else {
 			estado = true;
@@ -171,9 +169,9 @@ public class UsuarioBean implements Serializable {
 	}
 
 	public String cerrarSesion() {
-
-		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-		return "index?faces-redirect=true";
+		
+		FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, MyUtil.baseurl() +  "index.jsf");
+		return MyUtil.baseurl() + "index.jsf";
 		// return "index";
 	}
 

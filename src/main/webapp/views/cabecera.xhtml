@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+	
+<h:body>
+<h:form rendered="#{usuarioBean.verificarSesion()}">
+	<div id="blockCabecera">
+		<div style="padding: 10px;" align="center">
+			<div align="right">
+				USUARIO [
+				<h:outputLabel
+					value="#{usuarioBean.usuario.nombres}, #{usuarioBean.usuario.apellidoPaterno} #{usuarioBean.usuario.apellidoMaterno}"
+					style="font-size:12px;" />
+				]
+			</div>
+			<h1>BIENVENIDO AL PORTAL DE LA APLICACION TEST</h1>
+		</div>
+	</div>
+	<div id="menuBar">
+		<p:growl id="messages" />
+		<p:menubar>
+			<p:menuitem value="Inicio" url="#{appBean.basePath}paginaCliente.jsf"
+				icon="ui-icon-home" />
+			<p:submenu label="Mantenimiento" icon="ui-icon-document">
+				<p:menuitem value="Institución"
+					url="#{appBean.basePath}institucion/mantenimiento.jsf"
+					icon="ui-icon-home" />
+				<p:menuitem value="Portafolio"
+					url="#{appBean.basePath}portafolio/mantenimiento.jsf"
+					icon="ui-icon-suitcase" />
+				<p:menuitem value="Pregunta"
+					url="#{appBean.basePath}pregunta/mantenimiento.jsf"
+					icon="ui-icon-help" />
+				<p:menuitem value="Alternativa"
+					url="#{appBean.basePath}alternativa/mantenimiento.jsf"
+					icon="ui-icon-contact" />
+				<p:separator />
+				<p:menuitem value="Salir"
+					actionListener="#{usuarioBean.logout()}" icon="ui-icon-close"
+					oncomplete="manejarLogin(xhr, status, args)" />
+			</p:submenu>
+			<p:submenu label="Seguridad" icon="ui-icon-locked">
+				<p:menuitem value="Usuarios"
+					url="#{appBean.basePath}usuario/mantenimiento.jsf"
+					icon="ui-icon-person" />
+			</p:submenu>
+			<p:submenu label="Gestión" icon="ui-icon-locked">
+				<p:menuitem value="Registrar Sesión"
+					url="#{appBean.basePath}gestor/gestion.jsf" icon="ui-icon-person" />
+			</p:submenu>
+			<p:menuitem value="Salir" actionListener="#{usuarioBean.logout}"
+				icon="ui-icon-close" oncomplete="manejarLogin(xhr, status, args)" />
+		</p:menubar>
+	</div>
+</h:form>
+</h:body>
+
+</html>

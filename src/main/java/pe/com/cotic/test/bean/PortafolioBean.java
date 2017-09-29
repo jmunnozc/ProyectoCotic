@@ -26,6 +26,7 @@ public class PortafolioBean implements Serializable {
 	private Portafolio portafolio;
 	private PortafolioDao portafolioDao;
 	private List<Portafolio> listarPortafolios;
+	private List<Portafolio> listarPortafoliosxNivel;
 	private Portafolio selectedPortafolio;
 	
 	private List<SelectItem> listarNivel;
@@ -42,6 +43,7 @@ public class PortafolioBean implements Serializable {
 			this.portafolio = new Portafolio(); 
 		}
 		this.listarPortafolios = new ArrayList<Portafolio>();
+		this.listarPortafoliosxNivel = new ArrayList<Portafolio>();
 		this.selectedPortafolio = new Portafolio();
 		this.hideFields = true;
 	}
@@ -142,7 +144,15 @@ public class PortafolioBean implements Serializable {
 				
 		return listarPortafolios;
 	}
-	
+		
+
+	public List<Portafolio> getListarPortafoliosxNivel() {
+		PortafolioDao portafolioDao = new PortafolioDaoImpl();
+		this.listarPortafolios = portafolioDao.ListarPortafoliosxNivel(3);
+		
+		return listarPortafoliosxNivel;
+	}
+
 
 	public void btnGrabarPortafolio() {
 		PortafolioDao portafolioDao = new PortafolioDaoImpl();

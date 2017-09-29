@@ -18,6 +18,10 @@
 <body>
 
 	<ui:composition template="./../../template/plantilla.xhtml">
+		<ui:define name="top">
+			<ui:include src="/views/cabecera.xhtml" />
+		</ui:define>
+	
 		<ui:define name="content">
 			<div style="height: 15px"></div>
 			<div style="height: 800px">
@@ -231,6 +235,10 @@
 
 			</div>
 		</ui:define>
+		
+		<ui:define name="bottom">
+			<ui:include src="/views/pie.xhtml" />
+		</ui:define>		
 	</ui:composition>
 
 <h:outputScript library="js" name="calendar_es.js" />

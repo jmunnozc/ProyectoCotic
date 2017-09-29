@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css"
+		href="../resources/css/cssLayout.css" media="screen" />
+	<link rel="stylesheet" type="text/css"
+		href="../resources/css/login.css" media="screen" />
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/cssLayout.css" media="screen" />
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/login.css" media="screen" />
+
+	<title>Plantilla</title>
+
+	<script type="text/javascript">
+	    function handleMessage(data) {
+	        var series = [],
+	        chart = PF('browserChart').plot;
+	 
+	        for(var key in data) {
+	            series.push([key, data[key]]);
+	        }
+	 
+	        chart.series[0].data = series;
+	        chart.replot();
+	    }
+	</script>
+
+</h:head>
+<h:body>
+
+	<div id="top" class="ui-widget-header ui-corner-all"
+		style="height: 50:px;">
+			<h:form rendered="#{usuarioBean.verificarSesion()}">
+		<div id="blockCabecera">
+			<div style="padding: 10px;" align="center">
+				<div align="right">
+					USUARIO [<h:outputLabel value="#{usuarioBean.usuario.nombres}" />]
+				</div>
+				<h1>BIENVENIDO AL PORTAL DE LA APLICACION TEST</h1>
+			</div>
+		</div>
+
+		<div id="menuBar">
+
+			<p:growl id="messages" />
+
+				<h:outputLabel value="#{usuarioBean.usuario.usuario}" />
+				<p:menubar>
+
+					<p:menuitem value="Inicio"
+						url="#{appBean.basePath}paginaCliente.jsf" icon="ui-icon-home" />
+
+					<p:submenu label="Mantenimiento" icon="ui-icon-document">
+						<p:menuitem value="Institución"
+							url="#{appBean.basePath}institucion/mantenimiento.jsf"
+							icon="ui-icon-home" />
+						<p:menuitem value="Portafolio"
+							url="#{appBean.basePath}portafolio/mantenimiento.jsf"
+							icon="ui-icon-suitcase" />
+						<p:menuitem value="Pregunta"
+							url="#{appBean.basePath}pregunta/mantenimiento.jsf"
+							icon="ui-icon-help" />
+						<p:menuitem value="Alternativa"
+							url="#{appBean.basePath}alternativa/mantenimiento.jsf"
+							icon="ui-icon-contact" />
+						<p:separator />
+						<p:menuitem value="Salir" actionListener="#{usuarioBean.logout}"
+							icon="ui-icon-close" oncomplete="manejarLogin(xhr, status, args)" />
+					</p:submenu>
+
+					<p:submenu label="Seguridad" icon="ui-icon-locked">
+						<p:menuitem value="Usuarios"
+							url="#{appBean.basePath}usuario/mantenimiento.jsf"
+							icon="ui-icon-person" />
+					</p:submenu>
+
+					<p:submenu label="Gestión" icon="ui-icon-locked">
+						<p:menuitem value="Preguntas"
+							url="#{appBean.basePath}gestor/gestion.jsf" icon="ui-icon-person" />
+					</p:submenu>
+
+					<p:menuitem value="Salir" actionListener="#{usuarioBean.logout}"
+						icon="ui-icon-close" oncomplete="manejarLogin(xhr, status, args)" />
+
+				</p:menubar>
+
+		</div>
+			</h:form>
+	</div>
+	<div id="content" class="center_content">
+		<ui:insert name="content"></ui:insert>
+	</div>
+	<div id="bottom" class="ui-widget-header ui-corner-all"
+		style="height: 40:px;">
+		<ui:insert name="bottom">
+			<div align="center">© 2017 - Lima Perú</div>
+		</ui:insert>
+	</div>
+
+
+	<script type="text/javascript">
+  //<![CDATA[
+  function manejarLogin(xhr, status, args) {
+	  
+    if (args.loggetOut) {
+      	location.href = args.ruta;
+    }
+    
+  }
+//]]>
+</script>
+
+</h:body>
+</html>

@@ -17,6 +17,7 @@ public class Institucion implements java.io.Serializable {
 	private Set usuarios = new HashSet(0);
 
 	public Institucion() {
+		
 	}
 
 	public Institucion(String nombreInstitucion, int estado) {

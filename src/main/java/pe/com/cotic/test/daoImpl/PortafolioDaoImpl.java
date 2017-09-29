@@ -2,12 +2,14 @@ package pe.com.cotic.test.daoImpl;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import pe.com.cotic.test.dao.PortafolioDao;
 import pe.com.cotic.test.modelo.Nivel;
 import pe.com.cotic.test.modelo.Portafolio;
+import pe.com.cotic.test.modelo.Usuario;
 import pe.com.cotic.test.util.HibernateUtil;
 
 public class PortafolioDaoImpl implements PortafolioDao {
@@ -114,6 +116,31 @@ public class PortafolioDaoImpl implements PortafolioDao {
 		}
 		
 		return listarNiveles;
+	}
+
+	@Override
+	public List<Portafolio> ListarPortafoliosxNivel(int nivel) {
+
+		Portafolio por = null;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		
+		try {
+			Query callStoredProcedure_MYSQL = session.createSQLQuery("CALL listarPortafolioxNivel (:param1)").addEntity(Portafolio.class);
+			callStoredProcedure_MYSQL.setInteger("param1", nivel);
+			transaction.commit();
+			
+			if (!callStoredProcedure_MYSQL.list().isEmpty()) {
+				por = (Portafolio) callStoredProcedure_MYSQL.list().get(0);
+			}		
+			session.close();
+			
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	
+		return (List<Portafolio>) por;
 	}
 
 }

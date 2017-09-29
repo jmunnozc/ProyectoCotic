@@ -11,21 +11,23 @@
 		href="../resources/css/cssLayout.css" media="screen" />
 	<link rel="stylesheet" type="text/css"
 		href="../resources/css/login.css" media="screen" />
-	<title>Pagina Cliente</title>
+	<title>Pagina Principal</title>
 </h:head>
 
 <body>
-
 	<ui:composition template="./../template/plantilla.xhtml">
-		<ui:define name="content">
+		<ui:define name="top">
+			<ui:include src="/views/cabecera.xhtml" />
+		</ui:define>
 
-			<div style="height: 400px">
-				<h:form >
-				<h:outputLabel value="#{usuarioBean.usuario.nombres}" />
+		<ui:define name="content">
+			<div style="height: 800px">
+				<h:form rendered="#{usuarioBean.verificarSesion()}">
 					<p:growl id="msgs" showDetail="true" />
 
 					<p:dashboard id="board" model="#{dashboardBean.model}">
-						<p:ajax event="reorder" listener="#{dashboardBean.handleReorder()}" update="msgs" />
+						<p:ajax event="reorder"
+							listener="#{dashboardBean.handleReorder()}" update="msgs" />
 
 						<p:panel id="sports" header="Cantidad de Portafolios">
 							<h:outputText value="Gráfico Pie" />
@@ -40,9 +42,13 @@
 					<div style="clear: both" />
 				</h:form>
 			</div>
-
+		</ui:define>
+		
+		<ui:define name="bottom">
+			<ui:include src="/views/pie.xhtml" />
 		</ui:define>
 	</ui:composition>
+
 </body>
 
 </html>
