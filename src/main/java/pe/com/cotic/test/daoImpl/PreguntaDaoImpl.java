@@ -6,7 +6,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import pe.com.cotic.test.dao.PreguntaDao;
-import pe.com.cotic.test.modelo.Alternativa;
 import pe.com.cotic.test.modelo.Portafolio;
 import pe.com.cotic.test.modelo.Pregunta;
 import pe.com.cotic.test.util.HibernateUtil;
@@ -15,6 +14,7 @@ public class PreguntaDaoImpl implements PreguntaDao {
 	
 	private Session session;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Pregunta> ListarPreguntas() {
 
@@ -94,6 +94,7 @@ public class PreguntaDaoImpl implements PreguntaDao {
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Portafolio> ListarPortafolios(Pregunta pregunta) {
 		List<Portafolio> listarPortafolios = null;
@@ -114,6 +115,7 @@ public class PreguntaDaoImpl implements PreguntaDao {
 		return listarPortafolios;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Pregunta> buscarPreguntaXCodigo(Pregunta pregunta) {
 
@@ -133,6 +135,27 @@ public class PreguntaDaoImpl implements PreguntaDao {
 		
 		return listarPreguntaXCodigo;
 		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Pregunta> buscarPreguntasPortafolio(Portafolio portafolio) {
+
+		List<Pregunta> listarPreguntasPortafolio = null;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		String hql = "FROM Pregunta AS pr WHERE pr.portafolio.codigoPortafolio = " + portafolio.getCodigoPortafolio();
+		
+		try {
+			listarPreguntasPortafolio = session.createQuery(hql).list();
+			transaction.commit();
+			session.close();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			transaction.rollback();
+		}
+		
+		return listarPreguntasPortafolio;
 	}
 
 

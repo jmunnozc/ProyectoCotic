@@ -1,6 +1,5 @@
 package pe.com.cotic.test.bean;
 
-import java.io.Console;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

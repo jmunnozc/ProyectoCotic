@@ -10,6 +10,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
 import pe.com.cotic.test.dao.PortafolioDao;
@@ -26,12 +27,12 @@ public class PortafolioBean implements Serializable {
 	private Portafolio portafolio;
 	private PortafolioDao portafolioDao;
 	private List<Portafolio> listarPortafolios;
-	private List<Portafolio> listarPortafoliosxNivel;
 	private Portafolio selectedPortafolio;
 	
 	private List<SelectItem> listarNivel;
 	private List<SelectItem> listarEstado;
 	private List<SelectItem> listarSiNo;
+	//private List<SelectItem> listarPortafoliosxNivel;
 
 	private boolean hideFields;
 	
@@ -43,7 +44,6 @@ public class PortafolioBean implements Serializable {
 			this.portafolio = new Portafolio(); 
 		}
 		this.listarPortafolios = new ArrayList<Portafolio>();
-		this.listarPortafoliosxNivel = new ArrayList<Portafolio>();
 		this.selectedPortafolio = new Portafolio();
 		this.hideFields = true;
 	}
@@ -144,13 +144,35 @@ public class PortafolioBean implements Serializable {
 				
 		return listarPortafolios;
 	}
-		
 
+/*	
+	public List<SelectItem> getListarPortafoliosxNivel() {
+		
+		this.listarPortafoliosxNivel = new ArrayList<SelectItem>();
+		PortafolioDao portafolioDao = new PortafolioDaoImpl();
+		List<Portafolio> p = portafolioDao.ListarPortafoliosxNivel(3);
+		listarPortafoliosxNivel.clear();
+		
+		for (Portafolio portafolio : p){
+			SelectItem portafolioItem = new SelectItem(portafolio.getCodigoPortafolio(), portafolio.getDescripcionPortafolio());
+			this.listarPortafoliosxNivel.add(portafolioItem);
+		}
+		
+		return listarPortafoliosxNivel;
+	}
+
+
+	public void setListarPortafoliosxNivel(List<SelectItem> listarPortafoliosxNivel) {
+		this.listarPortafoliosxNivel = listarPortafoliosxNivel;
+	}
+*/
+	
 	public List<Portafolio> getListarPortafoliosxNivel() {
 		PortafolioDao portafolioDao = new PortafolioDaoImpl();
 		this.listarPortafolios = portafolioDao.ListarPortafoliosxNivel(3);
 		
-		return listarPortafoliosxNivel;
+		
+		return listarPortafolios;
 	}
 
 
@@ -173,7 +195,7 @@ public class PortafolioBean implements Serializable {
 		}
 		
 	}
-	
+
 	public void btnModificarPortafolio() {
 		PortafolioDao portafolioDao = new PortafolioDaoImpl();
 		String msg;
@@ -222,5 +244,14 @@ public class PortafolioBean implements Serializable {
         	this.selectedPortafolio.setTiempoPortafolio(0);
             this.hideFields = false;
         }
+    }
+	
+	public void btnAction(ActionEvent actionEvent) {
+        addMessage("Welcome to Primefaces!!");
+    }
+     
+    public void addMessage(String summary) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary,  null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 }

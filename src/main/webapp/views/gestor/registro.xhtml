@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/cssLayout.css" media="screen" />
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/login.css" media="screen" />
+	
+	<title>Gestión de las Sesiones</title>
+</h:head>
+
+<body>
+
+	<ui:composition template="./../../template/plantilla.xhtml">
+		<ui:define name="top">
+			<ui:include src="/views/cabecera.xhtml" />
+		</ui:define>
+	
+		<ui:define name="content">
+			<div style="height: 15px"></div>
+			<div style="height: 800px">
+				<p:growl id="msgs" showDetail="true" />				
+				<div style="height: 5px" />
+				<h:form id="formDataTable">
+
+					<p:dataTable id="tablaMostrarPortafolio" var="portafolio" emptyMessage="No hay datos de portafolios..." 
+						value="#{portafolioBean.listarPortafoliosxNivel}" rows="15" paginator="true" draggableColumns="true"
+						 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="10,15,20">
+						<f:facet name="header">
+					        LISTADO DE PORTAFOLIOS					 
+					        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+					        <p:columnToggler datasource="tablaMostrarPortafolio" trigger="toggler" />			
+					    </f:facet>
+						<p:column style="width:16px">
+				            <p:rowToggler />
+				        </p:column>					    
+						<p:column headerText="Código" style="width:20px;text-align: center">
+							<h:outputText value="#{portafolio.codigoPortafolio}" />
+						</p:column>
+						<p:column headerText="Título Portafolio" style="width:200px;text-align: center">
+							<h:outputText value="#{portafolio.tituloPortafolio}" />
+						</p:column>
+						<p:column headerText="Descripción Portafolio" style="width:600px;text-align: center">
+							<h:outputText value="#{portafolio.descripcionPortafolio}" />
+						</p:column>
+						<p:column headerText="Preguntas" style="width:50px;text-align: center">
+							<h:outputText value="#{portafolio.preguntas.size()}">
+							</h:outputText>
+						</p:column>						
+
+						<p:rowExpansion>
+			                <f:facet name="header">LISTADO DE PREGUNTAS</f:facet>
+		                	<p:growl id="msgsPregunta" showDetail="true" />
+		                	<p:panelGrid id="display" columns="3" cellpadding="4" columnClasses="label,value">
+								<p:dataTable id="tablaMostrarDetalle" var="pregunta" value="#{preguntaBean.btnBuscarPregunta(portafolio)}" style="width:700px" emptyMessage="No hay datos de preguntas...">
+									<p:column headerText="Título">
+										<h:outputText value="#{pregunta.tituloPregunta}" />
+									</p:column>
+									<p:column headerText="Estado" style="width:50px;text-align: center">
+										<h:outputText value="#{pregunta.estado}" converter="estadoConverter"/>
+									</p:column>
+								</p:dataTable>
+								<!-- 
+								<p:commandButton value="Registrar Sesión" id="ajax" update="msgs" actionListener="{usuarioPortafolioBean.btnGrabarUsuarioPortafolio(portafolio)}" styleClass="ui-priority-primary" />
+								 -->
+							</p:panelGrid>
+				        </p:rowExpansion>
+						
+					</p:dataTable>
+				</h:form>				
+
+			</div>
+		</ui:define>
+		
+		<ui:define name="bottom">
+			<ui:include src="/views/pie.xhtml" />
+		</ui:define>		
+	</ui:composition>
+
+<h:outputScript library="js" name="calendar_es.js" />
+</body>
+
+</html>

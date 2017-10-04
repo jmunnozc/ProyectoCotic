@@ -22,16 +22,16 @@
 
 		<ui:define name="content">
 			<div style="height: 15px"></div>
-
 			<div style="height: 800px">
 				<p:growl id="growl" showDetail="true" showSummary="true" />
 				<p:layout style="min-width:400px;min-height:350px;">
 					<p:layoutUnit position="west" resizable="true" size="100" minSize="400" maxSize="800">
         				<h:outputText value="Sesión:" />&nbsp;
 						<p:selectOneMenu id="sesion"
-							value="#{portafolioBean.selectedPortafolio.codigoPortafolio}">
+							value="#{portafolioBean.selectedPortafolio.codigoPortafolio}" style="width:200px">
 							<f:selectItem itemLabel="-- Seleccione --" />
 							<f:selectItems value="#{portafolioBean.listarPortafoliosxNivel}" />
+							<f:ajax render="tablaMostrarPregunta"  event="change" listener="#{portafolioBean.updateOutputLabels}"/>
 						</p:selectOneMenu>
     				</p:layoutUnit>
 					<p:layoutUnit position="center">
@@ -39,14 +39,14 @@
 							<p:dataTable id="tablaMostrarPregunta" var="pregunta"
 								value="#{preguntaBean.listarPreguntas}"
 								selection="#{preguntaBean.listarPreguntas}"
-								rowKey="#{pregunta.codigoPregunta}" style="margin-bottom:0; width:800px">
+								rowKey="#{pregunta.codigoPregunta}" style="margin-bottom:0; width:1200px">
 								<f:facet name="header">LISTADO DE PREGUNTAS</f:facet>
 								<p:column selectionMode="multiple"
 									style="width:16px;text-align:center" />
 								<p:column headerText="Código" style="width:50px">
 									<h:outputText value="#{pregunta.codigoPregunta}" />
 								</p:column>
-								<p:column headerText="Título Pregunta" style="width:300px">
+								<p:column headerText="Título Pregunta" style="width:600px">
 									<h:outputText value="#{pregunta.tituloPregunta}" />
 								</p:column>
 								<p:column headerText="Portafolio" style="width:200px">

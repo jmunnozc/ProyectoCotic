@@ -189,7 +189,6 @@ public class UsuarioBean implements Serializable {
 
 	public void btnGrabarUsuario() {
 		UsuarioDao usuarioDao = new UsuarioDaoImpl();
-		Institucion institucion = new Institucion();
 		String msg;
 
 		String nuevoUsuario = this.selectedUsuario.getNombres().substring(0, 1)
@@ -223,7 +222,6 @@ public class UsuarioBean implements Serializable {
 
 	public void btnModificarUsuario() {
 		UsuarioDao usuarioDao = new UsuarioDaoImpl();
-		Institucion institucion = new Institucion();
 		String msg;
 		this.selectedUsuario.setNombres(this.selectedUsuario.getNombres().toUpperCase());
 		this.selectedUsuario.setApellidoPaterno(this.selectedUsuario.getApellidoPaterno().toUpperCase());
@@ -253,7 +251,6 @@ public class UsuarioBean implements Serializable {
 
 	public void btnEliminarUsuario() {
 		UsuarioDao usuarioDao = new UsuarioDaoImpl();
-		Institucion institucion = new Institucion();
 		String msg;
 		
 		/*institucion.setCodigoInstitucion(1);

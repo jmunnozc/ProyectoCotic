@@ -1,7 +1,6 @@
 package pe.com.cotic.test.bean;
 
 import java.io.Serializable;
-import java.nio.charset.CodingErrorAction;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,12 +10,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import pe.com.cotic.test.dao.PortafolioDao;
 import pe.com.cotic.test.dao.PreguntaDao;
-import pe.com.cotic.test.daoImpl.PortafolioDaoImpl;
 import pe.com.cotic.test.daoImpl.PreguntaDaoImpl;
-import pe.com.cotic.test.modelo.Alternativa;
-import pe.com.cotic.test.modelo.Nivel;
 import pe.com.cotic.test.modelo.Portafolio;
 import pe.com.cotic.test.modelo.Pregunta;
 
@@ -185,6 +180,27 @@ public class PreguntaBean implements Serializable {
 		}
 	}
 	
+	public List<Pregunta> btnBuscarPregunta(Portafolio portafolio) {
+		PreguntaDao preguntaDao = new PreguntaDaoImpl();
+		String msg;
+		
+		this.listarPreguntas = preguntaDao.buscarPreguntasPortafolio(portafolio);
+		
+		if (this.listarPreguntas != null) {
+			msg = "Se muestra correctamente el listado...";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		} else {
+			msg = "Error al mostrar el listado...";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+
+		return listarPreguntas;
+		
+	}
+	
+	@SuppressWarnings("unused")
 	private boolean isPostBack() {
 		boolean rpta; 
 		return FacesContext.getCurrentInstance().isPostback();
