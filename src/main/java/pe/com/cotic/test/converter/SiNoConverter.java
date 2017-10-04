@@ -20,11 +20,11 @@ public class SiNoConverter implements Converter {
 		
 		if (value.toString() != null) {
 			estado = value.toString();
-			switch (estado) {
-			case "1":
+			switch (Integer.parseInt(estado)) {
+			case 1:
 				estado = "SI";
 				break;
-			case "0":
+			case 0:
 				estado = "NO";
 				break;
 			default:

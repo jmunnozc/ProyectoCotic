@@ -21,16 +21,8 @@ public class SexoConverter implements Converter {
 		
 		if (value != null) {
 			sexo = (String) value;
-			switch (sexo) {
-			case "M":
-				sexo = "MASCULINO";
-				break;
-			case "F":
-				sexo = "FEMENINO";
-				break;
-			default:
-				break;
-			}
+			if (sexo.equals("M")) sexo = "MASCULINO";
+			if (sexo.equals("F")) sexo = "FEMENINO";
 		}
 		return sexo;
 	}
