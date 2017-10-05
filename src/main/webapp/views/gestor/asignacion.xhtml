@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/cssLayout.css" media="screen" />
+	<link rel="stylesheet" type="text/css"
+		href="../../resources/css/login.css" media="screen" />
+	
+	<title>Enlace de las Sesiones</title>
+</h:head>
+
+<body>
+
+	<ui:composition template="./../../template/plantilla.xhtml">
+		<ui:define name="top">
+			<ui:include src="/views/cabecera.xhtml" />
+		</ui:define>
+	
+		<ui:define name="content">
+			<div style="height: 15px"></div>
+			<div style="height: 800px">
+				<p:growl id="msgs" showDetail="true" />
+				<h:form>
+					<p:commandButton id="btnPortafolioCreateEnlace" update=":formCreateEnlace"
+						oncomplete="PF('dialogPortafolioCreateEnlace').show()" icon="icon-new"
+						title="Crear" value="Crear Enlace de Portafolio" />
+				</h:form>
+				<div style="height: 5px" />
+				<h:form id="formDataTable">
+					<p:dataTable id="tablaMostrarEnlacePortafolio" var="usuarioportafolio" emptyMessage="No hay datos de enlace por portafolios..." 
+						value="#{usuarioPortafolioBean.listarUsuariosPortafolios}" rows="20" paginator="true" draggableColumns="true"
+						 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="10,15,20">
+						<f:facet name="header">
+					        LISTADO DE ENLACES PARA PORTAFOLIOS
+					        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+					        <p:columnToggler datasource="tablaMostrarEnlacePortafolio" trigger="toggler" />			
+					    </f:facet>		    
+						<p:column headerText="Nivel" style="width:100px;text-align: center">
+							<h:outputText value="#{usuarioportafolio.nivel.descripcionNivel}" />
+						</p:column>
+						<p:column headerText="Título Portafolio" style="width:200px;text-align: center">
+							<h:outputText value="#{usuarioportafolio.portafolioByCodigoPortafolio.tituloPortafolio}" />
+						</p:column>
+						<p:column headerText="Usuario" style="width:600px;text-align: center">
+							<h:outputText value="#{usuarioportafolio.usuario.nombres}, #{usuarioportafolio.usuario.apellidoPaterno} #{usuarioportafolio.usuario.apellidoMaterno}" />
+						</p:column>
+						<p:column headerText="Ruta Portafolio Enlazado" style="width:200px;text-align: center">
+							<h:outputText value="#{usuarioportafolio.portafolioByCodigoPortafolioEnlace.tituloPortafolio}">
+							</h:outputText>
+						</p:column>						
+					</p:dataTable>
+				</h:form>				
+
+
+				<h:form id="formCreateEnlace">
+					<p:dialog header="Crear Enlace de Portafolio" widgetVar="dialogPortafolioCreateEnlace"
+						modal="true" showEffect="fade" hideEffect="explode"
+						resizable="false" id="dlgPortafolioCreateEnlace">
+						<p:outputPanel id="PortafolioDetailCreateEnlace" style="text-align:center;">
+							<p:panelGrid id="display" columns="2" cellpadding="4"
+								columnClasses="label,value">
+								<h:outputText value="Nivel:" />
+								<p:selectOneMenu id="nivel" value="#{usuarioPortafolioBean.selectedUsuarioPortafolio.nivel.codigoNivel}">
+									<f:selectItem itemLabel="-- Seleccione --" />
+									<f:selectItems value="#{portafolioBean.listarNivel}" />
+								</p:selectOneMenu>
+								<h:outputText value="Módulo:" />
+								<p:selectOneMenu id="modulo" value="#{usuarioPortafolioBean.selectedUsuarioPortafolio.portafolioByCodigoPortafolio.codigoPortafolio}">
+									<f:selectItem itemLabel="-- Seleccione --" />
+									<f:selectItems value="#{usuarioPortafolioBean.listarPortafoliosLibres}" />
+								</p:selectOneMenu>
+								<h:outputText value="Tema:" />
+								<p:selectOneMenu id="tema" value="#{usuarioPortafolioBean.selectedUsuarioPortafolio.portafolioByCodigoPortafolioEnlace.codigoPortafolio}">
+									<f:selectItem itemLabel="-- Seleccione --" />
+									<f:selectItems value="#{usuarioPortafolioBean.listarPortafoliosLibres}" />
+								</p:selectOneMenu>
+								<f:facet name="footer">
+									<p:commandButton id="btnCreateEnlaceAceptar"
+										update=":formDataTable :msgs"
+										oncomplete="PF('dialogPortafolioCreateEnlace').hide()"
+										actionListener="#{usuarioPortafolioBean.btnGrabarUsuarioPortafolio()}"
+										icon="icon-save" title="Guardar" value="Guardar" />
+									<p:commandButton id="btnCreateEnlaceCancelar"
+										oncomplete="PF('dialogPortafolioCreateEnlace').hide()"
+										icon="icon-cancel" title="Cancelar" value="Cancelar" />
+								</f:facet>	
+							</p:panelGrid>
+						</p:outputPanel>
+					</p:dialog>
+				</h:form>
+
+
+			</div>
+		</ui:define>
+		
+		<ui:define name="bottom">
+			<ui:include src="/views/pie.xhtml" />
+		</ui:define>		
+	</ui:composition>
+
+<h:outputScript library="js" name="calendar_es.js" />
+</body>
+
+</html>

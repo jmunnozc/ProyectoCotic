@@ -53,6 +53,7 @@ public class GestionBean implements Serializable {
 		return listarPortafolio;
 		
 	}
+	
 	public void setListarPortafolio(List<SelectItem> listarPortafolio) {
 		this.listarPortafolio = listarPortafolio;
 	}

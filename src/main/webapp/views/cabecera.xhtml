@@ -49,7 +49,10 @@
 			</p:submenu>
 			<p:submenu label="Gestión" icon="ui-icon-locked">
 				<p:menuitem value="Registrar Sesión" url="#{appBean.basePath}gestor/registro.jsf" icon="ui-icon-person" />
-				<p:menuitem value="Asignar Nivel" url="#{appBean.basePath}gestor/asignacion.jsf" icon="ui-icon-person" />
+				<p:menuitem value="Asignar Nivel" url="#{appBean.basePath}gestor/asignacion.jsf" icon="ui-icon-person" />				
+			</p:submenu>
+			<p:submenu label="Reporte" icon="ui-icon-locked">
+				<p:menuitem value="Respuestas" url="#{appBean.basePath}reporte/respuestas.jsf" icon="ui-icon-person" />
 			</p:submenu>
 			<p:menuitem value="Salir" actionListener="#{usuarioBean.logout}"
 				icon="ui-icon-close" oncomplete="manejarLogin(xhr, status, args)" />

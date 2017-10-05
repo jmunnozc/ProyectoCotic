@@ -103,7 +103,7 @@ public class PortafolioDaoImpl implements PortafolioDao {
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
 		//String hql = "FROM Niveles WHERE codigoNivel = '" + portafolio.getNivel().getCodigoNivel() + "'";
-		String hql = "FROM Nivel ";
+		String hql = "FROM Nivel ORDER BY 1";
 
 		try {
 			listarNiveles = session.createQuery(hql).list();
@@ -127,7 +127,8 @@ public class PortafolioDaoImpl implements PortafolioDao {
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
 		
-		String hql = "FROM Portafolio WHERE codigoNivel = " + nivel;		
+		//String hql = "FROM Portafolio WHERE codigoNivel = " + nivel;		
+		String hql = "FROM Portafolio ";
 		
 		try {
 			listarPortafolios = session.createQuery(hql).list();

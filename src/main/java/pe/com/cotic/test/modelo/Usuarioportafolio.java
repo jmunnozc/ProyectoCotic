@@ -14,6 +14,9 @@ public class Usuarioportafolio implements java.io.Serializable {
 	private Portafolio portafolioByCodigoPortafolioEnlace;
 
 	public Usuarioportafolio() {
+		nivel = new Nivel();
+		portafolioByCodigoPortafolio = new Portafolio();
+		portafolioByCodigoPortafolioEnlace = new Portafolio();
 	}
 
 	public Usuarioportafolio(Nivel nivel,
