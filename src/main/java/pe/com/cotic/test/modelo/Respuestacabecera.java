@@ -1,6 +1,6 @@
 package pe.com.cotic.test.modelo;
 
-// Generated 28/09/2017 10:33:35 AM by Hibernate Tools 3.4.0.CR1
+// Generated 06/10/2017 10:40:55 AM by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -16,6 +16,7 @@ public class Respuestacabecera implements java.io.Serializable {
 	private Portafolio portafolio;
 	private String fechaRespuesta;
 	private Date fechaSincronizacion;
+	private String codigoDispositivo;
 	private Set respuestadetalles = new HashSet(0);
 
 	public Respuestacabecera() {
@@ -31,11 +32,12 @@ public class Respuestacabecera implements java.io.Serializable {
 
 	public Respuestacabecera(Usuario usuario, Portafolio portafolio,
 			String fechaRespuesta, Date fechaSincronizacion,
-			Set respuestadetalles) {
+			String codigoDispositivo, Set respuestadetalles) {
 		this.usuario = usuario;
 		this.portafolio = portafolio;
 		this.fechaRespuesta = fechaRespuesta;
 		this.fechaSincronizacion = fechaSincronizacion;
+		this.codigoDispositivo = codigoDispositivo;
 		this.respuestadetalles = respuestadetalles;
 	}
 
@@ -77,6 +79,14 @@ public class Respuestacabecera implements java.io.Serializable {
 
 	public void setFechaSincronizacion(Date fechaSincronizacion) {
 		this.fechaSincronizacion = fechaSincronizacion;
+	}
+
+	public String getCodigoDispositivo() {
+		return this.codigoDispositivo;
+	}
+
+	public void setCodigoDispositivo(String codigoDispositivo) {
+		this.codigoDispositivo = codigoDispositivo;
 	}
 
 	public Set getRespuestadetalles() {

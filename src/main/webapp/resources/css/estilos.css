@@ -24,3 +24,8 @@
 .ui-state-default .icon-login {
 	background-image url(../images/icons/people_16x16.ico);
 }
+
+.medium-pie {
+	width: 300px;
+	height: 250px;
+}

@@ -20,7 +20,7 @@
 				<h:form id="formDataTable">
 
 					<p:dataTable id="tablaMostrarRespuesta" var="respuesta" emptyMessage="No hay datos de respuestas..." 
-						value="#{portafolioBean.listarPortafoliosxNivel}" rows="20" paginator="true" draggableColumns="true"
+						value="#{respuestaCabeceraBean.listarRespuestasCabecera}" rows="20" paginator="true" draggableColumns="true"
 						 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="15,20,25">
 						<f:facet name="header">
@@ -32,37 +32,40 @@
 				            <p:rowToggler />
 				        </p:column>					    
 						<p:column headerText="Código" style="width:20px;text-align: center">
-							<h:outputText value="#{portafolio.codigoPortafolio}" />
+							<h:outputText value="#{respuesta.codigoRespuestaCabecera}" />
 						</p:column>
-						<p:column headerText="Título Portafolio" style="width:200px;text-align: center">
-							<h:outputText value="#{portafolio.tituloPortafolio}" />
+						<p:column headerText="Fecha Respuesta" style="width:200px;text-align: center">
+							<h:outputText value="#{respuesta.fechaRespuesta}" />
 						</p:column>
-						<p:column headerText="Descripción Portafolio" style="width:600px;text-align: center">
-							<h:outputText value="#{portafolio.descripcionPortafolio}" />
+						<p:column headerText="Titulo Portafolio" style="width:600px;text-align: center">
+							<h:outputText value="#{respuesta.portafolio.tituloPortafolio}" />
 						</p:column>
 						<p:column headerText="Preguntas" style="width:50px;text-align: center">
-							<h:outputText value="#{portafolio.preguntas.size()}">
+							<h:outputText value="#{respuesta.usuario.usuario}">
 							</h:outputText>
 						</p:column>						
 
 						<p:rowExpansion>
 			                <f:facet name="header">DETALLE DE LAS RESPUESTAS</f:facet>
-		                	<p:growl id="msgsPregunta" showDetail="true" />
-		                	<p:panelGrid id="display" columns="3" cellpadding="4" columnClasses="label,value">
-		                	<!-- 
-								<p:dataTable id="tablaMostrarDetalle" var="pregunta" value="{preguntaBean.btnBuscarPregunta(portafolio)}" style="width:700px" emptyMessage="No hay datos de preguntas...">
-									<p:column headerText="Título">
-										<h:outputText value="{pregunta.tituloPregunta}" />
+		                	<p:growl id="msgsRespuesta" showDetail="true" />
+		                	<p:panelGrid id="display" columns="4" cellpadding="2" columnClasses="label,value" >
+ 
+								<p:dataTable id="tablaMostrarDetalle" var="respuestadetalle" value="#{respuestaDetalleBean.btnBuscarRespuestaDetalle(respuesta)}" style="width:900px" emptyMessage="No hay datos del detalle de respuestas...">
+									<p:column headerText="Título Pregunta">
+										<h:outputText value="#{respuestadetalle.pregunta.tituloPregunta}" />
 									</p:column>
-									<p:column headerText="Estado" style="width:50px;text-align: center">
-										<h:outputText value="{pregunta.estado}" converter="estadoConverter"/>
+									<p:column headerText="Respuesta Contestada" style="width:300px;text-align: center">
+										<h:outputText value="#{respuestadetalle.alternativa.tituloAlternativa}" />
+									</p:column>
+									<p:column headerText="¿Correcta?" style="width:80px;text-align: center">
+										<h:outputText value="#{respuestadetalle.flagAlternativaCorrecta}"  converter="sinoConverter"/>
 									</p:column>
 								</p:dataTable>
-							 -->
-								<!-- 
-								<p:commandButton value="Registrar Sesión" id="ajax" update="msgs" actionListener="{usuarioPortafolioBean.btnGrabarUsuarioPortafolio(portafolio)}" styleClass="ui-priority-primary" />
-								 -->
+								<h:panelGroup>
+									<p:chart type="bar" model="#{respuestaDetalleBean.listarResumenRespuesta}" styleClass="optional-css-name" style="height:300px"/>
+								</h:panelGroup>								
 							</p:panelGrid>
+
 				        </p:rowExpansion>
 						
 					</p:dataTable>

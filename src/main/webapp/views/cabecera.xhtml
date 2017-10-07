@@ -6,7 +6,8 @@
       xmlns:p="http://primefaces.org/ui">
 	
 <h:body>
-<h:form rendered="#{usuarioBean.verificarSesion()}">
+<!-- h:form rendered="{usuarioBean.verificarSesion()}" -->
+<h:form >
 	<div id="blockCabecera">
 		<div style="padding: 10px;" align="center">
 			<div align="right">
@@ -22,7 +23,7 @@
 	<div id="menuBar">
 		<p:growl id="messages" />
 		<p:menubar>
-			<p:menuitem value="Inicio" url="#{appBean.basePath}paginaCliente.jsf"
+			<p:menuitem value="Inicio" url="#{appBean.basePath}paginaPrincipal.jsf"
 				icon="ui-icon-home" />
 			<p:submenu label="Mantenimiento" icon="ui-icon-document">
 				<p:menuitem value="Institución"
@@ -52,7 +53,7 @@
 				<p:menuitem value="Asignar Nivel" url="#{appBean.basePath}gestor/asignacion.jsf" icon="ui-icon-person" />				
 			</p:submenu>
 			<p:submenu label="Reporte" icon="ui-icon-locked">
-				<p:menuitem value="Respuestas" url="#{appBean.basePath}reporte/respuestas.jsf" icon="ui-icon-person" />
+				<p:menuitem value="Respuestas" url="#{appBean.basePath}reporte/respuesta.jsf" icon="ui-icon-person" />
 			</p:submenu>
 			<p:menuitem value="Salir" actionListener="#{usuarioBean.logout}"
 				icon="ui-icon-close" oncomplete="manejarLogin(xhr, status, args)" />
