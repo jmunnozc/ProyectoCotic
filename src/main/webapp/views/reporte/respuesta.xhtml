@@ -9,7 +9,9 @@
 <body> 
 <ui:composition template="./../../template/plantilla.xhtml">
 		<ui:define name="top">
-			<ui:include src="/views/cabecera.xhtml" />
+			<h:form rendered="#{usuarioBean.verificarSesion()}">
+				<ui:include src="/views/cabecera.xhtml" />
+			</h:form>
 		</ui:define>
 	
 		<ui:define name="content">
@@ -48,24 +50,23 @@
 						<p:rowExpansion>
 			                <f:facet name="header">DETALLE DE LAS RESPUESTAS</f:facet>
 		                	<p:growl id="msgsRespuesta" showDetail="true" />
-		                	<p:panelGrid id="display" columns="4" cellpadding="2" columnClasses="label,value" >
+		                	<p:panelGrid id="display" columns="2" cellpadding="2" columnClasses="label,value" >
  
-								<p:dataTable id="tablaMostrarDetalle" var="respuestadetalle" value="#{respuestaDetalleBean.btnBuscarRespuestaDetalle(respuesta)}" style="width:900px" emptyMessage="No hay datos del detalle de respuestas...">
+								<p:dataTable id="tablaMostrarDetalle" var="respuestadetalle" value="#{respuestaDetalleBean.btnBuscarRespuestaDetalle(respuesta)}" style="width:600px" emptyMessage="No hay datos del detalle de respuestas...">
 									<p:column headerText="Título Pregunta">
 										<h:outputText value="#{respuestadetalle.pregunta.tituloPregunta}" />
 									</p:column>
-									<p:column headerText="Respuesta Contestada" style="width:300px;text-align: center">
+									<p:column headerText="Respuesta Contestada" style="width:200px;text-align: center">
 										<h:outputText value="#{respuestadetalle.alternativa.tituloAlternativa}" />
 									</p:column>
 									<p:column headerText="¿Correcta?" style="width:80px;text-align: center">
 										<h:outputText value="#{respuestadetalle.flagAlternativaCorrecta}"  converter="sinoConverter"/>
 									</p:column>
 								</p:dataTable>
-								<h:panelGroup>
-									<p:chart type="bar" model="#{respuestaDetalleBean.listarResumenRespuesta}" styleClass="optional-css-name" style="height:300px"/>
-								</h:panelGroup>								
+								<p:fieldset legend="Respuestas Realizadas">
+									<p:chart type="pie" model="#{respuestaDetalleBean.model}" />
+								</p:fieldset>
 							</p:panelGrid>
-
 				        </p:rowExpansion>
 						
 					</p:dataTable>
@@ -75,7 +76,9 @@
 		</ui:define>
 		
 		<ui:define name="bottom">
-			<ui:include src="/views/pie.xhtml" />
+			<h:form rendered="#{usuarioBean.verificarSesion()}">
+				<ui:include src="/views/pie.xhtml" />
+			</h:form>
 		</ui:define>		
 	</ui:composition>
 </body> 

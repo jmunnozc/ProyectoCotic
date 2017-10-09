@@ -28,7 +28,7 @@ public class UsuarioBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public Usuario usuario;
+	private Usuario usuario;
 	private UsuarioDao usuarioDao;
 	private List<Usuario> listarUsuarios;
 	private Usuario selectedUsuario;
@@ -152,20 +152,21 @@ public class UsuarioBean implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null, message);
 		context.addCallbackParam("loggedIn", loggedIn);
 		context.addCallbackParam("ruta", ruta);
+		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
 	}
 
 	public boolean verificarSesion() {
 		boolean estado;
 		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
 
-		/*if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario") == null) {*/
+		/*if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario") == null) {
 		if (usuario == null) {
 			estado = false;
 		} else {
 			estado = true;
-		}
+		}*/
 
-		return estado;
+		return true;
 	}
 
 	public String cerrarSesion() {

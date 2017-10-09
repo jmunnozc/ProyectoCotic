@@ -15,9 +15,10 @@
 	<ui:composition template="./../../template/plantilla.xhtml">
 
 		<ui:define name="top">
-			<ui:include src="/views/cabecera.xhtml" />
+			<h:form rendered="#{usuarioBean.verificarSesion()}">
+				<ui:include src="/views/cabecera.xhtml" />
+			</h:form>
 		</ui:define>
-
 
 		<ui:define name="content">
 			<div style="height: 15px"></div>
@@ -177,7 +178,9 @@
 
 
 		<ui:define name="bottom">
-			<ui:include src="/views/pie.xhtml" />
+			<h:form rendered="#{usuarioBean.verificarSesion()}">
+				<ui:include src="/views/pie.xhtml" />
+			</h:form>
 		</ui:define>
 
 	</ui:composition>

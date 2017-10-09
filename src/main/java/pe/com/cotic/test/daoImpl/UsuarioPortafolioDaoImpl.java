@@ -53,4 +53,21 @@ public class UsuarioPortafolioDaoImpl implements UsuarioPortafolioDao {
 		return flag;
 	}
 
+	@Override
+	public boolean eliminarUsuarioPortafolio(Usuarioportafolio usuarioportafolio) {
+		boolean flag = false;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.delete(usuarioportafolio);
+			transaction.commit();
+			flag = true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			flag = false;
+			transaction.rollback();
+		}
+		return flag;
+	}
+
 }

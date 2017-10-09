@@ -7,23 +7,20 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
+import javax.inject.Named;
 
-import org.primefaces.model.chart.Axis;
-import org.primefaces.model.chart.AxisType;
-import org.primefaces.model.chart.BarChartModel;
-import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.PieChartModel;
 
 import pe.com.cotic.test.dao.RespuestaDetalleDao;
 import pe.com.cotic.test.dao.ResumenRespuestaDao;
 import pe.com.cotic.test.daoImpl.RespuestaDetalleDaoImpl;
 import pe.com.cotic.test.daoImpl.ResumenRespuestaDaoImpl;
-import pe.com.cotic.test.modelo.Portafolio;
 import pe.com.cotic.test.modelo.Respuestacabecera;
 import pe.com.cotic.test.modelo.Respuestadetalle;
 import pe.com.cotic.test.modelo.Resumenrespuesta;
 
 @ManagedBean
+//@Named("respuestadetalleBean")
 @ViewScoped
 public class RespuestaDetalleBean implements Serializable {
 
@@ -33,71 +30,51 @@ public class RespuestaDetalleBean implements Serializable {
 	private List<Respuestadetalle> listarRespuestasDetalle;
 	private Respuestadetalle selecRespuestadetalle;
 	
-	private List<Resumenrespuesta> listarResumenRespuesta = null;
-	private ChartSeries resumenRespuestaData;
-	private BarChartModel barModel;
+	private PieChartModel model;
 	
 	public RespuestaDetalleBean() {
 		if (this.respuestadetalle == null) {
 			this.respuestadetalle = new Respuestadetalle();
 		}
 	}	
+
+	public void listar(Respuestacabecera respuestacabecera) {
+		List<Resumenrespuesta> lista;		
+		try {
+			ResumenRespuestaDao resumenRespuestaDao = new ResumenRespuestaDaoImpl();
+			lista = resumenRespuestaDao.listarResumenRespuesta(respuestacabecera);
+			graficar(lista);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			
+		}		
+	}
 	
-	public List<Resumenrespuesta> getListarResumenRespuesta() {
-		ResumenRespuestaDao resumenrespuestaDao = new ResumenRespuestaDaoImpl();
-		this.listarResumenRespuesta = resumenrespuestaDao.listarResumenRespuesta();
-		createBarModel();
-		return listarResumenRespuesta;
+	private void graficar(List<Resumenrespuesta> lista) {
+		model = new PieChartModel();		
+		for (Resumenrespuesta rr : lista) {
+			model.set(rr.getRespuestaCorrecta().toString(), Integer.parseInt(rr.getTotal()));
+		}
+		/*model.setTitle("Preguntas");
+		model.setLegendPosition("e");*/
+		model.setFill(false);
+		model.setShowDataLabels(true);
+		model.setDiameter(150);
+		
 	}
+	
+	/*private void graficar() {
+		model = new PieChartModel();
+		model.set("Correctas", 2);
+		model.set("Incorrectas", 4);
+		model.setTitle("Respuestas Realizadas");
+		model.setLegendPosition("n");
+	}*/
+	
+	public PieChartModel getModel() {
 
-	public BarChartModel getBarModel() {
-		return barModel;
-	}
-
-	private BarChartModel initBarModel() {
-		BarChartModel model = new BarChartModel();
-		
-		resumenRespuestaData = new ChartSeries();
-		resumenRespuestaData.setLabel("Respuestas");
-		/*for (int i = 0; i < listarResumenRespuesta.size(); i++) {
-			System.out.println(String.valueOf(listarResumenRespuesta.get(i)));
-			Resumenrespuesta rr = listarResumenRespuesta.get(i);
-			resumenRespuestaData.set(rr.getFlagAlternativaCorrecta(), rr.getTotal());
-		}*/
-		
-		for (int i = 0; i < listarResumenRespuesta.size(); i++) {
-	        System.out.println( String.valueOf(listarResumenRespuesta.get(i)) ); //Imprime tipo
-	        Resumenrespuesta tu = listarResumenRespuesta.get(i);
-	        System.out.println(tu.getCodigoPortafolio().toString());
-	        System.out.println(tu.getCodigoUsuario().toString());
-	        System.out.println(tu.getFlagAlternativaCorrecta().toString());
-	        System.out.println(tu.getTotal().toString());
-	    }
-		
-/*		for (Resumenrespuesta cData : listarResumenRespuesta) {
-			resumenRespuestaData.set(cData.getFlagAlternativaCorrecta().toString(), cData.getTotal());
-		}*/
-		
-		
-		
-		model.addSeries(resumenRespuestaData);
-		
 		return model;
-	}
-	
-	private void createBarModel() {
-		barModel = initBarModel();
-		
-		barModel.setTitle("Respuestas Contestadas");
-		barModel.setLegendPosition("ne");
-		
-		Axis xAxis = barModel.getAxis(AxisType.X);
-		xAxis.setLabel("Respuestas");
-		
-		Axis yAxis = barModel.getAxis(AxisType.Y);
-		yAxis.setLabel("Total");
-		yAxis.setMin(0);
-		yAxis.setMax(75);
 	}
 	
 	public Respuestadetalle getRespuestadetalle() {
@@ -139,6 +116,7 @@ public class RespuestaDetalleBean implements Serializable {
 			msg = "Se muestra correctamente el listado...";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
 			FacesContext.getCurrentInstance().addMessage(null, message);
+			listar(respuestacabecera);
 		} else {
 			msg = "Error al mostrar el listado...";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);

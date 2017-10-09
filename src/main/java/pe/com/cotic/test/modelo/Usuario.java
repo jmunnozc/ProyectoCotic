@@ -35,7 +35,7 @@ public class Usuario implements java.io.Serializable {
 	private Set respuestacabeceras = new HashSet(0);
 
 	public Usuario() {
-		institucion = new Institucion();
+		institucion = new Institucion(); 
 	}
 
 	public Usuario(Institucion institucion, String clave, String dni,

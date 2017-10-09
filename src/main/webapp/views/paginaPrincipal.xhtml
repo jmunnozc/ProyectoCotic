@@ -7,17 +7,15 @@
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<link rel="stylesheet" type="text/css"
-		href="../resources/css/cssLayout.css" media="screen" />
-	<link rel="stylesheet" type="text/css"
-		href="../resources/css/login.css" media="screen" />
 	<title>Pagina Principal</title>
 </h:head>
 
 <body>
 	<ui:composition template="./../template/plantilla.xhtml">
 		<ui:define name="top">
-			<ui:include src="/views/cabecera.xhtml" />
+			<h:form rendered="#{usuarioBean.verificarSesion()}">
+				<ui:include src="/views/cabecera.xhtml" />
+			</h:form>
 		</ui:define>
 
 		<ui:define name="content">
@@ -29,14 +27,22 @@
 						<p:ajax event="reorder"
 							listener="#{dashboardBean.handleReorder()}" update="msgs" />
 
-						<p:panel id="sports" header="Cantidad de Portafolios">
-							<h:outputText value="Gráfico Pie" />
+						<p:panel id="sports" header="Rendimientos" style="background:#F5A9BC;width:900px;height:400px">
+							<h:outputText value="Últimos rendimientos (rojo)" />							
 						</p:panel>
 
-						<p:panel id="finance" header="Preguntas Correctas vs Incorrectas">
-							<h:outputText value="Gráfico de Barras" />
+						<p:panel id="finance" header="Recordaciones" style="background:#A9D0F5;width:250px;height:100px"> 
+							<h:outputText value="Recordaciones respondidas (celeste)"/>
 						</p:panel>
 
+						<p:panel id="lifestyle" header="Posición" style="background:#BCF5A9;width:250px;height:100px">
+							<h:outputText value="Posición en el Ranking (verde)"/>
+						</p:panel>
+
+						<p:panel id="weather" header="Prácticas" style="background:#F2F5A9;width:250px;height:100px">
+							<h:outputText value="Prácticas Respondidas (amarillo)" />
+						</p:panel>
+						
 					</p:dashboard>
 
 					<div style="clear: both" />
@@ -45,7 +51,9 @@
 		</ui:define>
 		
 		<ui:define name="bottom">
-			<ui:include src="/views/pie.xhtml" />
+			<h:form rendered="#{usuarioBean.verificarSesion()}">
+				<ui:include src="/views/pie.xhtml" />
+			</h:form>
 		</ui:define>
 	</ui:composition>
 

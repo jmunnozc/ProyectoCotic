@@ -22,16 +22,17 @@ public class UsuarioDaoImpl implements UsuarioDao {
 
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			if (usuario.getUsuario() == null)
-				usuario.setUsuario("");
-			if (usuario.getClave() == null)
-				usuario.setClave("");
+			if (usuario.getUsuario() == null) usuario.setUsuario("");
+			if (usuario.getClave() == null) usuario.setClave("");
 
 			// hibernate query language
-			String hql = "FROM Usuario WHERE usuario = '"
+			/*String hql = "FROM Usuario WHERE usuario = '"
 					+ usuario.getUsuario().toUpperCase() + "' and clave = '"
-					+ usuario.getClave().toUpperCase() + "'";
+					+ usuario.getClave().toUpperCase() + "'";*/
+			String hql = "FROM Usuario WHERE usuario=:user AND clave=:pass";			
 			Query query = session.createQuery(hql);
+			query.setString("user", usuario.getUsuario().toUpperCase());
+			query.setString("pass", usuario.getClave().toUpperCase());
 
 			if (!query.list().isEmpty()) {
 				us = (Usuario) query.list().get(0);

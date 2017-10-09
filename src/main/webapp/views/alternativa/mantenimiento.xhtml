@@ -18,7 +18,9 @@
 
 	<ui:composition template="./../../template/plantilla.xhtml">
 		<ui:define name="top">
-			<ui:include src="/views/cabecera.xhtml" />
+			<h:form rendered="#{usuarioBean.verificarSesion()}">
+				<ui:include src="/views/cabecera.xhtml" />
+			</h:form>
 		</ui:define>
 	
 		<ui:define name="content">
@@ -38,19 +40,19 @@
 						 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15">
 						<f:facet name="header">LISTADO DE ALTERNATIVAS</f:facet>
-						<p:column headerText="Código" style="width:60px;text-align: center">
+						<p:column headerText="Código" style="width:60px;text-align:center">
 							<h:outputText value="#{alternativa.codigoAlternativa}" />
 						</p:column>
-						<p:column headerText="Título Alternativa" style="width:600px;text-align: center">
+						<p:column headerText="Título Alternativa" style="width:300px;text-align: center">
 							<h:outputText value="#{alternativa.tituloAlternativa}" />
 						</p:column>
-						<p:column headerText="Respuesta Correcta" style="text-align: center">
+						<p:column headerText="Respuesta Correcta" style="width:50px;text-align:center">
 							<h:outputText value="#{alternativa.flagRespuestaCorrectaAlternativa}" converter="sinoConverter"/>
 						</p:column>
-						<p:column headerText="Pregunta" style="text-align: center">
+						<p:column headerText="Pregunta" style="width:400px;text-align:center" >
 							<h:outputText value="#{alternativa.pregunta.tituloPregunta}" />
 						</p:column>
-						<p:column headerText="Estado" style="width:100px;">
+						<p:column headerText="Estado" style="width:50px;">
 							<h:outputText value="#{alternativa.estado}" converter="estadoConverter"/>
 						</p:column>
 						<p:column headerText="Opciones"
@@ -180,7 +182,9 @@
 		
 		
 		<ui:define name="bottom">
-			<ui:include src="/views/pie.xhtml" />
+			<h:form rendered="#{usuarioBean.verificarSesion()}">
+				<ui:include src="/views/pie.xhtml" />
+			</h:form>
 		</ui:define>		
 	</ui:composition>
 

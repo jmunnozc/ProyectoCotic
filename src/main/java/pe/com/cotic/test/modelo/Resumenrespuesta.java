@@ -1,49 +1,30 @@
 package pe.com.cotic.test.modelo;
 
-public class Resumenrespuesta {
+public class Resumenrespuesta implements java.io.Serializable {
 	
-	private Integer codigoPortafolio;
-	private Integer codigoUsuario;
-	private Integer flagAlternativaCorrecta;
-	private Integer total;
+	private static final long serialVersionUID = 1L;
+	private String respuestaCorrecta;
+	private String total;
 	
-	public Resumenrespuesta(Integer codigoPortafolio, Integer codigoUsuario, Integer flagAlternativaCorrecta, Integer total) {
-		this.codigoPortafolio = codigoPortafolio;
-		this.codigoUsuario = codigoUsuario;
-		this.flagAlternativaCorrecta = flagAlternativaCorrecta;
-		this.total = total;
+	public Resumenrespuesta() {
+		
 	}
 
-	public Integer getCodigoPortafolio() {
-		return codigoPortafolio;
+	public String getRespuestaCorrecta() {
+		return respuestaCorrecta;
 	}
 
-	public void setCodigoPortafolio(Integer codigoPortafolio) {
-		this.codigoPortafolio = codigoPortafolio;
+	public void setRespuestaCorrecta(String respuestaCorrecta) {
+		this.respuestaCorrecta = respuestaCorrecta;
 	}
 
-	public Integer getCodigoUsuario() {
-		return codigoUsuario;
-	}
-
-	public void setCodigoUsuario(Integer codigoUsuario) {
-		this.codigoUsuario = codigoUsuario;
-	}
-
-	public Integer getFlagAlternativaCorrecta() {
-		return flagAlternativaCorrecta;
-	}
-
-	public void setFlagAlternativaCorrecta(Integer flagAlternativaCorrecta) {
-		this.flagAlternativaCorrecta = flagAlternativaCorrecta;
-	}
-
-	public Integer getTotal() {
+	public String getTotal() {
 		return total;
 	}
 
-	public void setTotal(Integer total) {
+	public void setTotal(String total) {
 		this.total = total;
 	}
 	
+
 }

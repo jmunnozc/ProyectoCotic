@@ -19,7 +19,9 @@
 
 	<ui:composition template="./../../template/plantilla.xhtml">
 		<ui:define name="top">
-			<ui:include src="/views/cabecera.xhtml" />
+			<h:form rendered="#{usuarioBean.verificarSesion()}">
+				<ui:include src="/views/cabecera.xhtml" />
+			</h:form>
 		</ui:define>
 	
 		<ui:define name="content">
@@ -54,7 +56,13 @@
 						<p:column headerText="Ruta Portafolio Enlazado" style="width:200px;text-align: center">
 							<h:outputText value="#{usuarioportafolio.portafolioByCodigoPortafolioEnlace.tituloPortafolio}">
 							</h:outputText>
-						</p:column>						
+						</p:column>	
+						<p:column headerText="Opciones" style="width:80px;text-align: center">
+							<p:commandButton id="btnDelete" update=":formEliminar" oncomplete="PF('dialogUsuarioEliminar').show()"
+								icon="ui-icon-trash" title="Eliminar">
+								<f:setPropertyActionListener value="#{usuarioportafolio}" target="#{usuarioPortafolioBean.selectedUsuarioPortafolio}" />
+							</p:commandButton>
+						</p:column>					
 					</p:dataTable>
 				</h:form>				
 
@@ -81,6 +89,11 @@
 									<f:selectItem itemLabel="-- Seleccione --" />
 									<f:selectItems value="#{usuarioPortafolioBean.listarPortafoliosLibres}" />
 								</p:selectOneMenu>
+								<h:outputText value="Usuario:" />
+								<p:selectOneMenu id="usuario" value="#{usuarioPortafolioBean.selectedUsuarioPortafolio.usuario.codigoUsuario}">
+									<f:selectItem itemLabel="-- Seleccione --" />
+									<f:selectItems value="#{usuarioPortafolioBean.listarUsuario}" />
+								</p:selectOneMenu>
 								<f:facet name="footer">
 									<p:commandButton id="btnCreateEnlaceAceptar"
 										update=":formDataTable :msgs"
@@ -96,12 +109,30 @@
 					</p:dialog>
 				</h:form>
 
+				<h:form id="formEliminar">
+					<h:inputHidden value="#{usuarioPortafolioBean.selectedUsuarioPortafolio.codigoUsuarioPortafolio}"/>
+					<p:confirmDialog id="confirmDialog"
+						message="¿Esta seguro de Eliminar el registro?"
+						header="Proceso de eliminación..." severity="alert"
+						widgetVar="dialogUsuarioEliminar" showEffect="fade"
+						hideEffect="explode">
+						<p:commandButton id="confirm" value="Aceptar" update=":formDataTable :msgs"
+							oncomplete="PF('dialogUsuarioEliminar').hide()"
+							actionListener="#{usuarioPortafolioBean.btnEliminarUsuarioPortafolio()}"
+							icon="icon-acept-green" />
+						<p:commandButton id="decline" value="Cancelar"
+							onclick="PF('dialogUsuarioEliminar').hide()" type="button"
+							icon="icon-cancel" />
+					</p:confirmDialog>
+				</h:form>
 
 			</div>
 		</ui:define>
 		
 		<ui:define name="bottom">
-			<ui:include src="/views/pie.xhtml" />
+			<h:form rendered="#{usuarioBean.verificarSesion()}">
+				<ui:include src="/views/pie.xhtml" />
+			</h:form>
 		</ui:define>		
 	</ui:composition>
 

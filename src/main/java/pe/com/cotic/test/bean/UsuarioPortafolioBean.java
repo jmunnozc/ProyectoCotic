@@ -15,8 +15,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import pe.com.cotic.test.dao.PortafolioDao;
+import pe.com.cotic.test.dao.UsuarioDao;
 import pe.com.cotic.test.dao.UsuarioPortafolioDao;
 import pe.com.cotic.test.daoImpl.PortafolioDaoImpl;
+import pe.com.cotic.test.daoImpl.UsuarioDaoImpl;
 import pe.com.cotic.test.daoImpl.UsuarioPortafolioDaoImpl;
 import pe.com.cotic.test.modelo.Nivel;
 import pe.com.cotic.test.modelo.Portafolio;
@@ -39,6 +41,7 @@ public class UsuarioPortafolioBean implements Serializable {
 	
 	private List<SelectItem> listarPortafoliosLibres;	
 	private List<SelectItem> listarNivel;
+	private List<SelectItem> listarUsuario;
 	
 	public UsuarioPortafolioBean(){
 		usuarioportafolio = new Usuarioportafolio();
@@ -61,6 +64,25 @@ public class UsuarioPortafolioBean implements Serializable {
 	public void setSelectedUsuarioPortafolio(
 			Usuarioportafolio selectedUsuarioPortafolio) {
 		this.selectedUsuarioPortafolio = selectedUsuarioPortafolio;
+	}
+	
+	public List<SelectItem> getListarUsuario() {
+		
+		this.listarUsuario = new ArrayList<SelectItem>();
+		UsuarioDao usuarioDao = new UsuarioDaoImpl();
+		List<Usuario> usu = usuarioDao.ListarUsuarios();
+		listarUsuario.clear();
+		
+		for (Usuario usuario : usu){
+			SelectItem usuarioItem = new SelectItem(usuario.getCodigoUsuario(), usuario.getNombres() + ", " + usuario.getApellidoPaterno() + " " + usuario.getApellidoMaterno());
+			this.listarUsuario.add(usuarioItem);
+		}
+		
+		return listarUsuario;
+	}
+
+	public void setListarUsuario(List<SelectItem> listarUsuario) {
+		this.listarUsuario = listarUsuario;
 	}
 
 	public List<SelectItem> getListarNivel() {
@@ -108,11 +130,12 @@ public class UsuarioPortafolioBean implements Serializable {
 				
 		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
 		
-		this.selectedUsuarioPortafolio.setUsuario(usuario);
+		//this.selectedUsuarioPortafolio.setUsuario(usuario);
 		
 		Logger.getLogger(getClass().getName()).log(Level.INFO,"CODIGO NIVEL: " + this.selectedUsuarioPortafolio.getNivel().getCodigoNivel());
 		Logger.getLogger(getClass().getName()).log(Level.INFO,"CODIGO PORTAFOLIO: " + this.selectedUsuarioPortafolio.getPortafolioByCodigoPortafolio().getCodigoPortafolio());
-		Logger.getLogger(getClass().getName()).log(Level.INFO,"CODIGO USUARIO: " + usuario.getCodigoUsuario().toString() + " - " + usuario.getUsuario());
+		Logger.getLogger(getClass().getName()).log(Level.INFO,"CODIGO USUARIO CREADOR: " + usuario.getCodigoUsuario().toString() + " - " + usuario.getUsuario());
+		Logger.getLogger(getClass().getName()).log(Level.INFO,"CODIGO USUARIO ASIGNADO: " + this.selectedUsuarioPortafolio.getUsuario().getCodigoUsuario() + " - " + this.selectedUsuarioPortafolio.getUsuario().getUsuario());
 		Logger.getLogger(getClass().getName()).log(Level.INFO,"CODIGO PORTAFOLIO ENLACE: " + this.selectedUsuarioPortafolio.getPortafolioByCodigoPortafolioEnlace().getCodigoPortafolio());
 		
 		UsuarioPortafolioDao usuarioportafolioDao = new UsuarioPortafolioDaoImpl();
@@ -129,4 +152,20 @@ public class UsuarioPortafolioBean implements Serializable {
 		}
 		
 	}
+	
+	public void btnEliminarUsuarioPortafolio() {
+		UsuarioPortafolioDao usuarioportafolioDao = new UsuarioPortafolioDaoImpl();
+		String msg;
+		
+		if (usuarioportafolioDao.eliminarUsuarioPortafolio(this.selectedUsuarioPortafolio)) {
+			msg = "Se eliminó correctamente el registro...";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		} else {
+			msg = "Error al eliminar el registro...";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+	}
+	
 }
