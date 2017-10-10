@@ -20,33 +20,61 @@
 
 		<ui:define name="content">
 			<div style="height: 800px">
-				<h:form rendered="#{usuarioBean.verificarSesion()}">
 					<p:growl id="msgs" showDetail="true" />
 
-					<p:dashboard id="board" model="#{dashboardBean.model}">
-						<p:ajax event="reorder"
-							listener="#{dashboardBean.handleReorder()}" update="msgs" />
+				<h:form id="formDataTable">
 
-						<p:panel id="sports" header="Rendimientos" style="background:#F5A9BC;width:900px;height:400px">
+					<p:dataTable id="tablaMostrarReporte" var="reporte" emptyMessage="No hay datos de Reportes..."
+						value="#{reporteUsuariosCursosBean.listarReporteUsuariosCursos}" rows="10" paginator="true" draggableColumns="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">
+						<f:facet name="header">
+					        REPORTE GENERAL					 
+					        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+					        <p:columnToggler datasource="tablaMostrarReporte" trigger="toggler" />
+					    </f:facet>
+						<p:column headerText="Código Usuario" style="width:100px;text-align: center;">
+							<h:outputText value="#{reporte.codigoUsuario}" />
+						</p:column>
+						<p:column headerText="Código Portafolio" style="width:100px;text-align: center">
+							<h:outputText value="#{reporte.codigoPortafolio}" />
+						</p:column>
+						<p:column headerText="Cantidad Preguntas" style="width:100px;text-align: center">
+							<h:outputText value="#{reporte.cantidadPreguntas}" />
+						</p:column>
+						<p:column headerText="Correctas" style="width:100px;text-align: center;">
+							<h:outputText value="#{reporte.cantidadCorrectas}" />
+						</p:column>
+						<p:column headerText="Incorrectas" style="width:100px;text-align: center;">
+							<h:outputText value="#{reporte.cantidadIncorrectas}" />
+						</p:column>
+						<p:column headerText="Correctas (%)" style="text-align: center; width: 100px;">
+							<h:outputText value="#{reporte.porcentajeCorrectas}" />
+						</p:column>
+						<p:column headerText="Incorrectas (%)" style="text-align: center; width: 100px;">
+							<h:outputText value="#{reporte.porcentajeIncorrectas}" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+
+<!--
+					<p:dashboard id="board" model="{dashboardBean.model}">
+						<p:ajax event="reorder"	listener="{dashboardBean.handleReorder()}" update="msgs" />
+							<p:panel id="sports" header="Rendimientos" style="background:#F5A9BC;width:900px;height:400px">
 							<h:outputText value="Últimos rendimientos (rojo)" />							
 						</p:panel>
-
 						<p:panel id="finance" header="Recordaciones" style="background:#A9D0F5;width:250px;height:100px"> 
 							<h:outputText value="Recordaciones respondidas (celeste)"/>
 						</p:panel>
-
 						<p:panel id="lifestyle" header="Posición" style="background:#BCF5A9;width:250px;height:100px">
 							<h:outputText value="Posición en el Ranking (verde)"/>
 						</p:panel>
-
 						<p:panel id="weather" header="Prácticas" style="background:#F2F5A9;width:250px;height:100px">
 							<h:outputText value="Prácticas Respondidas (amarillo)" />
 						</p:panel>
-						
 					</p:dashboard>
-
+-->
 					<div style="clear: both" />
-				</h:form>
 			</div>
 		</ui:define>
 		
