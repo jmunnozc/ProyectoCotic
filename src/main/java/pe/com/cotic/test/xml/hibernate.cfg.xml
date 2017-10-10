@@ -34,6 +34,7 @@
 		<mapping resource="pe/com/cotic/test/xml/Usuario.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Usuariodispositivo.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Usuarioportafolio.hbm.xml" />
+		<mapping resource="pe/com/cotic/test/xml/Reporteusuarioscursos.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Version.hbm.xml" />
 
 	</session-factory>
