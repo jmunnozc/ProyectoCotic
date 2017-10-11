@@ -266,4 +266,11 @@ public class UsuarioBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
+	
+	
+	public void btnCambiarClaveUsuario() {
+		UsuarioDao usuarioDao = new UsuarioDaoImpl();
+		String msg;
+		
+	}
 }

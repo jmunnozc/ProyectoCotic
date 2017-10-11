@@ -2,6 +2,7 @@ package pe.com.cotic.test.daoImpl;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -19,7 +20,10 @@ public class RespuestaDetalleDaoImpl implements RespuestaDetalleDao{
 		List<Respuestadetalle> listarRespuestasDetalle = null;
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
+		//String hql = "FROM Respuestadetalle WHERE codigoRespuestacabecera =:rc " + rc;
 		String hql = "FROM Respuestadetalle WHERE codigoRespuestacabecera = " + rc;
+		Query query = session.createQuery(hql);
+		//query.setInteger("rc", rc);
 
 		try {
 			listarRespuestasDetalle = session.createQuery(hql).list();

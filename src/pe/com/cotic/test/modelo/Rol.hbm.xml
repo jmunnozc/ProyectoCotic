@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 09/10/2017 09:34:29 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.com.cotic.test.modelo.Rol" table="rol" catalog="cotic">
+        <id name="codigoRol" type="java.lang.Integer">
+            <column name="codigoRol" />
+            <generator class="identity" />
+        </id>
+        <property name="nombreRol" type="string">
+            <column name="nombreRol" length="100" not-null="true" />
+        </property>
+        <property name="descripcionRol" type="string">
+            <column name="descripcionRol" length="300" not-null="true" />
+        </property>
+        <property name="estado" type="int">
+            <column name="estado" not-null="true" />
+        </property>
+        <set name="rolmenus" table="rolmenu" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="codigoRol" not-null="true" />
+            </key>
+            <one-to-many class="pe.com.cotic.test.modelo.Rolmenu" />
+        </set>
+        <set name="rolusuarios" table="rolusuario" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="codigoRol" not-null="true" />
+            </key>
+            <one-to-many class="pe.com.cotic.test.modelo.Rolusuario" />
+        </set>
+    </class>
+</hibernate-mapping>

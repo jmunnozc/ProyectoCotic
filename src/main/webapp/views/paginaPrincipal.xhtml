@@ -33,11 +33,11 @@
 					        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
 					        <p:columnToggler datasource="tablaMostrarReporte" trigger="toggler" />
 					    </f:facet>
-						<p:column headerText="Código Usuario" style="width:100px;text-align: center;">
-							<h:outputText value="#{reporte.codigoUsuario}" />
+						<p:column headerText="Usuario" style="width:100px;text-align: center;">
+							<h:outputText value="#{reporte.nombreUsuarioFull}" />
 						</p:column>
-						<p:column headerText="Código Portafolio" style="width:100px;text-align: center">
-							<h:outputText value="#{reporte.codigoPortafolio}" />
+						<p:column headerText="Portafolio" style="width:100px;text-align: center">
+							<h:outputText value="#{reporte.tituloPortafolio}" />
 						</p:column>
 						<p:column headerText="Cantidad Preguntas" style="width:100px;text-align: center">
 							<h:outputText value="#{reporte.cantidadPreguntas}" />

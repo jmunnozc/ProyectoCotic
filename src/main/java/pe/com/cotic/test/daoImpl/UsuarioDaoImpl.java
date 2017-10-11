@@ -10,6 +10,7 @@ import pe.com.cotic.test.dao.UsuarioDao;
 import pe.com.cotic.test.modelo.Institucion;
 import pe.com.cotic.test.modelo.Usuario;
 import pe.com.cotic.test.util.HibernateUtil;
+import pe.com.cotic.test.util.Seguridad;
 
 public class UsuarioDaoImpl implements UsuarioDao {
 
@@ -23,20 +24,32 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
 			if (usuario.getUsuario() == null) usuario.setUsuario("");
-			if (usuario.getClave() == null) usuario.setClave("");
-
+			if (usuario.getClave() == null) usuario.setClave("");			
+			
 			// hibernate query language
 			/*String hql = "FROM Usuario WHERE usuario = '"
 					+ usuario.getUsuario().toUpperCase() + "' and clave = '"
 					+ usuario.getClave().toUpperCase() + "'";*/
-			String hql = "FROM Usuario WHERE usuario=:user AND clave=:pass";			
+			
+			String hql = "FROM Usuario WHERE correo=:user AND clave=:pass";			
 			Query query = session.createQuery(hql);
 			query.setString("user", usuario.getUsuario().toUpperCase());
-			query.setString("pass", usuario.getClave().toUpperCase());
-
+			query.setString("pass", Seguridad.fn_sEncrypting("PASSCANGA", usuario.getClave().toUpperCase()));
+			
 			if (!query.list().isEmpty()) {
 				us = (Usuario) query.list().get(0);
 			}
+			
+			/*Query query1 = session.createSQLQuery(
+					"CALL autenticarUsuario(:param1,:param2)")
+					.addEntity(Usuario.class)
+					.setParameter("param1", usuario.getUsuario().toUpperCase())
+					.setParameter("param2", Seguridad.fn_sEncrypting("PASSCANGA", usuario.getClave().toUpperCase()));
+			
+			
+			if (!query1.list().isEmpty()) {
+				us = (Usuario) query1.list().get(0);
+			}*/
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -78,7 +91,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		Transaction transaction = session.beginTransaction();
 		// hibernate query language [FROM Usuario as u INNER JOIN FETCH
 		// u.usuariocursos LEFT JOIN FETCH u.usuariodispositivos]
-		String hql = "FROM Usuario ";
+		String hql = "FROM Usuario  AS usu WHERE usu.estado = 1 ";
 
 		try {
 			listarUsuarios = session.createQuery(hql).list();
@@ -95,10 +108,12 @@ public class UsuarioDaoImpl implements UsuarioDao {
 
 	@Override
 	public boolean grabarUsuario(Usuario usuario) {
-		boolean flag = false;
+		boolean flag = false;		
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
+			usuario.setClave(Seguridad.fn_sEncrypting("PASSCANGA", usuario.getClave().toUpperCase()));
+			
 			session.save(usuario);
 			transaction.commit();
 			session.close();

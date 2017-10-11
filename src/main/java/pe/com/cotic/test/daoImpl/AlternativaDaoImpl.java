@@ -43,10 +43,15 @@ public class AlternativaDaoImpl implements AlternativaDao {
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
 		
-		Query query = session.createQuery("update Alternativa al set al.flagRespuestaCorrectaAlternativa = :newFlag where al.codigoPregunta = :oldCodigo");
+/*		Query query = null;
+		if (alternativa.getFlagRespuestaCorrectaAlternativa() == 0) {
+			query = session.createQuery("update Alternativa al set al.flagRespuestaCorrectaAlternativa = :newFlag where al.codigoPregunta = :oldCodigo");
+		} else {		
+			query = session.createQuery("update Alternativa al set al.flagRespuestaCorrectaAlternativa = :newFlag where al.codigoPregunta = :oldCodigo");
+		}
 		query.setParameter("newFlag", 0);
 		query.setParameter("oldCodigo", alternativa.getPregunta().getCodigoPregunta());
-		int result = query.executeUpdate();
+		int result = query.executeUpdate();*/
 
 		try {
 			session.save(alternativa);
