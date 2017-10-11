@@ -10,6 +10,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
 import org.primefaces.context.RequestContext;
@@ -22,7 +23,8 @@ import pe.com.cotic.test.util.MyUtil;
 
 import java.io.Serializable;
 
-@ManagedBean
+//@ManagedBean
+@Named("usuario")
 @SessionScoped
 public class UsuarioBean implements Serializable {
 

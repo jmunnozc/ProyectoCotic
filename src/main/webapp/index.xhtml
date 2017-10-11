@@ -47,11 +47,11 @@
          </f:facet>
 				<h:panelGrid columns="2" cellpadding="5">
 					<h:outputLabel for="usuario" value="Usuario:" />
-					<p:inputText value="#{usuarioBean.usuario.usuario}" id="usuario"
-						required="true" label="usuario" a:placeholder="ingrese su correo" />
+					<p:inputText id="usuario" value="#{usuarioBean.usuario.correo}" label="usuario"  
+						required="true" a:placeholder="ingrese su correo" />
 					<h:outputLabel for="clave" value="Clave:" />
-					<p:password value="#{usuarioBean.usuario.clave}" id="clave"
-						required="true" label="clave" a:placeholder="ingrese su clave" />
+					<p:password id="clave" value="#{usuarioBean.usuario.clave}" label="clave"  
+						required="true" a:placeholder="ingrese su clave" />
 					<f:facet name="footer">
 						<p:commandButton id="loginButton" value="Login"
 							action="#{usuarioBean.verificarDatos}" update=":mensajes"
