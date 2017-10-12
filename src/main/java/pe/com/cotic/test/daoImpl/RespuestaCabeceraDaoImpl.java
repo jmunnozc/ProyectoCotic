@@ -34,10 +34,10 @@ public class RespuestaCabeceraDaoImpl implements RespuestaCabeceraDao {
 		
 		if (administrador.equals(usuario.getCorreo().toUpperCase().trim()) ) {
 			//hql = "select rc.usuario.codigoUsuario, rc.fechaRespuesta, rc.portafolio.tituloPortafolio, rc.usuario.usuario "
-					hql = "FROM Respuestacabecera ";
+					hql = "FROM Respuestacabecera AS rc WHERE rc.usuario.institucion.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion();
 		} else {
 			//hql = "select rc.usuario.codigoUsuario, rc.fechaRespuesta, rc.portafolio.tituloPortafolio, rc.usuario.usuario "
-			hql = "FROM Respuestacabecera AS rc WHERE rc.usuario.codigoUsuario=" + usuario.getCodigoUsuario();
+			hql = "FROM Respuestacabecera AS rc WHERE rc.usuario.codigoUsuario = " + usuario.getCodigoUsuario() + "AND rc.usuario.institucion.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion();
 		}
 		Query query = session.createQuery(hql);
 		//query.setInteger("codigoUsuario", usuario.getCodigoUsuario());

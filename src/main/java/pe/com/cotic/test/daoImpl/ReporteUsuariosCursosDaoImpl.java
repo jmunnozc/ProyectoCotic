@@ -1,9 +1,5 @@
 package pe.com.cotic.test.daoImpl;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
@@ -12,10 +8,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import com.mysql.fabric.xmlrpc.base.Array;
 
 import pe.com.cotic.test.dao.ReporteUsuariosCursosDao;
-import pe.com.cotic.test.modelo.Reporte;
 import pe.com.cotic.test.modelo.Reporteusuarioscursos;
 import pe.com.cotic.test.modelo.Usuario;
 import pe.com.cotic.test.util.HibernateUtil;
@@ -53,9 +47,9 @@ public class ReporteUsuariosCursosDaoImpl implements ReporteUsuariosCursosDao {
 		
 		String hql1 = "";
 		if (administrador.equals(usuario.getCorreo().toUpperCase().trim()) ) {
-			hql1 = "FROM Reporteusuarioscursos AS r ";
+			hql1 = "FROM Reporteusuarioscursos AS r WHERE r.codigoInstitucion =" + usuario.getInstitucion().getCodigoInstitucion();
 		} else {
-			hql1 = "FROM Reporteusuarioscursos AS r WHERE r.codigoUsuario =" + usuario.getCodigoUsuario();
+			hql1 = "FROM Reporteusuarioscursos AS r WHERE r.codigoUsuario =" + usuario.getCodigoUsuario() + " and r.codigoInstitucion =" + usuario.getInstitucion().getCodigoInstitucion();
 		}
 				
 		try {

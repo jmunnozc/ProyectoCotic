@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 09/10/2017 09:34:29 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 12/10/2017 03:06:09 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="pe.com.cotic.test.modelo.Reporteusuarioscursos" table="reporteusuarioscursos" catalog="cotic">
         <id name="codigoRespuestaCabecera" type="int">
@@ -36,7 +36,10 @@
             <column name="nombreUsuarioFull" length="200" />
         </property>
         <property name="tituloPortafolio" type="string">
-            <column name="tituloPortafolio" length="45" />
+            <column name="tituloPortafolio" length="200" />
+        </property>
+        <property name="codigoInstitucion" type="java.lang.Integer">
+            <column name="codigoInstitucion" />
         </property>
     </class>
 </hibernate-mapping>

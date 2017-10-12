@@ -16,7 +16,7 @@
 
 <h:body style="text-align:center">
 
-	<div id="block" data-vide-bg="video/ocean"
+	<div id="block" data-vide-bg="video/learning"
 		data-vide-options="position 0% 50%" />
 
 	<div id="centrado" class="conteiner">
@@ -47,14 +47,14 @@
          </f:facet>
 				<h:panelGrid columns="2" cellpadding="5">
 					<h:outputLabel for="usuario" value="Usuario:" />
-					<p:inputText id="usuario" value="#{usuarioBean.usuario.correo}" label="usuario"  
+					<p:inputText id="usuario" value="#{usuarioBean.usuario.usuario}" label="usuario"  
 						required="true" a:placeholder="ingrese su correo" />
 					<h:outputLabel for="clave" value="Clave:" />
 					<p:password id="clave" value="#{usuarioBean.usuario.clave}" label="clave"  
 						required="true" a:placeholder="ingrese su clave" />
 					<f:facet name="footer">
 						<p:commandButton id="loginButton" value="Login"
-							action="#{usuarioBean.verificarDatos}" update=":mensajes"
+							action="#{usuarioBean.verificarDatos()}" update=":mensajes"
 							oncomplete="manejarLogin(xhr, status, args)"
 							icon="icon-login" />
 

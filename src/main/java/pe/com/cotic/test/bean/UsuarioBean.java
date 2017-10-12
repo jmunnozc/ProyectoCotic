@@ -23,8 +23,7 @@ import pe.com.cotic.test.util.MyUtil;
 
 import java.io.Serializable;
 
-//@ManagedBean
-@Named("usuario")
+@ManagedBean
 @SessionScoped
 public class UsuarioBean implements Serializable {
 
@@ -198,6 +197,7 @@ public class UsuarioBean implements Serializable {
 				+ this.selectedUsuario.getApellidoPaterno();
 		this.selectedUsuario.setUsuario(nuevoUsuario.toUpperCase());
 		this.selectedUsuario.setClave("ADMIN");
+		this.selectedUsuario.setCorreo(this.selectedUsuario.getCorreo());
 		this.selectedUsuario.setNombres(this.selectedUsuario.getNombres().toUpperCase());
 		this.selectedUsuario.setApellidoPaterno(this.selectedUsuario.getApellidoPaterno().toUpperCase());
 		this.selectedUsuario.setApellidoMaterno(this.selectedUsuario.getApellidoMaterno().toUpperCase());

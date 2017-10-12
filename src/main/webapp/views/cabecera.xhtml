@@ -13,6 +13,7 @@
 				USUARIO [<h:outputLabel value="#{usuarioBean.usuario.nombres}, #{usuarioBean.usuario.apellidoPaterno} #{usuarioBean.usuario.apellidoMaterno}" Style="font-size:8px;font-family:cursive;font-style:italic" />]
 				<br />
 				<p:growl id="msgs" showDetail="true" />
+<!-- 				
 				<h:form>
 					<p:commandButton id="btnUsuarioCreate"
 						oncomplete="PF('dialogUsuarioCreate').show()" icon="icon-new"
@@ -31,7 +32,7 @@
 									<p:commandButton id="btnCreateAceptar"
 										update=":msgs"
 										oncomplete="PF('dialogUsuarioCreate').hide()"
-										actionListener="#{usuarioBean.btnGrabarUsuario}"
+										actionListener="{usuarioBean.btnGrabarUsuario}"
 										icon="icon-save" title="Guardar" value="Guardar" />
 									<p:commandButton id="btnCreateCancelar"
 										oncomplete="PF('dialogUsuarioCreate').hide()"
@@ -41,9 +42,12 @@
 						</p:outputPanel>
 					</p:dialog>
 				</h:form>
-			</div>				
-			<div style='height: 90px; width: 200px; float: left;'><p:graphicImage url="#{appBean.baseUrl}/resources/images/canga.png"/></div> 
+ -->				
+			</div>
+			<div align="left" style="font-family: verdana; color:blue"><h1>CANGA</h1></div>
+<!--		<div style='height: 90px; width: 200px; float: left;'><p:graphicImage url="#{appBean.baseUrl}/resources/images/canga.png"/></div> 
 			<div style='height: 90px; width: 200px; float: left;'><h1 style="font-family: verdana;font-color:blue">CANGA</h1></div> 
+-->
 			<!-- <div style='height: 85px; width: 200px; float: right;' ></div> -->
 		</div>
 	</div>
