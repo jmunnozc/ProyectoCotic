@@ -2,12 +2,15 @@ package pe.com.cotic.test.daoImpl;
 
 import java.util.List;
 
+import javax.faces.context.FacesContext;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import pe.com.cotic.test.dao.PortafolioDao;
 import pe.com.cotic.test.modelo.Nivel;
 import pe.com.cotic.test.modelo.Portafolio;
+import pe.com.cotic.test.modelo.Usuario;
 import pe.com.cotic.test.util.HibernateUtil;
 
 public class PortafolioDaoImpl implements PortafolioDao {
@@ -19,9 +22,14 @@ public class PortafolioDaoImpl implements PortafolioDao {
 	public List<Portafolio> ListarPortafolios() {
 		
 		List<Portafolio> listarPortafolios = null;
+		Usuario usuario = null;
+		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
-		String hql = "FROM Portafolio AS p INNER JOIN FETCH p.nivel ORDER BY codigoPortafolio";
+		String hql = "FROM Portafolio AS p INNER JOIN FETCH p.nivel " 
+				+	" WHERE p.usuario.institucion.codigoInstitucion = "
+				+	usuario.getInstitucion().getCodigoInstitucion()
+				+	" ORDER BY codigoPortafolio ";
 		//FROM Portafolio as p JOIN p.Nivel
 		try {
 			listarPortafolios = session.createQuery(hql).list();
@@ -124,11 +132,14 @@ public class PortafolioDaoImpl implements PortafolioDao {
 
 		//Portafolio por = null;
 		List<Portafolio> listarPortafolios = null;
+		Usuario usuario = null;
+		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
 		
 		//String hql = "FROM Portafolio WHERE codigoNivel = " + nivel;		
-		String hql = "FROM Portafolio ";
+		String hql = "FROM Portafolio AS p "
+				+	" WHERE p.usuario.institucion.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion();  
 		
 		try {
 			listarPortafolios = session.createQuery(hql).list();

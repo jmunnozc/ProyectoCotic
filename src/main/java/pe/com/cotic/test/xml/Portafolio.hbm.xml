@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 06/10/2017 10:40:56 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 13/10/2017 03:11:51 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="pe.com.cotic.test.modelo.Portafolio" table="portafolio" catalog="cotic">
         <id name="codigoPortafolio" type="java.lang.Integer">
@@ -10,6 +10,9 @@
         </id>
         <many-to-one name="nivel" class="pe.com.cotic.test.modelo.Nivel" fetch="select">
             <column name="codigoNivel" not-null="true" />
+        </many-to-one>
+        <many-to-one name="usuario" class="pe.com.cotic.test.modelo.Usuario" fetch="select">
+            <column name="codigoUsuario" not-null="true" />
         </many-to-one>
         <property name="tituloPortafolio" type="string">
             <column name="tituloPortafolio" length="200" not-null="true" unique="true" />
@@ -35,7 +38,22 @@
         <property name="estado" type="int">
             <column name="estado" not-null="true" />
         </property>
+        <property name="fechaCreacion" type="timestamp">
+            <column name="fechaCreacion" length="19" />
+        </property>
         <set name="respuestacabeceras" table="respuestacabecera" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="codigoPortafolio" not-null="true" />
+            </key>
+            <one-to-many class="pe.com.cotic.test.modelo.Respuestacabecera" />
+        </set>
+        <set name="preguntas" table="pregunta" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="codigoPortafolio" not-null="true" />
+            </key>
+            <one-to-many class="pe.com.cotic.test.modelo.Pregunta" />
+        </set>
+        <set name="respuestacabeceras_1" table="respuestacabecera" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="codigoPortafolio" not-null="true" />
             </key>
@@ -53,7 +71,13 @@
             </key>
             <one-to-many class="pe.com.cotic.test.modelo.Usuarioportafolio" />
         </set>
-        <set name="preguntas" table="pregunta" inverse="true" lazy="true" fetch="select">
+        <set name="preguntas_1" table="pregunta" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="codigoPortafolio" not-null="true" />
+            </key>
+            <one-to-many class="pe.com.cotic.test.modelo.Pregunta" />
+        </set>
+        <set name="preguntas_2" table="pregunta" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="codigoPortafolio" not-null="true" />
             </key>

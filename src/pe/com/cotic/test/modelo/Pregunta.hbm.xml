@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13/10/2017 03:11:51 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.com.cotic.test.modelo.Pregunta" table="pregunta" catalog="cotic">
+        <id name="codigoPregunta" type="java.lang.Integer">
+            <column name="codigoPregunta" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="portafolio" class="pe.com.cotic.test.modelo.Portafolio" fetch="select">
+            <column name="codigoPortafolio" not-null="true" />
+        </many-to-one>
+        <property name="tituloPregunta" type="string">
+            <column name="tituloPregunta" length="300" not-null="true" />
+        </property>
+        <property name="estado" type="int">
+            <column name="estado" not-null="true" />
+        </property>
+        <property name="imagenPregunta" type="binary">
+            <column name="imagenPregunta" />
+        </property>
+        <set name="alternativas" table="alternativa" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="codigoPregunta" not-null="true" />
+            </key>
+            <one-to-many class="pe.com.cotic.test.modelo.Alternativa" />
+        </set>
+        <set name="alternativas_1" table="alternativa" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="codigoPregunta" not-null="true" />
+            </key>
+            <one-to-many class="pe.com.cotic.test.modelo.Alternativa" />
+        </set>
+        <set name="alternativas_2" table="alternativa" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="codigoPregunta" not-null="true" />
+            </key>
+            <one-to-many class="pe.com.cotic.test.modelo.Alternativa" />
+        </set>
+        <set name="respuestadetalles" table="respuestadetalle" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="codigoPregunta" not-null="true" />
+            </key>
+            <one-to-many class="pe.com.cotic.test.modelo.Respuestadetalle" />
+        </set>
+    </class>
+</hibernate-mapping>

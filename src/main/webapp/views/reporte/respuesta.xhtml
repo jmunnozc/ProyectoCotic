@@ -39,11 +39,11 @@
 						<p:column headerText="Fecha Respuesta" style="width:200px;text-align: center">
 							<h:outputText value="#{respuesta.fechaRespuesta}" />
 						</p:column>
-						<p:column headerText="Titulo Portafolio" style="width:600px;text-align: center">
+						<p:column headerText="Titulo Portafolio" style="width:300px;text-align: center">
 							<h:outputText value="#{respuesta.portafolio.tituloPortafolio}" />
 						</p:column>
-						<p:column headerText="Preguntas" style="width:50px;text-align: center">
-							<h:outputText value="#{respuesta.usuario.usuario}">
+						<p:column headerText="Descripción Portafolio" style="width:500px;text-align: center">
+							<h:outputText value="#{respuesta.portafolio.descripcionPortafolio}">
 							</h:outputText>
 						</p:column>						
 
@@ -64,7 +64,7 @@
 									</p:column>
 								</p:dataTable>
 								<p:fieldset legend="Respuestas Realizadas">
-									<p:chart type="pie" model="#{respuestaDetalleBean.model}" />
+									<p:chart type="pie" model="#{respuestaDetalleBean.model}"/>
 								</p:fieldset>
 							</p:panelGrid>
 				        </p:rowExpansion>

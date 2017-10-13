@@ -17,6 +17,7 @@ import pe.com.cotic.test.dao.PortafolioDao;
 import pe.com.cotic.test.daoImpl.PortafolioDaoImpl;
 import pe.com.cotic.test.modelo.Nivel;
 import pe.com.cotic.test.modelo.Portafolio;
+import pe.com.cotic.test.modelo.Usuario;
 
 @ManagedBean
 @SessionScoped
@@ -24,6 +25,7 @@ public class PortafolioBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	private Usuario usuario;
 	private Portafolio portafolio;
 	private PortafolioDao portafolioDao;
 	private List<Portafolio> listarPortafolios;
@@ -161,7 +163,10 @@ public class PortafolioBean implements Serializable {
 		
 		Date today = new Date();
 		String fechaActual = new SimpleDateFormat("yyyy-MM-dd").format(today);
-		this.selectedPortafolio.setFechaInicioPortafolio(fechaActual);		
+		this.selectedPortafolio.setFechaInicioPortafolio(fechaActual);
+		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+		this.selectedPortafolio.getUsuario().setCodigoUsuario(usuario.getCodigoUsuario());
+		this.selectedPortafolio.setFechaCreacion(java.sql.Date.valueOf(fechaActual));
 		
 		if (portafolioDao.grabarPortafolio(this.selectedPortafolio)) {
 			msg = "Se creó correctamente el registro...";
@@ -179,8 +184,13 @@ public class PortafolioBean implements Serializable {
 		PortafolioDao portafolioDao = new PortafolioDaoImpl();
 		String msg;
 		
+		Date today = new Date();
+		String fechaActual = new SimpleDateFormat("yyyy-MM-dd").format(today);
 		/*this.selectedPortafolio.setTituloPortafolio(this.selectedPortafolio.getTituloPortafolio().toUpperCase());
 		this.selectedPortafolio.setDescripcionPortafolio(this.selectedPortafolio.getDescripcionPortafolio().toUpperCase());*/			
+		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+		this.selectedPortafolio.getUsuario().setCodigoUsuario(usuario.getCodigoUsuario());
+		this.selectedPortafolio.setFechaCreacion(java.sql.Date.valueOf(fechaActual));
 		
 		if (portafolioDao.modificarPortafolio(this.selectedPortafolio)) {
 			msg = "Se modificó correctamente el registro...";

@@ -1,7 +1,8 @@
 package pe.com.cotic.test.modelo;
 
-// Generated 28/09/2017 10:33:35 AM by Hibernate Tools 3.4.0.CR1
+// Generated 13/10/2017 03:11:51 PM by Hibernate Tools 3.4.0.CR1
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +13,7 @@ public class Portafolio implements java.io.Serializable {
 
 	private Integer codigoPortafolio;
 	private Nivel nivel;
+	private Usuario usuario;
 	private String tituloPortafolio;
 	private String descripcionPortafolio;
 	private byte[] imagenPortafolio;
@@ -20,20 +22,26 @@ public class Portafolio implements java.io.Serializable {
 	private int flagMostrarRespuestaCorrectaPortafolio;
 	private int tiempoPortafolio;
 	private int estado;
+	private Date fechaCreacion;
 	private Set respuestacabeceras = new HashSet(0);
+	private Set preguntas = new HashSet(0);
+	private Set respuestacabeceras_1 = new HashSet(0);
 	private Set usuarioportafoliosForCodigoPortafolioEnlace = new HashSet(0);
 	private Set usuarioportafoliosForCodigoPortafolio = new HashSet(0);
-	private Set preguntas = new HashSet(0);
+	private Set preguntas_1 = new HashSet(0);
+	private Set preguntas_2 = new HashSet(0);
 
 	public Portafolio() {
 		nivel = new Nivel();
+		usuario = new Usuario();
 	}
 
-	public Portafolio(Nivel nivel, String tituloPortafolio,
+	public Portafolio(Nivel nivel, Usuario usuario, String tituloPortafolio,
 			String descripcionPortafolio, String fechaInicioPortafolio,
 			int flagMostrarRespuestaCorrectaPortafolio, int tiempoPortafolio,
 			int estado) {
 		this.nivel = nivel;
+		this.usuario = usuario;
 		this.tituloPortafolio = tituloPortafolio;
 		this.descripcionPortafolio = descripcionPortafolio;
 		this.fechaInicioPortafolio = fechaInicioPortafolio;
@@ -42,14 +50,17 @@ public class Portafolio implements java.io.Serializable {
 		this.estado = estado;
 	}
 
-	public Portafolio(Nivel nivel, String tituloPortafolio,
+	public Portafolio(Nivel nivel, Usuario usuario, String tituloPortafolio,
 			String descripcionPortafolio, byte[] imagenPortafolio,
 			String fechaInicioPortafolio, String fechaFinPortafolio,
 			int flagMostrarRespuestaCorrectaPortafolio, int tiempoPortafolio,
-			int estado, Set respuestacabeceras,
+			int estado, Date fechaCreacion, Set respuestacabeceras,
+			Set preguntas, Set respuestacabeceras_1,
 			Set usuarioportafoliosForCodigoPortafolioEnlace,
-			Set usuarioportafoliosForCodigoPortafolio, Set preguntas) {
+			Set usuarioportafoliosForCodigoPortafolio, Set preguntas_1,
+			Set preguntas_2) {
 		this.nivel = nivel;
+		this.usuario = usuario;
 		this.tituloPortafolio = tituloPortafolio;
 		this.descripcionPortafolio = descripcionPortafolio;
 		this.imagenPortafolio = imagenPortafolio;
@@ -58,10 +69,14 @@ public class Portafolio implements java.io.Serializable {
 		this.flagMostrarRespuestaCorrectaPortafolio = flagMostrarRespuestaCorrectaPortafolio;
 		this.tiempoPortafolio = tiempoPortafolio;
 		this.estado = estado;
+		this.fechaCreacion = fechaCreacion;
 		this.respuestacabeceras = respuestacabeceras;
+		this.preguntas = preguntas;
+		this.respuestacabeceras_1 = respuestacabeceras_1;
 		this.usuarioportafoliosForCodigoPortafolioEnlace = usuarioportafoliosForCodigoPortafolioEnlace;
 		this.usuarioportafoliosForCodigoPortafolio = usuarioportafoliosForCodigoPortafolio;
-		this.preguntas = preguntas;
+		this.preguntas_1 = preguntas_1;
+		this.preguntas_2 = preguntas_2;
 	}
 
 	public Integer getCodigoPortafolio() {
@@ -78,6 +93,14 @@ public class Portafolio implements java.io.Serializable {
 
 	public void setNivel(Nivel nivel) {
 		this.nivel = nivel;
+	}
+
+	public Usuario getUsuario() {
+		return this.usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public String getTituloPortafolio() {
@@ -145,12 +168,36 @@ public class Portafolio implements java.io.Serializable {
 		this.estado = estado;
 	}
 
+	public Date getFechaCreacion() {
+		return this.fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
 	public Set getRespuestacabeceras() {
 		return this.respuestacabeceras;
 	}
 
 	public void setRespuestacabeceras(Set respuestacabeceras) {
 		this.respuestacabeceras = respuestacabeceras;
+	}
+
+	public Set getPreguntas() {
+		return this.preguntas;
+	}
+
+	public void setPreguntas(Set preguntas) {
+		this.preguntas = preguntas;
+	}
+
+	public Set getRespuestacabeceras_1() {
+		return this.respuestacabeceras_1;
+	}
+
+	public void setRespuestacabeceras_1(Set respuestacabeceras_1) {
+		this.respuestacabeceras_1 = respuestacabeceras_1;
 	}
 
 	public Set getUsuarioportafoliosForCodigoPortafolioEnlace() {
@@ -171,12 +218,20 @@ public class Portafolio implements java.io.Serializable {
 		this.usuarioportafoliosForCodigoPortafolio = usuarioportafoliosForCodigoPortafolio;
 	}
 
-	public Set getPreguntas() {
-		return this.preguntas;
+	public Set getPreguntas_1() {
+		return this.preguntas_1;
 	}
 
-	public void setPreguntas(Set preguntas) {
-		this.preguntas = preguntas;
+	public void setPreguntas_1(Set preguntas_1) {
+		this.preguntas_1 = preguntas_1;
+	}
+
+	public Set getPreguntas_2() {
+		return this.preguntas_2;
+	}
+
+	public void setPreguntas_2(Set preguntas_2) {
+		this.preguntas_2 = preguntas_2;
 	}
 
 }

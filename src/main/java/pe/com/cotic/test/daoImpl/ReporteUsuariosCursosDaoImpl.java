@@ -30,10 +30,10 @@ public class ReporteUsuariosCursosDaoImpl implements ReporteUsuariosCursosDao {
 		String administrador = System.getProperty("usuario_administrador") != null ? System.getProperty("usuario_administrador") : "";
 		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
 		
-		hql = "SELECT distinct rc.usuario.codigoUsuario, rc.portafolio.codigoPortafolio, p.nivel.codigoNivel "
+		/*hql = "SELECT distinct rc.usuario.codigoUsuario, rc.portafolio.codigoPortafolio, p.codigoNivel "
 					+ "FROM Respuestacabecera AS rc INNER JOIN rc.portafolio p "
-					+ "WHERE p.nivel.codigoNivel = 3 ";
-		Query query = session.createQuery(hql);
+					+ "WHERE p.codigoNivel = 3 ";
+		Query query = session.createQuery(hql);*/
 		
 		
 		/*List<ArrayList> lista = new ArrayList<ArrayList>();
@@ -44,6 +44,10 @@ public class ReporteUsuariosCursosDaoImpl implements ReporteUsuariosCursosDao {
 		callStoredProcedure_MYSQL.setInteger("param2", 2);
 		callStoredProcedure_MYSQL.setInteger("param3", 1);
 		transaction.commit();	*/
+		
+		/*Query callStoredProcedure_MYSQL = session.createSQLQuery("CALL cursorCanga").addEntity(Reporteusuarioscursos.class);
+		transaction.commit();*/
+		
 		
 		String hql1 = "";
 		if (administrador.equals(usuario.getCorreo().toUpperCase().trim()) ) {

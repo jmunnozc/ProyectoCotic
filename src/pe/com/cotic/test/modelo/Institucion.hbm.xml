@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13/10/2017 03:11:51 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.com.cotic.test.modelo.Institucion" table="institucion" catalog="cotic">
+        <id name="codigoInstitucion" type="java.lang.Integer">
+            <column name="codigoInstitucion" />
+            <generator class="identity" />
+        </id>
+        <property name="nombreInstitucion" type="string">
+            <column name="nombreInstitucion" length="200" not-null="true" />
+        </property>
+        <property name="direccionInstitucion" type="string">
+            <column name="direccionInstitucion" length="300" />
+        </property>
+        <property name="estado" type="int">
+            <column name="estado" not-null="true" />
+        </property>
+        <set name="usuarios" table="usuario" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="codigoInstitucion" not-null="true" />
+            </key>
+            <one-to-many class="pe.com.cotic.test.modelo.Usuario" />
+        </set>
+        <set name="usuarios_1" table="usuario" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="codigoInstitucion" not-null="true" />
+            </key>
+            <one-to-many class="pe.com.cotic.test.modelo.Usuario" />
+        </set>
+        <set name="usuarios_2" table="usuario" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="codigoInstitucion" not-null="true" />
+            </key>
+            <one-to-many class="pe.com.cotic.test.modelo.Usuario" />
+        </set>
+    </class>
+</hibernate-mapping>

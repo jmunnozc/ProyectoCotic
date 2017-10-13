@@ -2,6 +2,8 @@ package pe.com.cotic.test.daoImpl;
 
 import java.util.List;
 
+import javax.faces.context.FacesContext;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -87,11 +89,14 @@ public class UsuarioDaoImpl implements UsuarioDao {
 	public List<Usuario> ListarUsuarios() {
 
 		List<Usuario> listarUsuarios = null;
+		Usuario usuario = null;
+		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
 		// hibernate query language [FROM Usuario as u INNER JOIN FETCH
 		// u.usuariocursos LEFT JOIN FETCH u.usuariodispositivos]
-		String hql = "FROM Usuario  AS usu WHERE usu.estado = 1 ";
+		String hql = "FROM Usuario  AS usu "
+				+	" WHERE usu.estado = 1 AND usu.institucion.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion();
 
 		try {
 			listarUsuarios = session.createQuery(hql).list();

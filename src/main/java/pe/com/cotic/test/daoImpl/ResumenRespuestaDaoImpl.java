@@ -26,12 +26,12 @@ public class ResumenRespuestaDaoImpl implements ResumenRespuestaDao{
 		String hql = "SELECT CASE rd.flagAlternativaCorrecta WHEN 1 THEN 'CORRECTO' ELSE 'INCORRECTO' END AS RespuestaCorrecta, " 
 					+ " count(rd.flagAlternativaCorrecta) AS Total "
 					+ " FROM Respuestacabecera AS rc INNER JOIN rc.respuestadetalles AS rd " 
-					+ " WHERE rc.codigoRespuestaCabecera =:respuestacabecera "
+					+ " WHERE rc.codigoRespuestaCabecera = " + respuestacabecera.getCodigoRespuestaCabecera().toString()
 					+ " GROUP BY rd.flagAlternativaCorrecta";
 
 		try {
 			Query query = session.createQuery(hql);
-			query.setString("respuestacabecera", respuestacabecera.getCodigoRespuestaCabecera().toString());
+			/*query.setString("respuestacabecera", respuestacabecera.getCodigoRespuestaCabecera().toString());*/
 			List<Object[]> res = query.list();
 
 			listarResumenRespuesta = new ArrayList<Resumenrespuesta>();

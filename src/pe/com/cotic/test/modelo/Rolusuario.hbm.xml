@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13/10/2017 03:11:51 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.com.cotic.test.modelo.Rolusuario" table="rolusuario" catalog="cotic">
+        <id name="codigoRolUsuario" type="java.lang.Integer">
+            <column name="codigoRolUsuario" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="rol" class="pe.com.cotic.test.modelo.Rol" fetch="select">
+            <column name="codigoRol" not-null="true" />
+        </many-to-one>
+        <many-to-one name="usuario" class="pe.com.cotic.test.modelo.Usuario" fetch="select">
+            <column name="codigoUsuario" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

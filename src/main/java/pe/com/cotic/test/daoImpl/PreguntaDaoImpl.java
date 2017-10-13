@@ -2,12 +2,16 @@ package pe.com.cotic.test.daoImpl;
 
 import java.util.List;
 
+import javax.faces.context.FacesContext;
+
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import pe.com.cotic.test.dao.PreguntaDao;
 import pe.com.cotic.test.modelo.Portafolio;
 import pe.com.cotic.test.modelo.Pregunta;
+import pe.com.cotic.test.modelo.Usuario;
 import pe.com.cotic.test.util.HibernateUtil;
 
 public class PreguntaDaoImpl implements PreguntaDao {
@@ -19,10 +23,16 @@ public class PreguntaDaoImpl implements PreguntaDao {
 	public List<Pregunta> ListarPreguntas() {
 
 		List<Pregunta> listarPreguntas = null;
+		Usuario usuario = null;
+		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
 		//String hql = "FROM Pregunta AS pr INNER JOIN fetch pr.portafolio INNER JOIN fetch pr.alternativas ";
-		String hql = "FROM Pregunta AS pr INNER JOIN fetch pr.portafolio ";
+		//String hql = "FROM Pregunta AS pr INNER JOIN pr.portafolio AS po WHERE po.usuario.institucion= " + usuario.getInstitucion().getCodigoInstitucion();
+		String hql = "FROM Pregunta AS pr INNER JOIN FETCH pr.portafolio AS po WHERE po.usuario.institucion= " + usuario.getInstitucion().getCodigoInstitucion();
+		/*Query query = session.createQuery(hql);
+		query.setInteger("codigoInstitucion", usuario.getInstitucion().getCodigoInstitucion());*/
+		
 		try {
 			listarPreguntas = session.createQuery(hql).list();
 			transaction.commit();
@@ -122,7 +132,9 @@ public class PreguntaDaoImpl implements PreguntaDao {
 		List<Pregunta> listarPreguntaXCodigo = null;
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
-		String hql = "FROM Pregunta AS al WHERE al.pregunta.codigoPregunta = " + pregunta.getCodigoPregunta();
+		String hql = "FROM Pregunta AS al WHERE al.pregunta.codigoPregunta= " + pregunta.getCodigoPregunta();
+		/*Query query = session.createQuery(hql);
+		query.setInteger("codigoPregunta", pregunta.getCodigoPregunta());*/
 		
 		try {
 			listarPreguntaXCodigo = session.createQuery(hql).list();
@@ -144,7 +156,9 @@ public class PreguntaDaoImpl implements PreguntaDao {
 		List<Pregunta> listarPreguntasPortafolio = null;
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
-		String hql = "FROM Pregunta AS pr WHERE pr.portafolio.codigoPortafolio = " + portafolio.getCodigoPortafolio();
+		String hql = "FROM Pregunta AS pr WHERE pr.portafolio.codigoPortafolio= " + portafolio.getCodigoPortafolio();
+		/*Query query = session.createQuery(hql);
+		query.setInteger("codigoPortafolio", portafolio.getCodigoPortafolio());*/
 		
 		try {
 			listarPreguntasPortafolio = session.createQuery(hql).list();

@@ -2,6 +2,8 @@ package pe.com.cotic.test.daoImpl;
 
 import java.util.List;
 
+import javax.faces.context.FacesContext;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -10,6 +12,7 @@ import pe.com.cotic.test.dao.AlternativaDao;
 import pe.com.cotic.test.modelo.Alternativa;
 import pe.com.cotic.test.modelo.Portafolio;
 import pe.com.cotic.test.modelo.Pregunta;
+import pe.com.cotic.test.modelo.Usuario;
 import pe.com.cotic.test.util.HibernateUtil;
 
 public class AlternativaDaoImpl implements AlternativaDao {
@@ -20,9 +23,17 @@ public class AlternativaDaoImpl implements AlternativaDao {
 	public List<Alternativa> ListarAlternativas() {
 
 		List<Alternativa> listarAlternativas = null;
+		Usuario usuario = null;
+		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
-		String hql = "FROM Alternativa AS al INNER JOIN FETCH al.pregunta ORDER BY al.codigoAlternativa";
+		//String hql = "FROM Alternativa AS al INNER JOIN FETCH al.pregunta ORDER BY al.codigoAlternativa";		
+		String hql = "FROM Alternativa AS al INNER JOIN FETCH al.pregunta AS pre " 
+				+	" WHERE pre.portafolio.usuario.institucion.codigoInstitucion = " 
+				+  usuario.getInstitucion().getCodigoInstitucion()
+				+	" ORDER BY al.codigoAlternativa ";
+		
+		
 		try {
 			listarAlternativas = session.createQuery(hql).list();
 			transaction.commit();

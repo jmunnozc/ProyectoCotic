@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13/10/2017 03:11:51 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.com.cotic.test.modelo.Menu" table="menu" catalog="cotic">
+        <id name="codigoMenu" type="java.lang.Integer">
+            <column name="codigoMenu" />
+            <generator class="identity" />
+        </id>
+        <property name="codigoMenuEnlace" type="int">
+            <column name="codigoMenuEnlace" not-null="true" />
+        </property>
+        <property name="nivelMenu" type="int">
+            <column name="nivelMenu" not-null="true" />
+        </property>
+        <property name="ordenMenu" type="int">
+            <column name="ordenMenu" not-null="true" />
+        </property>
+        <property name="nombreMenu" type="string">
+            <column name="nombreMenu" length="100" not-null="true" />
+        </property>
+        <property name="urlMenu" type="string">
+            <column name="urlMenu" length="150" />
+        </property>
+        <property name="iconoMenu" type="string">
+            <column name="iconoMenu" length="45" />
+        </property>
+        <property name="estado" type="int">
+            <column name="estado" not-null="true" />
+        </property>
+        <set name="rolmenus" table="rolmenu" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="codigoMenu" not-null="true" />
+            </key>
+            <one-to-many class="pe.com.cotic.test.modelo.Rolmenu" />
+        </set>
+    </class>
+</hibernate-mapping>

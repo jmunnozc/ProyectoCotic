@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13/10/2017 03:11:51 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.com.cotic.test.modelo.Respuestacabecera" table="respuestacabecera" catalog="cotic">
+        <id name="codigoRespuestaCabecera" type="java.lang.Integer">
+            <column name="codigoRespuestaCabecera" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="usuario" class="pe.com.cotic.test.modelo.Usuario" fetch="select">
+            <column name="codigoUsuario" not-null="true" />
+        </many-to-one>
+        <many-to-one name="portafolio" class="pe.com.cotic.test.modelo.Portafolio" fetch="select">
+            <column name="codigoPortafolio" not-null="true" />
+        </many-to-one>
+        <property name="fechaRespuesta" type="string">
+            <column name="fechaRespuesta" length="45" not-null="true" />
+        </property>
+        <property name="fechaSincronizacion" type="timestamp">
+            <column name="fechaSincronizacion" length="19" not-null="true" />
+        </property>
+        <property name="codigoDispositivo" type="string">
+            <column name="codigoDispositivo" length="45" />
+        </property>
+        <set name="respuestadetalles" table="respuestadetalle" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="codigoRespuestaCabecera" not-null="true" />
+            </key>
+            <one-to-many class="pe.com.cotic.test.modelo.Respuestadetalle" />
+        </set>
+    </class>
+</hibernate-mapping>

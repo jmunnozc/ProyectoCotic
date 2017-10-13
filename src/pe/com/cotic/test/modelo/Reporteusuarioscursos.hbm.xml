@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13/10/2017 03:11:51 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.com.cotic.test.modelo.Reporteusuarioscursos" table="reporteusuarioscursos" catalog="cotic">
+        <id name="codigoRespuestaCabecera" type="int">
+            <column name="codigoRespuestaCabecera" />
+            <generator class="assigned" />
+        </id>
+        <property name="codigoUsuario" type="java.lang.Integer">
+            <column name="codigoUsuario" />
+        </property>
+        <property name="codigoPortafolio" type="java.lang.Integer">
+            <column name="codigoPortafolio" />
+        </property>
+        <property name="fechaRespuesta" type="string">
+            <column name="fechaRespuesta" length="45" />
+        </property>
+        <property name="cantidadPreguntas" type="java.lang.Integer">
+            <column name="cantidadPreguntas" />
+        </property>
+        <property name="cantidadCorrectas" type="java.lang.Integer">
+            <column name="cantidadCorrectas" />
+        </property>
+        <property name="cantidadIncorrectas" type="java.lang.Integer">
+            <column name="cantidadIncorrectas" />
+        </property>
+        <property name="porcentajeCorrectas" type="java.lang.Double">
+            <column name="porcentajeCorrectas" precision="22" scale="0" />
+        </property>
+        <property name="porcentajeIncorrectas" type="java.lang.Double">
+            <column name="porcentajeIncorrectas" precision="22" scale="0" />
+        </property>
+        <property name="nombreUsuarioFull" type="string">
+            <column name="nombreUsuarioFull" length="200" />
+        </property>
+        <property name="tituloPortafolio" type="string">
+            <column name="tituloPortafolio" length="200" />
+        </property>
+        <property name="codigoInstitucion" type="java.lang.Integer">
+            <column name="codigoInstitucion" />
+        </property>
+    </class>
+</hibernate-mapping>

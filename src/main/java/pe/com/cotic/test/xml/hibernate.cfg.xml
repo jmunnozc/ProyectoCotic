@@ -19,7 +19,7 @@
 		<property name="hibernate.enable_lazy_load_no_trans">true</property>
 		<property name="hibernate.show_sql">false</property>
 		<property name="hibernate.connection.pool_size">1</property>
-		<!-- <property name="hibernate.hbm2ddl.auto">update</property>  -->
+		<!--  <property name="hibernate.hbm2ddl.auto">update</property>  -->
 
 		<mapping resource="pe/com/cotic/test/xml/Alternativa.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Institucion.hbm.xml" />

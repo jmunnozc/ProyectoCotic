@@ -2,10 +2,13 @@ package pe.com.cotic.test.daoImpl;
 
 import java.util.List;
 
+import javax.faces.context.FacesContext;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import pe.com.cotic.test.dao.UsuarioPortafolioDao;
+import pe.com.cotic.test.modelo.Usuario;
 import pe.com.cotic.test.modelo.Usuarioportafolio;
 import pe.com.cotic.test.util.HibernateUtil;
 
@@ -17,11 +20,15 @@ public class UsuarioPortafolioDaoImpl implements UsuarioPortafolioDao {
 	public List<Usuarioportafolio> ListarUsuariosPortafolios() {
 
 		List<Usuarioportafolio> listarUsuarioPortafolio = null;
+		Usuario usuario = null;
+		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
 		//String hql = "FROM Pregunta AS pr INNER JOIN fetch pr.portafolio INNER JOIN fetch pr.alternativas ";
 		//String hql = "FROM Pregunta AS pr INNER JOIN fetch pr.portafolio ";
-		String hql = "FROM Usuarioportafolio ";
+		String hql = "FROM Usuarioportafolio AS up " 
+				+	" WHERE up.usuario.institucion.codigoInstitucion = " +  usuario.getInstitucion().getCodigoInstitucion()
+				+	" ORDER BY codigoPortafolio ";
 		try {
 			listarUsuarioPortafolio = session.createQuery(hql).list();
 			transaction.commit();
