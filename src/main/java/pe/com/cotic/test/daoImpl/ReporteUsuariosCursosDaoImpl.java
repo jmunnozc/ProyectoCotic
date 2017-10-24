@@ -50,10 +50,10 @@ public class ReporteUsuariosCursosDaoImpl implements ReporteUsuariosCursosDao {
 		
 		
 		String hql1 = "";
-		if (administrador.equals(usuario.getCorreo().toUpperCase().trim()) ) {
-			hql1 = "FROM Reporteusuarioscursos AS r WHERE r.codigoInstitucion =" + usuario.getInstitucion().getCodigoInstitucion();
+		if (administrador.toUpperCase().equals(usuario.getCorreo().toUpperCase().trim()) ) {
+			hql1 = "FROM Reporteusuarioscursos AS r WHERE r.codigoInstitucion =" + usuario.getInstitucion().getCodigoInstitucion() + " ORDER BY r.tituloPortafolio, r.nombreUsuarioFull, r.fechaRespuesta ";
 		} else {
-			hql1 = "FROM Reporteusuarioscursos AS r WHERE r.codigoUsuario =" + usuario.getCodigoUsuario() + " and r.codigoInstitucion =" + usuario.getInstitucion().getCodigoInstitucion();
+			hql1 = "FROM Reporteusuarioscursos AS r WHERE r.codigoUsuario =" + usuario.getCodigoUsuario() + " and r.codigoInstitucion =" + usuario.getInstitucion().getCodigoInstitucion() + " ORDER BY r.tituloPortafolio, r.nombreUsuarioFull, r.fechaRespuesta ";
 		}
 				
 		try {

@@ -93,8 +93,7 @@ public class RespuestaDetalleBean implements Serializable {
 		return listarRespuestasDetalle;
 	}
 
-	public void setListarRespuestasDetalle(
-			List<Respuestadetalle> listarRespuestasDetalle) {
+	public void setListarRespuestasDetalle(List<Respuestadetalle> listarRespuestasDetalle) {
 		this.listarRespuestasDetalle = listarRespuestasDetalle;
 	}
 

@@ -60,7 +60,7 @@
 				<p:menuitem value="Institución"
 					url="#{appBean.basePath}institucion/mantenimiento.jsf"
 					icon="ui-icon-home" />
-				<p:menuitem value="Portafolio"
+				<p:menuitem value="Cuestionario"
 					url="#{appBean.basePath}portafolio/mantenimiento.jsf"
 					icon="ui-icon-suitcase" />
 				<p:menuitem value="Pregunta"
@@ -85,6 +85,7 @@
 			</p:submenu>
 			<p:submenu label="Reporte" icon="ui-icon-locked">
 				<p:menuitem value="Respuestas" url="#{appBean.basePath}reporte/respuesta.jsf" icon="ui-icon-person" />
+				<p:menuitem value="Cursos" url="#{appBean.basePath}reporte/cursos.jsf" icon="ui-icon-person" />
 			</p:submenu>
 			<p:menuitem value="Salir" actionListener="#{usuarioBean.logout}"
 				icon="ui-icon-close" oncomplete="manejarLogin(xhr, status, args)" />

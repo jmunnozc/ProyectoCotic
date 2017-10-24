@@ -29,7 +29,7 @@
 				<h:form>
 					<p:commandButton id="btnPortafolioCreate" update=":formCreate"
 						oncomplete="PF('dialogPortafolioCreate').show()" icon="icon-new"
-						title="Crear" value="Crear Portafolio" />
+						title="Crear" value="Crear Cuestionario" />
 				</h:form>
 								
 				<div style="height: 5px" />
@@ -40,7 +40,7 @@
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15">
 						<f:facet name="header">
-					        LISTADO DE PORTAFOLIOS					 
+					        LISTADO DE CUESTIONARIOS					 
 					        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
 					        <p:columnToggler datasource="tablaMostrarPortafolios" trigger="toggler" />
 					    </f:facet>
@@ -54,7 +54,7 @@
 						<p:column headerText="Descripción" style="text-align: center; width: 900px;">
 							<h:outputText value="#{portafolio.descripcionPortafolio}" />
 						</p:column>
-						<p:column headerText="Fecha Portafolio" style="text-align: center; width: 100px;">
+						<p:column headerText="Fecha Cuestionario" style="text-align: center; width: 100px;">
 							<h:outputText value="#{portafolio.fechaInicioPortafolio}" />
 						</p:column>
 						<p:column headerText="Nivel" style="text-align: center; width: 70px;">
@@ -81,7 +81,7 @@
 				</h:form>
 
 				<h:form id="formCreate">
-					<p:dialog header="Crear Portafolio" widgetVar="dialogPortafolioCreate"
+					<p:dialog header="Crear Cuestionario" widgetVar="dialogPortafolioCreate"
 						modal="true" showEffect="fade" hideEffect="explode"
 						resizable="false" id="dlgPortafolioCreate">
 						<p:outputPanel id="PortafolioDetailCreate" style="text-align:center;">
@@ -149,7 +149,7 @@
 					<h:inputHidden value="#{portafolioBean.selectedPortafolio.flagMostrarRespuestaCorrectaPortafolio}"/>
 					<h:inputHidden value="#{portafolioBean.selectedPortafolio.tiempoPortafolio}"/>
 									
-						<p:dialog header="Modificar Portafolio" widgetVar="dialogPortafolioModificar"
+						<p:dialog header="Modificar Cuestionario" widgetVar="dialogPortafolioModificar"
 						modal="true" showEffect="fade" hideEffect="explode"
 						resizable="false" id="dlgPortafolioModificar">
 							<p:outputPanel id="PortafolioDetailModificar" style="text-align:center;" >						

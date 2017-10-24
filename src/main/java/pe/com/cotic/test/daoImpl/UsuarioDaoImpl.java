@@ -1,6 +1,8 @@
 package pe.com.cotic.test.daoImpl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.faces.context.FacesContext;
 
@@ -10,6 +12,9 @@ import org.hibernate.Transaction;
 
 import pe.com.cotic.test.dao.UsuarioDao;
 import pe.com.cotic.test.modelo.Institucion;
+import pe.com.cotic.test.modelo.Reportecurso;
+import pe.com.cotic.test.modelo.Rol;
+import pe.com.cotic.test.modelo.Rolusuario;
 import pe.com.cotic.test.modelo.Usuario;
 import pe.com.cotic.test.util.HibernateUtil;
 import pe.com.cotic.test.util.Seguridad;
@@ -95,11 +100,18 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		Transaction transaction = session.beginTransaction();
 		// hibernate query language [FROM Usuario as u INNER JOIN FETCH
 		// u.usuariocursos LEFT JOIN FETCH u.usuariodispositivos]
-		String hql = "FROM Usuario  AS usu "
-				+	" WHERE usu.estado = 1 AND usu.institucion.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion();
-
+		String hql = "FROM Usuario AS usu INNER JOIN FETCH usu.institucion AS ins "
+				+	" WHERE usu.estado = 1 AND ins.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion();
+		
+		/*String hql = "SELECT u, ru "
+				+	" FROM Usuario u "
+				+	" 	INNER JOIN FETCH u.institucion i "
+				+	"	INNER JOIN FETCH u.rolusuarios ru " 
+				+	" WHERE u.estado = 1 AND i.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion();*/ 
+				
 		try {
 			listarUsuarios = session.createQuery(hql).list();
+						
 			transaction.commit();
 			session.close();
 
@@ -108,6 +120,43 @@ public class UsuarioDaoImpl implements UsuarioDao {
 			transaction.rollback();
 		}
 
+		
+/* ************************************************** */
+		/*List<Usuario> listarUsuarios1 = null;
+		Usuario usuario = null;
+		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction1 = session.beginTransaction();
+		String hql1 = "SELECT usu, (SELECT r.rol.descripcionRol FROM Rolusuario r WHERE r.usuario.codigoUsuario = usu.codigoUsuario) AS descripcionRol "
+				+	" FROM Usuario usu " 
+				+	" 	INNER JOIN FETCH usu.institucion ins "
+				+	" WHERE usu.estado = 1 AND ins.codigoInstitucion =" + usuario.getInstitucion().getCodigoInstitucion();		
+		
+		try {
+			
+			Query query = session.createQuery(hql1);
+			List<Object[]> res = query.list();
+
+			listarUsuarios1 = new ArrayList<Usuario>();
+			for (Object[] elements: res){
+				Usuario usu = new Usuario();
+				usu = (Usuario) elements[0];
+				if (elements[1] != null) {
+					usu.setPerfil(elements[1].toString());
+				}
+				listarUsuarios1.add(usu);
+			}
+			
+			transaction1.commit();
+			session.close();
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			transaction1.rollback();
+		}*/
+		
+		
 		return listarUsuarios;
 	}
 

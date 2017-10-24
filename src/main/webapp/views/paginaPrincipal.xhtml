@@ -33,11 +33,14 @@
 					        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
 					        <p:columnToggler datasource="tablaMostrarReporte" trigger="toggler" />
 					    </f:facet>
+						<p:column headerText="Cuestionario" style="width:100px;text-align: center">
+							<h:outputText value="#{reporte.tituloPortafolio}" />
+						</p:column>					    
 						<p:column headerText="Usuario" style="width:100px;text-align: center;">
 							<h:outputText value="#{reporte.nombreUsuarioFull}" />
 						</p:column>
-						<p:column headerText="Cuestionario" style="width:100px;text-align: center">
-							<h:outputText value="#{reporte.tituloPortafolio}" />
+						<p:column headerText="Fecha y Hora" style="width:50px;text-align: center">
+							<h:outputText value="#{reporte.fechaRespuesta}" />
 						</p:column>
 						<p:column headerText="Cantidad Preguntas" style="width:100px;text-align: center">
 							<h:outputText value="#{reporte.cantidadPreguntas}" />
@@ -48,12 +51,18 @@
 						<p:column headerText="Incorrectas" style="width:100px;text-align: center;">
 							<h:outputText value="#{reporte.cantidadIncorrectas}" />
 						</p:column>
+						<p:column headerText="No Contestadas" style="width:100px;text-align: center;">
+							<h:outputText value="#{reporte.cantidadNocontestadas}" />
+						</p:column>
 						<p:column headerText="Correctas (%)" style="text-align: center; width: 100px;">
 							<h:outputText value="#{reporte.porcentajeCorrectas}" />
 						</p:column>
 						<p:column headerText="Incorrectas (%)" style="text-align: center; width: 100px;">
 							<h:outputText value="#{reporte.porcentajeIncorrectas}" />
 						</p:column>
+						<p:column headerText="No Contestadas (%)" style="text-align: center; width: 100px;">
+							<h:outputText value="#{reporte.porcentajeNocontestadas}" />
+						</p:column>						
 					</p:dataTable>
 				</h:form>
 

@@ -84,7 +84,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public Integer getCodigoUsuario() {
-		return this.codigoUsuario;
+		return codigoUsuario;
 	}
 
 	public void setCodigoUsuario(Integer codigoUsuario) {
@@ -92,7 +92,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public Institucion getInstitucion() {
-		return this.institucion;
+		return institucion;
 	}
 
 	public void setInstitucion(Institucion institucion) {
@@ -100,7 +100,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public String getUsuario() {
-		return this.usuario;
+		return usuario;
 	}
 
 	public void setUsuario(String usuario) {
@@ -108,7 +108,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public String getClave() {
-		return this.clave;
+		return clave;
 	}
 
 	public void setClave(String clave) {
@@ -116,7 +116,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public String getDni() {
-		return this.dni;
+		return dni;
 	}
 
 	public void setDni(String dni) {
@@ -124,7 +124,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public String getApellidoPaterno() {
-		return this.apellidoPaterno;
+		return apellidoPaterno;
 	}
 
 	public void setApellidoPaterno(String apellidoPaterno) {
@@ -132,7 +132,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public String getApellidoMaterno() {
-		return this.apellidoMaterno;
+		return apellidoMaterno;
 	}
 
 	public void setApellidoMaterno(String apellidoMaterno) {
@@ -140,7 +140,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public String getNombres() {
-		return this.nombres;
+		return nombres;
 	}
 
 	public void setNombres(String nombres) {
@@ -148,7 +148,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public Date getFechaNacimiento() {
-		return this.fechaNacimiento;
+		return fechaNacimiento;
 	}
 
 	public void setFechaNacimiento(Date fechaNacimiento) {
@@ -156,7 +156,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public String getCorreo() {
-		return this.correo;
+		return correo;
 	}
 
 	public void setCorreo(String correo) {
@@ -164,7 +164,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public String getTelefono() {
-		return this.telefono;
+		return telefono;
 	}
 
 	public void setTelefono(String telefono) {
@@ -172,7 +172,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public String getCelular() {
-		return this.celular;
+		return celular;
 	}
 
 	public void setCelular(String celular) {
@@ -180,7 +180,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public int getEstado() {
-		return this.estado;
+		return estado;
 	}
 
 	public void setEstado(int estado) {
@@ -188,7 +188,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public String getUsuarioCreacion() {
-		return this.usuarioCreacion;
+		return usuarioCreacion;
 	}
 
 	public void setUsuarioCreacion(String usuarioCreacion) {
@@ -196,7 +196,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public Date getFechaCreacion() {
-		return this.fechaCreacion;
+		return fechaCreacion;
 	}
 
 	public void setFechaCreacion(Date fechaCreacion) {
@@ -204,7 +204,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public String getUsuarioModificacion() {
-		return this.usuarioModificacion;
+		return usuarioModificacion;
 	}
 
 	public void setUsuarioModificacion(String usuarioModificacion) {
@@ -212,7 +212,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public Date getFechaModificacion() {
-		return this.fechaModificacion;
+		return fechaModificacion;
 	}
 
 	public void setFechaModificacion(Date fechaModificacion) {
@@ -220,7 +220,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public String getSexo() {
-		return this.sexo;
+		return sexo;
 	}
 
 	public void setSexo(String sexo) {
@@ -228,7 +228,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public Set getRolusuarios() {
-		return this.rolusuarios;
+		return rolusuarios;
 	}
 
 	public void setRolusuarios(Set rolusuarios) {
@@ -236,7 +236,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public Set getUsuariodispositivos() {
-		return this.usuariodispositivos;
+		return usuariodispositivos;
 	}
 
 	public void setUsuariodispositivos(Set usuariodispositivos) {
@@ -244,7 +244,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public Set getUsuarioportafolios() {
-		return this.usuarioportafolios;
+		return usuarioportafolios;
 	}
 
 	public void setUsuarioportafolios(Set usuarioportafolios) {
@@ -252,7 +252,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public Set getRespuestacabeceras() {
-		return this.respuestacabeceras;
+		return respuestacabeceras;
 	}
 
 	public void setRespuestacabeceras(Set respuestacabeceras) {

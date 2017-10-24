@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head></h:head> 
+<body> 
+<ui:composition template="./../../template/plantilla.xhtml">
+		<ui:define name="top">
+			<h:form rendered="#{usuarioBean.verificarSesion()}">
+				<ui:include src="/views/cabecera.xhtml" />
+			</h:form>
+		</ui:define>
+	
+		<ui:define name="content">
+			<div style="height: 15px"></div>
+			<div style="height: 800px">
+				<p:growl id="msgs" showDetail="true" />				
+				<div style="height: 5px" />
+				<h:form id="formDataTable">
+
+					<p:dataTable id="tablaMostrarCurso" var="cursos" emptyMessage="No hay datos de cursos..." 
+						value="#{reporteCursoBean.listarReportecursos}" rows="20" paginator="true" draggableColumns="true"
+						 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="15,20,25">
+						<f:facet name="header">
+					        REPORTE GENERAL DE CURSOS					 
+					        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+					        <p:columnToggler datasource="tablaMostrarCurso" trigger="toggler" />			
+					    </f:facet>
+						<p:column style="width:16px">
+				            <p:rowToggler />
+				        </p:column>					    
+						<p:column headerText="Código" style="width:50px;text-align: center">
+							<h:outputText value="#{cursos.codigoPortafolio}" />
+						</p:column>
+						<p:column headerText="Título Cursos" style="width:500px;text-align: center">
+							<h:outputText value="#{cursos.tituloPortafolio}" />
+						</p:column>
+						<p:column headerText="Total Intentos" style="text-align: center">
+							<h:outputText value="#{cursos.intentos}">
+							</h:outputText>
+						</p:column>
+						<p:column headerText="% Aciertos" style="text-align: center">
+							<h:outputText value="#{cursos.porcentajeAciertos}">
+							</h:outputText>
+						</p:column>
+						<p:rowExpansion>
+			                <f:facet name="header">DETALLE DE LOS CURSOS</f:facet>
+		                	<p:growl id="msgsCursos" showDetail="true" />
+		                	<p:panelGrid id="display" columns="2" cellpadding="2" columnClasses="label,value" >
+ 
+								<p:dataTable id="tablaMostrarDetalle" var="cursosdetalle" value="#{reporteCursoDetalleBean.btnBuscarReporteCursoDetalle(cursos)}" style="width:600px" emptyMessage="No hay datos del detalle de cursos...">
+									<p:column headerText="Usuario">
+										<h:outputText value="#{cursosdetalle.usuario.nombres} #{cursosdetalle.usuario.apellidoPaterno} #{cursosdetalle.usuario.apellidoMaterno} " />
+									</p:column>
+									<p:column headerText="Respuesta Correcta" style="width:200px;text-align: center">
+										<h:outputText value="#{cursosdetalle.correctas}" />
+									</p:column>
+									<p:column headerText="Respuesta Incorrecta" style="width:200px;text-align: center">
+										<h:outputText value="#{cursosdetalle.incorrectas}" />
+									</p:column>
+								</p:dataTable>
+								<!-- 
+								<p:fieldset legend="Respuestas Realizadas">
+									<p:chart type="pie" model="{respuestaDetalleBean.model}"/>
+								</p:fieldset>
+								 -->
+							</p:panelGrid>
+				        </p:rowExpansion>						
+					</p:dataTable>
+				</h:form>				
+
+			</div>
+		</ui:define>
+		
+		<ui:define name="bottom">
+			<h:form rendered="#{usuarioBean.verificarSesion()}">
+				<ui:include src="/views/pie.xhtml" />
+			</h:form>
+		</ui:define>		
+	</ui:composition>
+</body> 
+</html>
