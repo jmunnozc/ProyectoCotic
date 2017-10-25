@@ -18,6 +18,8 @@ import org.primefaces.context.RequestContext;
 import pe.com.cotic.test.dao.UsuarioDao;
 import pe.com.cotic.test.daoImpl.UsuarioDaoImpl;
 import pe.com.cotic.test.modelo.Institucion;
+import pe.com.cotic.test.modelo.Rol;
+import pe.com.cotic.test.modelo.Rolusuario;
 import pe.com.cotic.test.modelo.Usuario;
 import pe.com.cotic.test.util.MyUtil;
 
@@ -33,10 +35,13 @@ public class UsuarioBean implements Serializable {
 	private UsuarioDao usuarioDao;
 	private List<Usuario> listarUsuarios;
 	private Usuario selectedUsuario;
+	private Rol selectedRol;
+	private Rolusuario selectedRolusuario;
 
 	private List<SelectItem> listarSexo;
 	private List<SelectItem> listarEstado;
 	private List<SelectItem> listarInstitucion;
+	private List<SelectItem> listarPerfil;
 
 	public UsuarioBean() {
 		this.usuarioDao = new UsuarioDaoImpl();
@@ -67,6 +72,22 @@ public class UsuarioBean implements Serializable {
 
 	public void setSelectedUsuario(Usuario selectedUsuario) {
 		this.selectedUsuario = selectedUsuario;
+	}
+
+	public Rol getSelectedRol() {
+		return selectedRol;
+	}
+
+	public void setSelectedRol(Rol selectedRol) {
+		this.selectedRol = selectedRol;
+	}
+
+	public Rolusuario getSelectedRolusuario() {
+		return selectedRolusuario;
+	}
+
+	public void setSelectedRolusuario(Rolusuario selectedRolusuario) {
+		this.selectedRolusuario = selectedRolusuario;
 	}
 
 	public List<SelectItem> getListarSexo() {
@@ -120,6 +141,26 @@ public class UsuarioBean implements Serializable {
 
 	public void setListarInstitucion(List<SelectItem> listarInstitucion) {
 		this.listarInstitucion = listarInstitucion;
+	}
+	
+	public List<SelectItem> getListarPerfil() {
+		
+		this.listarPerfil = new ArrayList<SelectItem>();
+		UsuarioDao usuarioDao = new UsuarioDaoImpl();
+		
+		List<Rol> r = usuarioDao.ListarPerfil(usuario);
+		listarPerfil.clear();
+		
+		for (Rol rol : r){
+			SelectItem rolItem = new SelectItem(rol.getCodigoRol(), rol.getDescripcionRol());
+			this.listarPerfil.add(rolItem);
+		}
+		
+		return listarPerfil;
+	}
+
+	public void setListarPerfil(List<SelectItem> listarPerfil) {
+		this.listarPerfil = listarPerfil;
 	}
 
 	public void verificarDatos() throws Exception {
@@ -212,6 +253,7 @@ public class UsuarioBean implements Serializable {
 		this.selectedUsuario.setInstitucion(institucion);*/
 
 		if (usuarioDao.grabarUsuario(this.selectedUsuario)) {
+			
 			msg = "Se creó correctamente el registro...";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
 			FacesContext.getCurrentInstance().addMessage(null, message);
@@ -252,6 +294,29 @@ public class UsuarioBean implements Serializable {
 		}
 	}
 
+	public void btnModificarPerfilUsuario() {
+		UsuarioDao usuarioDao = new UsuarioDaoImpl();
+		String msg;
+		Rolusuario ru = new Rolusuario();
+		Rol r = new Rol();
+		if (this.selectedUsuario.getPerfil().equals("1")) r.setCodigoRol(1);
+		if (this.selectedUsuario.getPerfil().equals("2")) r.setCodigoRol(2);	
+		ru.setCodigoRolUsuario(usuarioDao.buscarCodigoRolusuario(this.selectedUsuario));
+		ru.setRol(r);
+		ru.setUsuario(this.selectedUsuario);
+		this.selectedRolusuario = ru;
+
+		if (usuarioDao.modificarPerfilUsuario(this.selectedRolusuario)) {
+			msg = "Se modificó correctamente el registro...";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		} else {
+			msg = "Error al modificar el registro...";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+	}
+	
 	public void btnEliminarUsuario() {
 		UsuarioDao usuarioDao = new UsuarioDaoImpl();
 		String msg;

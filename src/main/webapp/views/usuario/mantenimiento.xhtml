@@ -3,7 +3,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -34,7 +35,6 @@
 				</h:form>
 				<div style="height: 5px" />
 				<h:form id="formDataTable">
-
 					<p:dataTable id="tablaMostrarUsuarios" var="usuario" emptyMessage="No hay datos de usuarios..." 
 						value="#{usuarioBean.listarUsuarios}" rows="10" paginator="true" draggableColumns="true"
 						 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -59,29 +59,25 @@
 							<h:outputText value="#{usuario.institucion.nombreInstitucion}" />
 						</p:column>
 						<p:column headerText="Perfil">
-							<h:outputText value="#{usuario.rolusuarios}" />
+							<h:outputText value="#{usuario.perfil}" />
 						</p:column>
 						<p:column headerText="Estado">
 							<h:outputText value="#{usuario.estado}" converter="estadoConverter" />
 						</p:column>
-						<p:column headerText="Opciones" style="width:100px;text-align: center">
+						<h:outputText value="#{usuarioBean.usuario.perfil}" />
+						<p:column headerText="Opciones" style="width:100px;text-align: center" rendered="#{usuarioBean.usuario.perfil != 'USUARIO'}">
 							<p:commandButton id="btnModificar" update=":formModificar" oncomplete="PF('dialogUsuarioModificar').show()"
-								icon="ui-icon-pencil" title="Modificar">
+								icon="ui-icon-pencil" title="Modificar" >
 								<f:setPropertyActionListener value="#{usuario}" target="#{usuarioBean.selectedUsuario}" />
 							</p:commandButton>
 							<p:commandButton id="btnDelete" update=":formEliminar" oncomplete="PF('dialogUsuarioEliminar').show()"
-								icon="ui-icon-trash" title="Eliminar">
+								icon="ui-icon-trash" title="Eliminar" >
 								<f:setPropertyActionListener value="#{usuario}" target="#{usuarioBean.selectedUsuario}" />
 							</p:commandButton>
-							<p:commandButton id="btnPerfil" update=":formEliminar" oncomplete="PF('dialogUsuarioEliminar').show()"
-								icon="ui-icon-person" title="Perfil">
-							</p:commandButton>							
-							<!-- 
-							<p:commandButton id="btnDelete" update=":formPerfil" oncomplete="PF('dialogUsuarioPerfil').show()"
-								icon="fa-user-plus" title="Perfil">
-								<f:setPropertyActionListener value="{usuario}" target="{usuarioBean.selectedUsuario}" />
+							<p:commandButton id="btnPerfil" update=":formModificarPerfil" oncomplete="PF('dialogUsuarioModificarPerfil').show()"
+								icon="ui-icon-person" title="Perfil" >
+								<f:setPropertyActionListener value="#{usuario}" target="#{usuarioBean.selectedUsuario}" />
 							</p:commandButton>
-							 -->
 						</p:column>
 					</p:dataTable>
 				</h:form>
@@ -232,6 +228,38 @@
 							icon="icon-cancel" />
 					</p:confirmDialog>
 				</h:form>
+
+				<h:form id="formModificarPerfil">
+					<h:inputHidden value="#{usuarioBean.selectedUsuario.codigoUsuario}"/>
+					<h:outputText value="#{usuarioBean.selectedUsuario.codigoUsuario}" />
+					<p:dialog header="Modificar Perfil Usuario" widgetVar="dialogUsuarioModificarPerfil"
+						modal="true" showEffect="fade" hideEffect="explode"
+						resizable="false" id="dlgUsuarioModificarPerfil">
+						<p:outputPanel id="usuarioDetailModificarPerfil" style="text-align:center;">
+							<p:panelGrid id="display" columns="2" cellpadding="4"
+								columnClasses="label,value">			
+								<h:outputText value="Perfil" />
+								<p:selectOneMenu id="perfil"
+									value="#{usuarioBean.selectedUsuario.perfil}">
+									<f:selectItem itemLabel="-- Seleccione --" />
+									<f:selectItems value="#{usuarioBean.listarPerfil}" />
+								</p:selectOneMenu>
+								<div style="height: 5px" />
+								<f:facet name="footer">
+									<p:commandButton id="btnModificarPerfilAceptar"
+										update=":formDataTable :msgs"
+										oncomplete="PF('dialogUsuarioModificarPerfil').hide()"
+										actionListener="#{usuarioBean.btnModificarPerfilUsuario}"
+										icon="icon-save" title="Guardar" value="Guardar Perfil" />
+									<p:commandButton id="btnModificarCancelar"
+										oncomplete="PF('dialogUsuarioModificarPerfil').hide()"
+										icon="icon-cancel" title="Cancelar" value="Cancelar" />
+								</f:facet>
+							</p:panelGrid>
+						</p:outputPanel>
+					</p:dialog>
+				</h:form>
+
 
 			</div>
 		</ui:define>

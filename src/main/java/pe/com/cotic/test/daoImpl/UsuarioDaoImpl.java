@@ -27,6 +27,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 	public Usuario verificarDatos(Usuario usuario) {
 
 		Usuario us = null;
+		List<Usuario> listarUsuarios = null;
 
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
@@ -34,17 +35,26 @@ public class UsuarioDaoImpl implements UsuarioDao {
 			if (usuario.getClave() == null) usuario.setClave("");			
 			
 			// hibernate query language
-			/*String hql = "FROM Usuario WHERE usuario = '"
-					+ usuario.getUsuario().toUpperCase() + "' and clave = '"
-					+ usuario.getClave().toUpperCase() + "'";*/
-			
-			String hql = "FROM Usuario WHERE correo=:user AND clave=:pass";			
+			String hql = "SELECT u, rr.rol.descripcionRol "
+					+	" FROM Usuario u " 
+					+	" 	INNER JOIN FETCH u.institucion i "
+					+	" 	INNER JOIN FETCH u.rolusuarios rr " 	  
+					+	" WHERE correo=:user AND clave=:pass";							
+			//String hql = "FROM Usuario WHERE correo=:user AND clave=:pass";			
 			Query query = session.createQuery(hql);
 			query.setString("user", usuario.getUsuario().toUpperCase());
 			query.setString("pass", Seguridad.fn_sEncrypting("PASSCANGA", usuario.getClave().toUpperCase()));
 			
 			if (!query.list().isEmpty()) {
-				us = (Usuario) query.list().get(0);
+				//us = (Usuario) query.list().get(0);				
+				List<Object[]> res = query.list();
+				for (Object[] elements: res){
+					us = (Usuario) elements[0];
+					if (elements[1] != null) {
+						us.setPerfil(elements[1].toString().trim().toUpperCase());
+					}					
+				}			
+				session.close();				
 			}
 			
 			/*Query query1 = session.createSQLQuery(
@@ -93,21 +103,13 @@ public class UsuarioDaoImpl implements UsuarioDao {
 	@Override
 	public List<Usuario> ListarUsuarios() {
 
-		List<Usuario> listarUsuarios = null;
+		/*List<Usuario> listarUsuarios = null;
 		Usuario usuario = null;
 		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
-		// hibernate query language [FROM Usuario as u INNER JOIN FETCH
-		// u.usuariocursos LEFT JOIN FETCH u.usuariodispositivos]
 		String hql = "FROM Usuario AS usu INNER JOIN FETCH usu.institucion AS ins "
-				+	" WHERE usu.estado = 1 AND ins.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion();
-		
-		/*String hql = "SELECT u, ru "
-				+	" FROM Usuario u "
-				+	" 	INNER JOIN FETCH u.institucion i "
-				+	"	INNER JOIN FETCH u.rolusuarios ru " 
-				+	" WHERE u.estado = 1 AND i.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion();*/ 
+				+	" WHERE usu.estado = 1 AND ins.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion(); 
 				
 		try {
 			listarUsuarios = session.createQuery(hql).list();
@@ -118,20 +120,21 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			transaction.rollback();
-		}
+		}*/
 
 		
 /* ************************************************** */
-		/*List<Usuario> listarUsuarios1 = null;
+		List<Usuario> listarUsuarios1 = null;
 		Usuario usuario = null;
 		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
 
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction1 = session.beginTransaction();
-		String hql1 = "SELECT usu, (SELECT r.rol.descripcionRol FROM Rolusuario r WHERE r.usuario.codigoUsuario = usu.codigoUsuario) AS descripcionRol "
-				+	" FROM Usuario usu " 
-				+	" 	INNER JOIN FETCH usu.institucion ins "
-				+	" WHERE usu.estado = 1 AND ins.codigoInstitucion =" + usuario.getInstitucion().getCodigoInstitucion();		
+		String hql1 = "SELECT u, rr.rol.descripcionRol "
+				+	" FROM Usuario u " 
+				+	" 	INNER JOIN FETCH u.institucion i "
+				+	" 	INNER JOIN FETCH u.rolusuarios rr " 	  
+				+	" WHERE u.estado = 1 AND i.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion();		
 		
 		try {
 			
@@ -143,7 +146,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 				Usuario usu = new Usuario();
 				usu = (Usuario) elements[0];
 				if (elements[1] != null) {
-					usu.setPerfil(elements[1].toString());
+					usu.setPerfil(elements[1].toString().trim().toUpperCase());
 				}
 				listarUsuarios1.add(usu);
 			}
@@ -154,10 +157,10 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			transaction1.rollback();
-		}*/
+		}
 		
 		
-		return listarUsuarios;
+		return listarUsuarios1;
 	}
 
 	@Override
@@ -234,6 +237,68 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		}
 		
 		return listarInstituciones;
+	}
+
+	@Override
+	public List<Rol> ListarPerfil(Usuario usuario) {
+		List<Rol> listarRol = null;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		String hql = "FROM Rol ";
+
+		try {
+			listarRol = session.createQuery(hql).list();
+			transaction.commit();
+			session.close();
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			transaction.rollback();
+		}
+		
+		return listarRol;
+	}
+
+	@Override
+	public boolean modificarPerfilUsuario(Rolusuario rolusuario) {
+		boolean flag = false;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.update(rolusuario);
+			transaction.commit();
+			session.close();
+			flag = true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			flag = false;
+			transaction.rollback();
+		}
+		return flag;
+	}
+
+	@Override
+	public int buscarCodigoRolusuario(Usuario usuario) {
+
+		int codigoRolUsuario = 0;
+		List<Rolusuario> listarRolusuario = null;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		String hql = "FROM Rolusuario ru "
+				+	" WHERE ru.usuario.codigoUsuario = " + usuario.getCodigoUsuario(); 
+				
+		try {
+			listarRolusuario = session.createQuery(hql).list();
+
+			codigoRolUsuario = listarRolusuario.get(0).getCodigoRolUsuario();
+			transaction.commit();
+			session.close();
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			transaction.rollback();
+		}
+		return codigoRolUsuario;
 	}
 
 }

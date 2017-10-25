@@ -29,6 +29,7 @@ public class Usuario implements java.io.Serializable {
 	private String usuarioModificacion;
 	private Date fechaModificacion;
 	private String sexo;
+	private String perfil;
 	private Set rolusuarios = new HashSet(0);
 	private Set usuariodispositivos = new HashSet(0);
 	private Set usuarioportafolios = new HashSet(0);
@@ -57,7 +58,7 @@ public class Usuario implements java.io.Serializable {
 			String nombres, Date fechaNacimiento, String correo,
 			String telefono, String celular, int estado,
 			String usuarioCreacion, Date fechaCreacion,
-			String usuarioModificacion, Date fechaModificacion, String sexo,
+			String usuarioModificacion, Date fechaModificacion, String sexo, String perfil,
 			Set rolusuarios, Set usuariodispositivos, Set usuarioportafolios,
 			Set respuestacabeceras) {
 		this.institucion = institucion;
@@ -77,6 +78,7 @@ public class Usuario implements java.io.Serializable {
 		this.usuarioModificacion = usuarioModificacion;
 		this.fechaModificacion = fechaModificacion;
 		this.sexo = sexo;
+		this.perfil = perfil;
 		this.rolusuarios = rolusuarios;
 		this.usuariodispositivos = usuariodispositivos;
 		this.usuarioportafolios = usuarioportafolios;
@@ -225,6 +227,14 @@ public class Usuario implements java.io.Serializable {
 
 	public void setSexo(String sexo) {
 		this.sexo = sexo;
+	}
+
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
 	}
 
 	public Set getRolusuarios() {
