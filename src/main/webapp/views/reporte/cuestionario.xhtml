@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head></h:head> 
+<body> 
+<ui:composition template="./../../template/plantilla.xhtml">
+		<ui:define name="top">
+			<h:form rendered="#{usuarioBean.verificarSesion()}">
+				<ui:include src="/views/cabecera.xhtml" />
+			</h:form>
+		</ui:define>
+	
+		<ui:define name="content">
+			<div style="height: 15px"></div>
+			<div style="height: 800px">
+				<p:growl id="msgs" showDetail="true" />				
+				<div style="height: 5px" />
+				<h:form id="formDataTable">
+
+					<p:dataTable id="tablaMostrarCursosPuestos" var="cursosPuestos" emptyMessage="No hay datos de cursos..." 
+						value="#{reporteUsuariosCursosBean.listarReporteUsuariosCursosPuestos}" rows="20" paginator="true" draggableColumns="true"
+						 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="20,25,30">
+						<f:facet name="header">
+					        REPORTE GENERAL DE USUARIOS / CURSOS					 
+					        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+					        <p:columnToggler datasource="tablaMostrarCursosPuestos" trigger="toggler" />			
+					    </f:facet>
+						<p:column style="width:16px">
+				            <p:rowToggler />
+				        </p:column>					    
+						<p:column headerText="Usuario" style="width:300px;text-align: center">
+							<h:outputText value="#{cursosPuestos.fullNombre}" />
+						</p:column>
+						<p:column headerText="Cuestionarios" style="width:50px;text-align: center">
+							<h:outputText value="#{cursosPuestos.totalCuestionarios}" />
+						</p:column>
+						<p:column headerText="Ubicación Alta" style="text-align: center">
+							<h:outputText value="#{cursosPuestos.ubicacionPrimera}">
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Ubicación Baja" style="text-align: center">
+							<h:outputText value="#{cursosPuestos.ubicacionUltima}">
+							</h:outputText>
+						</p:column>				
+					</p:dataTable>
+				</h:form>				
+
+			</div>
+		</ui:define>
+		
+		<ui:define name="bottom">
+			<h:form rendered="#{usuarioBean.verificarSesion()}">
+				<ui:include src="/views/pie.xhtml" />
+			</h:form>
+		</ui:define>		
+	</ui:composition>
+</body> 
+</html>

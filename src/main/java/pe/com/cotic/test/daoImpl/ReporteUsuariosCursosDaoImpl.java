@@ -9,8 +9,11 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 
+
+
 import pe.com.cotic.test.dao.ReporteUsuariosCursosDao;
 import pe.com.cotic.test.modelo.Reporteusuarioscursos;
+import pe.com.cotic.test.modelo.Reporteusuarioscursospuestos;
 import pe.com.cotic.test.modelo.Usuario;
 import pe.com.cotic.test.util.HibernateUtil;
 
