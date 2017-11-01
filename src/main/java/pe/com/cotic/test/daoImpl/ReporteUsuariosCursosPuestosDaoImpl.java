@@ -24,7 +24,7 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 	private Session session;
 	
 	@Override
-	public List<Reporteusuarioscursospuestos> listarReporteUsuariosCursosPuestos() {
+	public List<Reporteusuarioscursospuestos> listarReporteUsuariosCursosPuestosxxx() {
 		
 		Usuario usuario = null;
 		Usuarioportafolio usuarioPortafolio = null;
@@ -97,29 +97,46 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 				}
 				
 				System.out.println(listarUsuariosPuestos.size());
-				int correctas = 0, incorrectas = 0;
 				int totalPreguntas = 0;
-				List<Usuariospuesto> listarUsuarioPuesto = new ArrayList<Usuariospuesto>();
-				for (int b=0; b<listarUsuariosPuestos.size(); b++) {
-					Usuariospuesto up = new Usuariospuesto();
-					up.setCodigoUsuario(listarUsuariosPuestos.get(b).getCodigoUsuario());
-					up.setCodigoPortafolio(listarUsuariosPuestos.get(b).getCodigoPortafolio());
-					up.setCodigoRespuestaCabecera(listarUsuariosPuestos.get(b).getCodigoRespuestaCabecera());
-					up.setCodigoRespuestaDetalle(listarUsuariosPuestos.get(b).getCodigoRespuestaDetalle());
-					up.setCodigoPregunta(listarUsuariosPuestos.get(b).getCodigoPregunta());
-					up.setCodigoAlternativa(listarUsuariosPuestos.get(b).getCodigoAlternativa());
-					up.setFlagAlternativa(listarUsuariosPuestos.get(b).getFlagAlternativa());
-					if (totalPreguntas == 0) {
-						listarUsuarioPuesto.add(up);
-						totalPreguntas++;
-					} else if (up.getCodigoUsuario()==listarUsuariosPuestos.get(b-1).getCodigoUsuario()) {
-						listarUsuarioPuesto.add(up);
-						totalPreguntas++;
+				List<Usuariospuesto> listarUsuario = new ArrayList<Usuariospuesto>();
+				for (int j=0; j<listarUsuariosPuestos.size(); j++) {
+					Usuariospuesto usupue = new Usuariospuesto();
+					usupue.setCodigoUsuario(listarUsuariosPuestos.get(j).getCodigoUsuario());
+					if (listarUsuario.size()==0){
+						listarUsuario.add(usupue);
 					} else {
-						//System.out.println(Collections.max(listarUsuarioPuesto));
-						listarUsuarioPuesto = new ArrayList<Usuariospuesto>();
-						totalPreguntas = 0;
+						int Contador = 0;
+						for (int k=0; k<listarUsuario.size(); k++) {
+							if (listarUsuariosPuestos.get(j).getCodigoUsuario() == listarUsuario.get(k).getCodigoUsuario()) {
+								Contador++;								
+							}
+						}
+						if (Contador == 0 && usupue != null) {
+							listarUsuario.add(usupue);
+						}
 					}
+				}
+				System.out.println("Total de Usuarios: " + listarUsuario.size());
+				
+				
+				for (int b=0; b<listarUsuario.size(); b++){
+					List<Usuariospuesto> listarUsuarioPuesto = new ArrayList<Usuariospuesto>();					
+					for (int c=0; c<listarUsuariosPuestos.size(); c++) {
+						Usuariospuesto up = new Usuariospuesto();
+						up.setCodigoUsuario(listarUsuariosPuestos.get(c).getCodigoUsuario());
+						up.setCodigoPortafolio(listarUsuariosPuestos.get(c).getCodigoPortafolio());
+						up.setCodigoRespuestaCabecera(listarUsuariosPuestos.get(c).getCodigoRespuestaCabecera());
+						up.setCodigoRespuestaDetalle(listarUsuariosPuestos.get(c).getCodigoRespuestaDetalle());
+						up.setCodigoPregunta(listarUsuariosPuestos.get(c).getCodigoPregunta());
+						up.setCodigoAlternativa(listarUsuariosPuestos.get(c).getCodigoAlternativa());
+						up.setFlagAlternativa(listarUsuariosPuestos.get(c).getFlagAlternativa());
+						if ( (listarUsuario.get(b).getCodigoUsuario() == up.getCodigoUsuario()) && (up != null) && (up.getFlagAlternativa()==1) ) {
+							listarUsuarioPuesto.add(up);
+						}
+					}
+					
+					System.out.println("Total de Usuario para Puesto [" + listarUsuario.get(b).getCodigoUsuario() + " - " + listarUsuarioPuesto.size() + "]");
+					
 				}
 				System.out.println(listarUsuariosPuestos.get(0).getCodigoUsuario());
 				
@@ -143,6 +160,84 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 
 		
 		return listarReporteUsuariosCursosPuestos;
+	}
+
+
+	@Override
+	public List<Reporteusuarioscursospuestos> listarReporteUsuariosCursosPuestos() {
+
+		Usuario usuario = null;
+		Usuarioportafolio usuarioPortafolio = null;
+		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+		List<Reporteusuarioscursospuestos> listarReporteUsuariosCursosPuestos = null;
+		//List<Usuariospuesto> listarUsuariosPuestos = null;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		String hql = "SELECT rc.usuario.codigoUsuario as codigoUsuario, rc.portafolio.codigoPortafolio as codigoPortafolio, count(rd.flagAlternativaCorrecta) as total "
+				+	" FROM Respuestacabecera rc " 
+				+	" 	INNER JOIN rc.respuestadetalles rd " 
+				+	" WHERE rd.flagAlternativaCorrecta = 1 "
+				+	" GROUP BY rc.usuario.codigoUsuario, rc.portafolio.codigoPortafolio "
+				+	" ORDER BY rc.portafolio.codigoPortafolio, count(rd.flagAlternativaCorrecta) desc";
+		try {
+			Query query = session.createQuery(hql);
+			List<Usuariospuesto> listarUsuarioPuesto = new ArrayList<Usuariospuesto>();
+			List<Usuariospuesto> listarUsuario = new ArrayList<Usuariospuesto>();
+			List<Object[]> res = query.list();
+			int contadorPuesto=1;
+			for (Object[] elements: res){
+				Usuariospuesto up = new Usuariospuesto();
+				up.setCodigoUsuario(Integer.parseInt(elements[0].toString()));
+				up.setCodigoPortafolio(Integer.parseInt(elements[1].toString()));
+				up.setTotal(Integer.parseInt(elements[2].toString()));
+				if (listarUsuarioPuesto.size()==0) {
+					up.setPuestoUsuario(contadorPuesto++);
+					listarUsuarioPuesto.add(up);
+				} else if (listarUsuarioPuesto.get(listarUsuarioPuesto.size()-1).getCodigoPortafolio()==Integer.parseInt(elements[1].toString())) {
+					up.setPuestoUsuario(contadorPuesto++);
+					listarUsuarioPuesto.add(up);
+				} else if (listarUsuarioPuesto.get(listarUsuarioPuesto.size()-1).getCodigoPortafolio()!=Integer.parseInt(elements[1].toString())) {
+					contadorPuesto=1;
+					up.setPuestoUsuario(contadorPuesto++);
+					listarUsuarioPuesto.add(up);
+				} else {					
+					contadorPuesto=1;
+				}
+				if (listarUsuario.size()==0){
+					listarUsuario.add(up);
+				} else {
+					int contador=0;
+					for (int usu=0; usu<listarUsuario.size(); usu++) {
+						if (listarUsuario.get(usu).getCodigoUsuario()==up.getCodigoUsuario()) {
+							contador++;
+						}
+					}
+					if (contador==0) {
+						listarUsuario.add(up);
+					}					
+				}
+				
+			}
+			
+			for (int a=0; a<listarUsuarioPuesto.size(); a++) {				
+				if (a==0) {
+					System.out.println("----------------------------------------------");	
+				} else if (listarUsuarioPuesto.get(a).getCodigoPortafolio()!=listarUsuarioPuesto.get(a-1).getCodigoPortafolio()) {
+					System.out.println("----------------------------------------------");
+				}
+				System.out.println("[" + listarUsuarioPuesto.get(a).getCodigoPortafolio() + "] [" + listarUsuarioPuesto.get(a).getPuestoUsuario() + "] [" + listarUsuarioPuesto.get(a).getCodigoUsuario() + "]");
+			}
+			
+			transaction.commit();
+			session.close();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			transaction.rollback();
+		}
+
+		
+		return listarReporteUsuariosCursosPuestos;
+
 	}
 
 

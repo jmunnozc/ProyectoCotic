@@ -9,6 +9,8 @@ public class Usuariospuesto {
 	private Integer codigoPregunta;
 	private Integer codigoAlternativa;
 	private Integer flagAlternativa;
+	private Integer total;
+	private Integer puestoUsuario;
 	
 	public Integer getCodigoUsuario() {
 		return codigoUsuario;
@@ -64,6 +66,22 @@ public class Usuariospuesto {
 	
 	public void setFlagAlternativa(Integer flagAlternativa) {
 		this.flagAlternativa = flagAlternativa;
+	}
+
+	public Integer getTotal() {
+		return total;
+	}
+
+	public void setTotal(Integer total) {
+		this.total = total;
+	}
+
+	public Integer getPuestoUsuario() {
+		return puestoUsuario;
+	}
+
+	public void setPuestoUsuario(Integer puestoUsuario) {
+		this.puestoUsuario = puestoUsuario;
 	}
 	
 }
