@@ -286,8 +286,8 @@ public class ReporteCursosDaoImpl implements ReporteCursoDao {
 				rd.setCorrectas(Integer.parseInt(elements[7].toString()));
 				rd.setIncorrectas(Integer.parseInt(elements[8].toString()));
 				
-				System.out.println("Detalle de Reporte: " + res.size());
-				System.out.println("Dato1 : " + elements[0].toString());
+				/*System.out.println("Detalle de Reporte: " + res.size());
+				System.out.println("Dato1 : " + elements[0].toString());*/
 				
 				listarReporteCursosDetalle.add(rd);
 			}								

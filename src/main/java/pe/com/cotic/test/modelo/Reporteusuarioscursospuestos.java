@@ -1,12 +1,19 @@
 package pe.com.cotic.test.modelo;
 
 public class Reporteusuarioscursospuestos {
+	private Integer codigoUsuario;
 	private String fullNombre;
 	private Integer totalCuestionarios;
 	private Integer ubicacionPrimera;
 	private Integer ubicacionUltima;
 	private Integer noCumplimiento;
-	
+
+	public Integer getCodigoUsuario() {
+		return codigoUsuario;
+	}
+	public void setCodigoUsuario(Integer codigoUsuario) {
+		this.codigoUsuario = codigoUsuario;
+	}
 	public String getFullNombre() {
 		return fullNombre;
 	}

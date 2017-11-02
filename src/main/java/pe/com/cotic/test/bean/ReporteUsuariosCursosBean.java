@@ -4,12 +4,18 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 
+import pe.com.cotic.test.dao.ReporteCursoDao;
 import pe.com.cotic.test.dao.ReporteUsuariosCursosDao;
 import pe.com.cotic.test.dao.ReporteUsuariosCursosPuestosDao;
+import pe.com.cotic.test.daoImpl.ReporteCursosDaoImpl;
 import pe.com.cotic.test.daoImpl.ReporteUsuariosCursosDaoImpl;
 import pe.com.cotic.test.daoImpl.ReporteUsuariosCursosPuestosDaoImpl;
+import pe.com.cotic.test.modelo.Reportecurso;
+import pe.com.cotic.test.modelo.Reportecursodetalle;
 import pe.com.cotic.test.modelo.Reporteusuarioscursos;
 import pe.com.cotic.test.modelo.Reporteusuarioscursospuestos;
 
@@ -65,5 +71,4 @@ public class ReporteUsuariosCursosBean implements Serializable {
 		this.listarReporteUsuariosCursosPuestos = listarReporteUsuariosCursosPuestos;
 	}
 	
-
 }

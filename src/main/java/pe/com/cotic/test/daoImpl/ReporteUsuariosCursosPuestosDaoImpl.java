@@ -3,7 +3,9 @@ package pe.com.cotic.test.daoImpl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.faces.context.FacesContext;
 
@@ -13,9 +15,14 @@ import org.hibernate.Transaction;
 
 import pe.com.cotic.test.dao.ReporteUsuariosCursosPuestosDao;
 import pe.com.cotic.test.modelo.Institucion;
+import pe.com.cotic.test.modelo.Portafolio;
+import pe.com.cotic.test.modelo.Reportecurso;
+import pe.com.cotic.test.modelo.Reportecursodetalle;
+import pe.com.cotic.test.modelo.Reporteusuarioscursos;
 import pe.com.cotic.test.modelo.Reporteusuarioscursospuestos;
 import pe.com.cotic.test.modelo.Usuario;
 import pe.com.cotic.test.modelo.Usuarioportafolio;
+import pe.com.cotic.test.modelo.Usuarioscursos;
 import pe.com.cotic.test.modelo.Usuariospuesto;
 import pe.com.cotic.test.util.HibernateUtil;
 
@@ -29,7 +36,7 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 		Usuario usuario = null;
 		Usuarioportafolio usuarioPortafolio = null;
 		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
-		List<Reporteusuarioscursospuestos> listarReporteUsuariosCursosPuestos = null;
+		List<Reporteusuarioscursospuestos> listarReporteUsuariosCursosPuestos = new ArrayList<Reporteusuarioscursospuestos>();
 		//List<Usuariospuesto> listarUsuariosPuestos = null;
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
@@ -169,14 +176,14 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 		Usuario usuario = null;
 		Usuarioportafolio usuarioPortafolio = null;
 		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
-		List<Reporteusuarioscursospuestos> listarReporteUsuariosCursosPuestos = null;
+		List<Reporteusuarioscursospuestos> listarReporteUsuariosCursosPuestos = new ArrayList<Reporteusuarioscursospuestos>();
 		//List<Usuariospuesto> listarUsuariosPuestos = null;
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
 		String hql = "SELECT rc.usuario.codigoUsuario as codigoUsuario, rc.portafolio.codigoPortafolio as codigoPortafolio, count(rd.flagAlternativaCorrecta) as total "
 				+	" FROM Respuestacabecera rc " 
 				+	" 	INNER JOIN rc.respuestadetalles rd " 
-				+	" WHERE rd.flagAlternativaCorrecta = 1 "
+				+	" WHERE rd.flagAlternativaCorrecta = 1 AND rc.usuario.institucion.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion()
 				+	" GROUP BY rc.usuario.codigoUsuario, rc.portafolio.codigoPortafolio "
 				+	" ORDER BY rc.portafolio.codigoPortafolio, count(rd.flagAlternativaCorrecta) desc";
 		try {
@@ -219,13 +226,51 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 				
 			}
 			
-			for (int a=0; a<listarUsuarioPuesto.size(); a++) {				
+			/*for (int a=0; a<listarUsuarioPuesto.size(); a++) {				
 				if (a==0) {
 					System.out.println("----------------------------------------------");	
 				} else if (listarUsuarioPuesto.get(a).getCodigoPortafolio()!=listarUsuarioPuesto.get(a-1).getCodigoPortafolio()) {
 					System.out.println("----------------------------------------------");
 				}
 				System.out.println("[" + listarUsuarioPuesto.get(a).getCodigoPortafolio() + "] [" + listarUsuarioPuesto.get(a).getPuestoUsuario() + "] [" + listarUsuarioPuesto.get(a).getCodigoUsuario() + "]");
+			}*/
+			
+			for (int j=0; j<listarUsuario.size();j++) {
+				//System.out.println("Usuario: " + listarUsuario.get(j).getCodigoUsuario());
+				List<Usuariospuesto> listarUsuariosPuestos = new ArrayList<Usuariospuesto>();
+				for (int k=0; k<listarUsuarioPuesto.size(); k++) {
+					Usuariospuesto upo = new Usuariospuesto();
+					upo.setCodigoUsuario(listarUsuarioPuesto.get(k).getCodigoUsuario());
+					upo.setCodigoPortafolio(listarUsuarioPuesto.get(k).getCodigoPortafolio());
+					upo.setPuestoUsuario(listarUsuarioPuesto.get(k).getPuestoUsuario());
+					if (listarUsuario.get(j).getCodigoUsuario() == listarUsuarioPuesto.get(k).getCodigoUsuario()) {						
+						//System.out.println("Codigo1: " + listarUsuario.get(j).getCodigoUsuario() + " Codigo2: " + listarUsuarioPuesto.get(k).getCodigoUsuario() + " Puesto: " + listarUsuarioPuesto.get(k).getCodigoPortafolio() + " - " + listarUsuarioPuesto.get(k).getPuestoUsuario());
+						listarUsuariosPuestos.add(upo);
+					}
+				}
+				Set<Integer> hs = new HashSet<Integer>();
+				for (int l=0; l<listarUsuariosPuestos.size(); l++) {
+					hs.add(listarUsuariosPuestos.get(l).getPuestoUsuario());					
+				}
+				
+				
+				String hql2 = "SELECT u.codigoUsuario as codigoUsuario, concat(concat(concat(concat(u.apellidoPaterno,' '),u.apellidoMaterno),', '),u.nombres) as fullNombre, count(p.portafolioByCodigoPortafolio.codigoPortafolio) as portafolios "
+						+	" FROM Usuario u INNER JOIN u.usuarioportafolios p " 
+						+	" WHERE u.institucion.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion()
+						+ 	" 	AND p.nivel.codigoNivel = 3 AND u.codigoUsuario = " + listarUsuario.get(j).getCodigoUsuario() 
+						+	" GROUP BY u.codigoUsuario, u.apellidoPaterno, u.apellidoMaterno, u.nombres";
+				Query query2 = session.createQuery(hql2);				
+				List<Object[]> res2 = query2.list();
+				for (Object[] elements2: res2){
+					Reporteusuarioscursospuestos ucu = new Reporteusuarioscursospuestos();
+					ucu.setCodigoUsuario(Integer.parseInt(elements2[0].toString()));
+					ucu.setFullNombre(elements2[1].toString());
+					ucu.setTotalCuestionarios(Integer.parseInt(elements2[2].toString()));
+					ucu.setUbicacionPrimera(Collections.min(hs));
+					ucu.setUbicacionUltima(Collections.max(hs));
+					listarReporteUsuariosCursosPuestos.add(ucu);
+				}
+				//System.out.println("Usuario[" + listarUsuariosPuestos.get(j).getCodigoUsuario() + "] top[" + Collections.min(hs) + "] bottom[" + Collections.max(hs) + "]");
 			}
 			
 			transaction.commit();
@@ -238,6 +283,93 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 		
 		return listarReporteUsuariosCursosPuestos;
 
+	}
+
+
+	@Override
+	public List<Reporteusuarioscursos> listarReporteUsuariosCursos() {
+		List<Reporteusuarioscursos> listarReporteUsuariosCursos = null;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		Usuario usuario = null;
+		String hql = "";
+		
+		String administrador = System.getProperty("usuario_administrador") != null ? System.getProperty("usuario_administrador") : "";
+		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+
+		hql = "FROM Reporteusuarioscursos AS r "
+			+ " WHERE r.codigoInstitucion =" + usuario.getInstitucion().getCodigoInstitucion()
+			+ " 	AND r.codigoUsuario = " + usuario.getCodigoUsuario()
+			+ " ORDER BY r.tituloPortafolio, r.nombreUsuarioFull, r.fechaRespuesta ";
+				
+		try {
+			listarReporteUsuariosCursos = session.createQuery(hql).list();
+			transaction.commit();
+			session.close();
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			transaction.rollback();
+		}
+		
+		return listarReporteUsuariosCursos;
+	}
+
+
+	@Override
+	public List<Reportecursodetalle> ListarReporteUsuariosCursosDetalle(int codigoUsuario) {
+		
+		List<Reportecursodetalle> listarReporteUsuariosCursosDetalle = null;
+		Usuario usuario = null;		
+		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		
+		String administrador = System.getProperty("usuario_administrador") != null ? System.getProperty("usuario_administrador") : "";
+		String hql = "";
+		hql = "SELECT c.portafolio.codigoPortafolio as codigoPortafolio, c.usuario.codigoUsuario as codigoUsuario, c.usuario.nombres as nombres, c.usuario.apellidoPaterno as apellidoPaterno, c.usuario.apellidoMaterno as apellidoMaterno, "  
+			+	"	(select por.tituloPortafolio from Portafolio AS por where por.codigoPortafolio = c.portafolio.codigoPortafolio) AS tituloPortafolio, "
+			+	"	c.fechaRespuesta as fechaRespuesta, "
+			+	"	SUM((case when d.flagAlternativaCorrecta = 1 then 1 else 0 end)) as correctas, " 
+			+	"	SUM((case when d.flagAlternativaCorrecta = 0 then 1 else 0 end)) as incorrectas " 
+			+	"FROM Respuestacabecera as c LEFT JOIN c.respuestadetalles as d " 
+			+	"WHERE c.usuario.institucion.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion()
+			+	" 	AND c.usuario.codigoUsuario = " + codigoUsuario
+			+	"GROUP BY c.portafolio.codigoPortafolio, c.usuario.codigoUsuario, c.usuario.nombres, c.usuario.apellidoPaterno, c.usuario.apellidoMaterno, c.fechaRespuesta";		
+		try {
+			Query query = session.createQuery(hql);
+			List<Object[]> res = query.list();
+
+			listarReporteUsuariosCursosDetalle = new ArrayList<Reportecursodetalle>();			
+			for (Object[] elements: res){
+				Reportecursodetalle rd = new Reportecursodetalle();
+				Portafolio p = new Portafolio();
+				Usuario u = new Usuario();
+				p.setCodigoPortafolio(Integer.parseInt(elements[0].toString()));
+				p.setTituloPortafolio(elements[5].toString());
+				rd.setPortafolio(p);
+				u.setCodigoUsuario(Integer.parseInt(elements[1].toString()));
+				u.setNombres(elements[2].toString());
+				u.setApellidoPaterno(elements[3].toString());
+				u.setApellidoMaterno(elements[4].toString());
+				rd.setUsuario(u);
+				rd.setCorrectas(Integer.parseInt(elements[7].toString()));
+				rd.setIncorrectas(Integer.parseInt(elements[8].toString()));
+				
+				/*System.out.println("Detalle de Reporte: " + res.size());
+				System.out.println("Dato1 : " + elements[0].toString());*/
+				
+				listarReporteUsuariosCursosDetalle.add(rd);
+			}								
+			session.close();		
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			transaction.rollback();
+		}
+
+		
+		return listarReporteUsuariosCursosDetalle;
 	}
 
 

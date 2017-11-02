@@ -29,10 +29,22 @@
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15">
 						<f:facet name="header">
-					        REPORTE GENERAL					 
-					        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />
+					        REPORTE GENERAL
+					        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />					        
 					        <p:columnToggler datasource="tablaMostrarReporte" trigger="toggler" />
+					        <h:commandLink id="excel">
+						        <p:graphicImage url="#{appBean.baseUrl}/resources/images/excel_32x32.png" />
+						        <p:dataExporter type="xls" target="tablaMostrarReporte" fileName="canga" />
+						    </h:commandLink>
+						    <!-- 
+						  	<p:spacer height="20" />
+						    <h:commandLink id="pdf">
+						        <p:graphicImage url="{appBean.baseUrl}/resources/images/pdf_32x32.png" />
+						        <p:dataExporter type="pdf" target="tablaMostrarReporte" fileName="canga" />
+						    </h:commandLink>
+						     -->  
 					    </f:facet>
+
 						<p:column headerText="Cuestionario" style="width:100px;text-align: center">
 							<h:outputText value="#{reporte.tituloPortafolio}" />
 						</p:column>					    
@@ -64,6 +76,7 @@
 							<h:outputText value="#{reporte.porcentajeNocontestadas}" />
 						</p:column>						
 					</p:dataTable>
+
 				</h:form>
 
 <!--

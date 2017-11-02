@@ -46,7 +46,34 @@
 						<p:column headerText="Ubicación Baja" style="text-align: center">
 							<h:outputText value="#{cursosPuestos.ubicacionUltima}">
 							</h:outputText>
-						</p:column>				
+						</p:column>
+						<p:column headerText="Cumplimiento" style="text-align: center">
+						</p:column>
+						
+						<p:rowExpansion>
+			                <f:facet name="header">DETALLE DE LOS USUARIOS</f:facet>
+		                	<p:growl id="msgsCursos" showDetail="true" />
+		                	<p:panelGrid id="display" columns="2" cellpadding="2" columnClasses="label,value" >
+ 
+								<p:dataTable id="tablaMostrarDetalle" var="cursosdetalle" value="#{reporteUsuariosCursosDetalleBean.btnBuscarReporteCursoDetalle(cursosPuestos)}" style="width:600px" emptyMessage="No hay datos del detalle de cursos...">
+									<p:column headerText="Curso">
+										<h:outputText value="#{cursosdetalle.portafolio.tituloPortafolio} " />
+									</p:column>
+									<p:column headerText="Respuesta Correcta" style="width:200px;text-align: center">
+										<h:outputText value="#{cursosdetalle.correctas} " />
+									</p:column>
+									<p:column headerText="Respuesta Incorrecta" style="width:200px;text-align: center">
+										<h:outputText value="#{cursosdetalle.incorrectas} " />
+									</p:column>
+								</p:dataTable>
+								<!-- 
+								<p:fieldset legend="Respuestas Realizadas">
+									<p:chart type="pie" model="{respuestaDetalleBean.model}"/>
+								</p:fieldset>
+								 -->
+							</p:panelGrid>
+				        </p:rowExpansion>	
+						
 					</p:dataTable>
 				</h:form>				
 

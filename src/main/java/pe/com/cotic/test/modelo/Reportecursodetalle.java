@@ -6,6 +6,10 @@ public class Reportecursodetalle {
 	private Usuario usuario;
 	private Integer correctas;
 	private Integer incorrectas;
+	private Integer nocontestadas;
+	private Integer intentos;
+	private Integer puestos;
+	private Integer cumplimiento;
 	
 	public Portafolio getPortafolio() {
 		return portafolio;
@@ -31,5 +35,29 @@ public class Reportecursodetalle {
 	public void setIncorrectas(Integer incorrectas) {
 		this.incorrectas = incorrectas;
 	}
-
+	public Integer getNocontestadas() {
+		return nocontestadas;
+	}
+	public void setNocontestadas(Integer nocontestadas) {
+		this.nocontestadas = nocontestadas;
+	}
+	public Integer getIntentos() {
+		return intentos;
+	}
+	public void setIntentos(Integer intentos) {
+		this.intentos = intentos;
+	}
+	public Integer getPuestos() {
+		return puestos;
+	}
+	public void setPuestos(Integer puestos) {
+		this.puestos = puestos;
+	}
+	public Integer getCumplimiento() {
+		return cumplimiento;
+	}
+	public void setCumplimiento(Integer cumplimiento) {
+		this.cumplimiento = cumplimiento;
+	}
+	
 }
