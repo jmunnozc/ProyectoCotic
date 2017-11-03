@@ -10,6 +10,7 @@ public class Reportecursodetalle {
 	private Integer intentos;
 	private Integer puestos;
 	private Integer cumplimiento;
+	private Integer preguntas;
 	
 	public Portafolio getPortafolio() {
 		return portafolio;
@@ -58,6 +59,12 @@ public class Reportecursodetalle {
 	}
 	public void setCumplimiento(Integer cumplimiento) {
 		this.cumplimiento = cumplimiento;
+	}
+	public Integer getPreguntas() {
+		return preguntas;
+	}
+	public void setPreguntas(Integer preguntas) {
+		this.preguntas = preguntas;
 	}
 	
 }

@@ -13,6 +13,7 @@ public interface UsuarioDao {
 	public Usuario verificarDatosSP(Usuario usuario);
 	public List<Usuario> ListarUsuarios();
 	public boolean grabarUsuario(Usuario usuario);
+	public boolean grabarRolUsuario(Rolusuario rolusuario);
 	public boolean modificarUsuario(Usuario usuario);
 	public boolean eliminarUsuario(Usuario usuario);
 	public boolean modificarPerfilUsuario(Rolusuario rolusuario);

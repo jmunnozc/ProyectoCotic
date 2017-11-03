@@ -301,4 +301,23 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		return codigoRolUsuario;
 	}
 
+	@Override
+	public boolean grabarRolUsuario(Rolusuario rolusuario) {
+		boolean flag = false;		
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			
+			session.save(rolusuario);
+			transaction.commit();
+			session.close();
+			flag = true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			flag = false;
+			transaction.rollback();
+		}
+		return flag;
+	}
+
 }

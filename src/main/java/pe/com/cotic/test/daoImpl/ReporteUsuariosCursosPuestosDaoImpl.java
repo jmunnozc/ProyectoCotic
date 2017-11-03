@@ -326,8 +326,10 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 		Transaction transaction = session.beginTransaction();
 		
 		String administrador = System.getProperty("usuario_administrador") != null ? System.getProperty("usuario_administrador") : "";
+		
+		//Primer Query directo al Respuestacabecera
 		String hql = "";
-		hql = "SELECT c.portafolio.codigoPortafolio as codigoPortafolio, c.usuario.codigoUsuario as codigoUsuario, c.usuario.nombres as nombres, c.usuario.apellidoPaterno as apellidoPaterno, c.usuario.apellidoMaterno as apellidoMaterno, "  
+		/*hql = "SELECT c.portafolio.codigoPortafolio as codigoPortafolio, c.usuario.codigoUsuario as codigoUsuario, c.usuario.nombres as nombres, c.usuario.apellidoPaterno as apellidoPaterno, c.usuario.apellidoMaterno as apellidoMaterno, "  
 			+	"	(select por.tituloPortafolio from Portafolio AS por where por.codigoPortafolio = c.portafolio.codigoPortafolio) AS tituloPortafolio, "
 			+	"	c.fechaRespuesta as fechaRespuesta, "
 			+	"	SUM((case when d.flagAlternativaCorrecta = 1 then 1 else 0 end)) as correctas, " 
@@ -335,7 +337,7 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 			+	"FROM Respuestacabecera as c LEFT JOIN c.respuestadetalles as d " 
 			+	"WHERE c.usuario.institucion.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion()
 			+	" 	AND c.usuario.codigoUsuario = " + codigoUsuario
-			+	"GROUP BY c.portafolio.codigoPortafolio, c.usuario.codigoUsuario, c.usuario.nombres, c.usuario.apellidoPaterno, c.usuario.apellidoMaterno, c.fechaRespuesta";		
+			+	"GROUP BY c.portafolio.codigoPortafolio, c.usuario.codigoUsuario, c.usuario.nombres, c.usuario.apellidoPaterno, c.usuario.apellidoMaterno, c.fechaRespuesta";	
 		try {
 			Query query = session.createQuery(hql);
 			List<Object[]> res = query.list();
@@ -356,12 +358,37 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 				rd.setCorrectas(Integer.parseInt(elements[7].toString()));
 				rd.setIncorrectas(Integer.parseInt(elements[8].toString()));
 				
-				/*System.out.println("Detalle de Reporte: " + res.size());
-				System.out.println("Dato1 : " + elements[0].toString());*/
+				listarReporteUsuariosCursosDetalle.add(rd);
+			}								
+			session.close();*/
+		hql = "SELECT r.codigoPortafolio, r.codigoUsuario, r.tituloPortafolio, sum(1) as intentos, sum(r.cantidadCorrectas) as correctas, sum(r.cantidadIncorrectas) as incorrectas, sum(r.cantidadNocontestadas) as nocontestadas, sum(r.cantidadPreguntas) as preguntas "
+			+ "FROM Reporteusuarioscursos r " 
+			+ "WHERE r.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion()
+			+ "	AND r.codigoUsuario = " + codigoUsuario
+			+ "GROUP BY r.codigoPortafolio, r.codigoUsuario, r.tituloPortafolio";
+		try {
+			Query query = session.createQuery(hql);
+			List<Object[]> res = query.list();
+
+			listarReporteUsuariosCursosDetalle = new ArrayList<Reportecursodetalle>();			
+			for (Object[] elements: res){
+				Reportecursodetalle rd = new Reportecursodetalle();
+				Portafolio p = new Portafolio();
+				Usuario u = new Usuario();
+				p.setCodigoPortafolio(Integer.parseInt(elements[0].toString()));
+				p.setTituloPortafolio(elements[2].toString());
+				rd.setPortafolio(p);
+				u.setCodigoUsuario(Integer.parseInt(elements[1].toString()));
+				rd.setUsuario(u);
+				rd.setIntentos(Integer.parseInt(elements[3].toString()));
+				rd.setCorrectas(Integer.parseInt(elements[4].toString()));
+				rd.setIncorrectas(Integer.parseInt(elements[5].toString()));
+				rd.setNocontestadas(Integer.parseInt(elements[6].toString()));
+				rd.setPreguntas(Integer.parseInt(elements[7].toString()));
 				
 				listarReporteUsuariosCursosDetalle.add(rd);
 			}								
-			session.close();		
+			session.close();
 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

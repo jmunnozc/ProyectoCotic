@@ -53,24 +53,33 @@
 						<p:rowExpansion>
 			                <f:facet name="header">DETALLE DE LOS USUARIOS</f:facet>
 		                	<p:growl id="msgsCursos" showDetail="true" />
-		                	<p:panelGrid id="display" columns="2" cellpadding="2" columnClasses="label,value" >
+		                	<p:panelGrid id="display" columns="7" cellpadding="2" columnClasses="label,value" >
  
-								<p:dataTable id="tablaMostrarDetalle" var="cursosdetalle" value="#{reporteUsuariosCursosDetalleBean.btnBuscarReporteCursoDetalle(cursosPuestos)}" style="width:600px" emptyMessage="No hay datos del detalle de cursos...">
-									<p:column headerText="Curso">
+								<p:dataTable id="tablaMostrarDetalle" var="cursosdetalle" value="#{reporteUsuariosCursosDetalleBean.btnBuscarReporteCursoDetalle(cursosPuestos)}" style="width:800px" emptyMessage="No hay datos del detalle de cursos...">
+									<p:column headerText="Curso" style="width:150px;text-align: left">
 										<h:outputText value="#{cursosdetalle.portafolio.tituloPortafolio} " />
 									</p:column>
-									<p:column headerText="Respuesta Correcta" style="width:200px;text-align: center">
+									<p:column headerText="Respuesta Correcta" style="width:80px;text-align: center">
 										<h:outputText value="#{cursosdetalle.correctas} " />
 									</p:column>
-									<p:column headerText="Respuesta Incorrecta" style="width:200px;text-align: center">
+									<p:column headerText="Respuesta Incorrecta" style="width:80px;text-align: center">
 										<h:outputText value="#{cursosdetalle.incorrectas} " />
 									</p:column>
+									<p:column headerText="Respuesta No Contestadas" style="width:80px;text-align: center">
+										<h:outputText value="#{cursosdetalle.nocontestadas} " />
+									</p:column>
+									<p:column headerText="Cantidad Preguntas" style="width:80px;text-align: center">
+										<h:outputText value="#{cursosdetalle.preguntas} " />
+									</p:column>
+									<p:column headerText="Intentos" style="width:80px;text-align: center">
+										<h:outputText value="#{cursosdetalle.intentos} " />
+									</p:column>									
 								</p:dataTable>
-								<!-- 
+ 
 								<p:fieldset legend="Respuestas Realizadas">
-									<p:chart type="pie" model="{respuestaDetalleBean.model}"/>
+									<p:chart type="pie" model="#{reporteUsuariosCursosDetalleBean.model}"/>
 								</p:fieldset>
-								 -->
+
 							</p:panelGrid>
 				        </p:rowExpansion>	
 						
@@ -88,3 +97,4 @@
 	</ui:composition>
 </body> 
 </html>
+

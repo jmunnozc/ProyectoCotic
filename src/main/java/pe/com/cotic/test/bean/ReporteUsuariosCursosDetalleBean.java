@@ -9,19 +9,24 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.model.chart.PieChartModel;
+
 import pe.com.cotic.test.dao.ReporteCursoDao;
 import pe.com.cotic.test.dao.ReporteUsuariosCursosPuestosDao;
 import pe.com.cotic.test.dao.RespuestaDetalleDao;
+import pe.com.cotic.test.dao.ResumenRespuestaDao;
 import pe.com.cotic.test.daoImpl.ReporteCursosDaoImpl;
 import pe.com.cotic.test.daoImpl.ReporteUsuariosCursosDaoImpl;
 import pe.com.cotic.test.daoImpl.ReporteUsuariosCursosPuestosDaoImpl;
 import pe.com.cotic.test.daoImpl.RespuestaDetalleDaoImpl;
+import pe.com.cotic.test.daoImpl.ResumenRespuestaDaoImpl;
 import pe.com.cotic.test.modelo.Portafolio;
 import pe.com.cotic.test.modelo.Reportecurso;
 import pe.com.cotic.test.modelo.Reportecursodetalle;
 import pe.com.cotic.test.modelo.Reporteusuarioscursospuestos;
 import pe.com.cotic.test.modelo.Respuestacabecera;
 import pe.com.cotic.test.modelo.Respuestadetalle;
+import pe.com.cotic.test.modelo.Resumenrespuesta;
 
 @ManagedBean
 @SessionScoped
@@ -34,6 +39,8 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
 	private ReporteUsuariosCursosPuestosDao reporteusuarioscursospuestosDao;
 	private List<Reportecursodetalle> listarReportecursosdetalle;
 	private Reportecursodetalle selectedReportecursodetalle;
+	
+	private PieChartModel model;
 	
 	public ReporteUsuariosCursosDetalleBean() {
 		reportecursodetalle = new Reportecursodetalle(); 
@@ -88,6 +95,45 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
 			Reportecursodetalle selectedReportecursodetalle) {
 		this.selectedReportecursodetalle = selectedReportecursodetalle;
 	}
+	
+	public PieChartModel getModel() {
+		return model;
+	}
+
+	public void listarCursoCuestionario(Reporteusuarioscursospuestos reporteusuariocursospuestos) {
+		List<Reportecursodetalle> lista;
+		int codigoUsuario = reporteusuariocursospuestos.getCodigoUsuario();
+		try {
+			ReporteUsuariosCursosPuestosDao reporteusuarioscursospuestosDao = new ReporteUsuariosCursosPuestosDaoImpl();
+			lista = reporteusuarioscursospuestosDao.ListarReporteUsuariosCursosDetalle(codigoUsuario);
+			graficarCursoCuestionario(lista);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			
+		}		
+	}
+	
+	private void graficarCursoCuestionario(List<Reportecursodetalle> lista) {
+		model = new PieChartModel();
+		int correctas=0, incorrectas=0, nocontestadas=0;
+		for (Reportecursodetalle rr : lista) {
+			correctas+=rr.getCorrectas();
+			incorrectas+=rr.getIncorrectas();
+			nocontestadas+=rr.getNocontestadas();
+			//model.set(rr.getPortafolio().toString(), rr.getIntentos());
+		}
+		model.set("Correctas", correctas);
+		model.set("Incorrectas", incorrectas);
+		model.set("No Contestadas", nocontestadas);
+
+		/*model.setTitle("Preguntas");*/
+		model.setLegendPosition("s");
+		model.setFill(true);
+		model.setShowDataLabels(true);
+		model.setDiameter(150);
+		
+	}
 
 	public List<Reportecursodetalle> btnBuscarReporteCursoDetalle(Reporteusuarioscursospuestos reporteusuariocursospuestos) {
 		ReporteUsuariosCursosPuestosDao reporteusuarioscursospuestosDao = new ReporteUsuariosCursosPuestosDaoImpl();
@@ -101,7 +147,7 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
 			msg = "Se muestra correctamente el listado...";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
 			FacesContext.getCurrentInstance().addMessage(null, message);
-			//listar(respuestacabecera);
+			listarCursoCuestionario(reporteusuariocursospuestos);
 		} else {
 			msg = "Error al mostrar el listado...";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);

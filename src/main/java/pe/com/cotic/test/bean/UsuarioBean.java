@@ -234,8 +234,8 @@ public class UsuarioBean implements Serializable {
 		UsuarioDao usuarioDao = new UsuarioDaoImpl();
 		String msg;
 
-		String nuevoUsuario = this.selectedUsuario.getNombres().substring(0, 1)
-				+ this.selectedUsuario.getApellidoPaterno();
+		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+		String nuevoUsuario = this.selectedUsuario.getNombres().substring(0, 1) + this.selectedUsuario.getApellidoPaterno();
 		this.selectedUsuario.setUsuario(nuevoUsuario.toUpperCase());
 		this.selectedUsuario.setClave("ADMIN");
 		this.selectedUsuario.setCorreo(this.selectedUsuario.getCorreo());
@@ -246,14 +246,20 @@ public class UsuarioBean implements Serializable {
 		Date today = new Date();
 		String fechaActual = new SimpleDateFormat("yyyy-MM-dd").format(today);
 		this.selectedUsuario.setFechaNacimiento(java.sql.Date.valueOf(fechaActual));
-		this.selectedUsuario.setUsuarioCreacion("JAMBROCIO");
+		
+		this.selectedUsuario.setUsuarioCreacion(usuario.getCodigoUsuario().toString());
 		this.selectedUsuario.setFechaCreacion(java.sql.Date.valueOf(fechaActual));
 		
-		/*institucion.setCodigoInstitucion(1);
-		this.selectedUsuario.setInstitucion(institucion);*/
+		Rolusuario rolusuario = new Rolusuario();
+		Rol rol = new Rol();
+		Usuario usu = new Usuario();
+		rol.setCodigoRol(2);
+		usu.setCodigoUsuario(this.selectedUsuario.getCodigoUsuario());
+		rolusuario.setUsuario(usu);
+		rolusuario.setRol(rol);				
 
 		if (usuarioDao.grabarUsuario(this.selectedUsuario)) {
-			
+			usuarioDao.grabarRolUsuario(rolusuario);
 			msg = "Se creó correctamente el registro...";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
 			FacesContext.getCurrentInstance().addMessage(null, message);
