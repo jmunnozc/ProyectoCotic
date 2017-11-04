@@ -274,6 +274,8 @@ public class UsuarioBean implements Serializable {
 	public void btnModificarUsuario() {
 		UsuarioDao usuarioDao = new UsuarioDaoImpl();
 		String msg;
+		
+		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
 		this.selectedUsuario.setNombres(this.selectedUsuario.getNombres().toUpperCase());
 		this.selectedUsuario.setApellidoPaterno(this.selectedUsuario.getApellidoPaterno().toUpperCase());
 		this.selectedUsuario.setApellidoMaterno(this.selectedUsuario.getApellidoMaterno().toUpperCase());
@@ -283,7 +285,7 @@ public class UsuarioBean implements Serializable {
 		String fechaActual = new SimpleDateFormat("yyyy-MM-dd").format(today);
 		this.selectedUsuario.setFechaNacimiento(java.sql.Date.valueOf(fechaActual));
 		this.selectedUsuario.setFechaCreacion(java.sql.Date.valueOf(fechaActual));
-		this.selectedUsuario.setUsuarioModificacion("JAMBROCIO");
+		this.selectedUsuario.setUsuarioModificacion(usuario.getCodigoUsuario().toString());
 		this.selectedUsuario.setFechaModificacion(java.sql.Date.valueOf(fechaActual));
 		
 		/*institucion.setCodigoInstitucion(1);

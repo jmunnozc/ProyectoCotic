@@ -77,7 +77,8 @@
 								</p:dataTable>
  
 								<p:fieldset legend="Respuestas Realizadas">
-									<p:chart type="pie" model="#{reporteUsuariosCursosDetalleBean.model}"/>
+									<!-- <p:chart type="pie" model="{reporteUsuariosCursosDetalleBean.model}"/>  -->
+									<p:chart type="bar" model="#{reporteUsuariosCursosDetalleBean.barModel}" style="width:800px; height:300px"/>
 								</p:fieldset>
 
 							</p:panelGrid>

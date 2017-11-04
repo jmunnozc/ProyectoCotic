@@ -9,24 +9,16 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.PieChartModel;
 
-import pe.com.cotic.test.dao.ReporteCursoDao;
 import pe.com.cotic.test.dao.ReporteUsuariosCursosPuestosDao;
-import pe.com.cotic.test.dao.RespuestaDetalleDao;
-import pe.com.cotic.test.dao.ResumenRespuestaDao;
-import pe.com.cotic.test.daoImpl.ReporteCursosDaoImpl;
-import pe.com.cotic.test.daoImpl.ReporteUsuariosCursosDaoImpl;
 import pe.com.cotic.test.daoImpl.ReporteUsuariosCursosPuestosDaoImpl;
-import pe.com.cotic.test.daoImpl.RespuestaDetalleDaoImpl;
-import pe.com.cotic.test.daoImpl.ResumenRespuestaDaoImpl;
-import pe.com.cotic.test.modelo.Portafolio;
-import pe.com.cotic.test.modelo.Reportecurso;
 import pe.com.cotic.test.modelo.Reportecursodetalle;
 import pe.com.cotic.test.modelo.Reporteusuarioscursospuestos;
-import pe.com.cotic.test.modelo.Respuestacabecera;
-import pe.com.cotic.test.modelo.Respuestadetalle;
-import pe.com.cotic.test.modelo.Resumenrespuesta;
 
 @ManagedBean
 @SessionScoped
@@ -41,7 +33,8 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
 	private Reportecursodetalle selectedReportecursodetalle;
 	
 	private PieChartModel model;
-	
+	private BarChartModel barModel;	
+
 	public ReporteUsuariosCursosDetalleBean() {
 		reportecursodetalle = new Reportecursodetalle(); 
 		this.reporteusuarioscursospuestosDao = new ReporteUsuariosCursosPuestosDaoImpl();
@@ -100,13 +93,20 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
 		return model;
 	}
 
+	public BarChartModel getBarModel() {
+		return barModel;
+	}
+
 	public void listarCursoCuestionario(Reporteusuarioscursospuestos reporteusuariocursospuestos) {
 		List<Reportecursodetalle> lista;
+		List<Reportecursodetalle> lista2;
 		int codigoUsuario = reporteusuariocursospuestos.getCodigoUsuario();
 		try {
 			ReporteUsuariosCursosPuestosDao reporteusuarioscursospuestosDao = new ReporteUsuariosCursosPuestosDaoImpl();
 			lista = reporteusuarioscursospuestosDao.ListarReporteUsuariosCursosDetalle(codigoUsuario);
+			lista2 = lista;
 			graficarCursoCuestionario(lista);
+			graficarCursoCuestionarioBar(lista2);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		} finally {
@@ -134,6 +134,46 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
 		model.setDiameter(150);
 		
 	}
+	
+	private void graficarCursoCuestionarioBar(List<Reportecursodetalle> lista2) {
+		barModel = new BarChartModel();
+		 
+        ChartSeries correctas = new ChartSeries();
+        correctas.setLabel("Correctas");
+        for (Reportecursodetalle rr : lista2) {
+        	correctas.set(rr.getPortafolio().getTituloPortafolio(),rr.getCorrectas());
+        }
+ 
+        ChartSeries incorrectas = new ChartSeries();
+        incorrectas.setLabel("Incorrectas");
+        for (Reportecursodetalle rr : lista2) {
+        	incorrectas.set(rr.getPortafolio().getTituloPortafolio(),rr.getIncorrectas());
+        }
+ 
+        ChartSeries nocontestadas = new ChartSeries();
+        nocontestadas.setLabel("No Contestadas");
+        for (Reportecursodetalle rr : lista2) {
+        	nocontestadas.set(rr.getPortafolio().getTituloPortafolio(),rr.getNocontestadas());
+        }
+        
+        barModel.addSeries(correctas);
+        barModel.addSeries(incorrectas);
+        barModel.addSeries(nocontestadas);
+		
+        //barModel.setTitle("Bar Chart");
+        //barModel.setLegendPosition("ne");
+        barModel.setLegendPosition("ne");
+        barModel.setStacked(false);
+         
+        Axis xAxis = barModel.getAxis(AxisType.X);
+        xAxis.setLabel("Cuestionarios");
+         
+        Axis yAxis = barModel.getAxis(AxisType.Y);
+        yAxis.setLabel("Preguntas");
+        yAxis.setMin(0);
+        yAxis.setMax(75);
+	}
+
 
 	public List<Reportecursodetalle> btnBuscarReporteCursoDetalle(Reporteusuarioscursospuestos reporteusuariocursospuestos) {
 		ReporteUsuariosCursosPuestosDao reporteusuarioscursospuestosDao = new ReporteUsuariosCursosPuestosDaoImpl();
