@@ -43,14 +43,11 @@
 						<p:column headerText="Código" style="width:60px;text-align: center">
 							<h:outputText value="#{usuario.codigoUsuario}" />
 						</p:column>
-						<p:column headerText="Dni" style="width:100px;text-align: center">
-							<h:outputText value="#{usuario.dni}" />
+						<p:column headerText="Usuario" style="text-align: center">
+							<h:outputText value="#{usuario.correo}" />
 						</p:column>
 						<p:column headerText="Nombres y Apellidos" style="width:500px;text-align: center">
 							<h:outputText value="#{usuario.nombres} #{usuario.apellidoPaterno} #{usuario.apellidoMaterno}" />
-						</p:column>
-						<p:column headerText="Sexo" style="width:100px;text-align: center">
-							<h:outputText value="#{usuario.sexo}" converter="sexoConverter"/>
 						</p:column>
 						<p:column headerText="Fecha Nacimiento">
 							<h:outputText value="#{usuario.fechaNacimiento}" />

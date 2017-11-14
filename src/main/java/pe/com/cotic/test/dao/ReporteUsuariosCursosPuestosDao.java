@@ -16,4 +16,6 @@ public interface ReporteUsuariosCursosPuestosDao {
 	public List<Reporteusuarioscursos> listarReporteUsuariosCursos();
 	
 	public List<Reportecursodetalle> ListarReporteUsuariosCursosDetalle(int codigoUsuario);
+	
+	public List<Reportecursodetalle> ListarReporteUsuariosCursosDetalleUnico(int codigoUsuario, int codigoCurso);
 }

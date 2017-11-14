@@ -283,8 +283,10 @@ public class ReporteCursosDaoImpl implements ReporteCursoDao {
 				u.setApellidoPaterno(elements[3].toString());
 				u.setApellidoMaterno(elements[4].toString());
 				rd.setUsuario(u);
-				rd.setCorrectas(Integer.parseInt(elements[7].toString()));
-				rd.setIncorrectas(Integer.parseInt(elements[8].toString()));
+				/*rd.setCorrectas(Integer.parseInt(elements[7].toString()));
+				rd.setIncorrectas(Integer.parseInt(elements[8].toString()));*/
+				rd.setCorrectas(Double.parseDouble(elements[7].toString()));
+				rd.setIncorrectas(Double.parseDouble(elements[8].toString()));
 				
 				/*System.out.println("Detalle de Reporte: " + res.size());
 				System.out.println("Dato1 : " + elements[0].toString());*/

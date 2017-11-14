@@ -13,6 +13,7 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.LegendPlacement;
 import org.primefaces.model.chart.PieChartModel;
 
 import pe.com.cotic.test.dao.ReporteUsuariosCursosPuestosDao;
@@ -137,23 +138,32 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
 	
 	private void graficarCursoCuestionarioBar(List<Reportecursodetalle> lista2) {
 		barModel = new BarChartModel();
-		 
+
         ChartSeries correctas = new ChartSeries();
-        correctas.setLabel("Correctas");
+        correctas.setLabel("Correctas");                    
         for (Reportecursodetalle rr : lista2) {
-        	correctas.set(rr.getPortafolio().getTituloPortafolio(),rr.getCorrectas());
+        	double totalPreguntas = (rr.getCorrectas()+ rr.getIncorrectas()+rr.getNocontestadas());
+        	double totalCorrectas = rr.getCorrectas();
+        	double porcentajeCorrectas = (totalCorrectas / totalPreguntas) * 100 ;        	
+        	correctas.set(rr.getPortafolio().getTituloPortafolio(),porcentajeCorrectas);
         }
  
         ChartSeries incorrectas = new ChartSeries();
-        incorrectas.setLabel("Incorrectas");
+        incorrectas.setLabel("Incorrectas");        
         for (Reportecursodetalle rr : lista2) {
-        	incorrectas.set(rr.getPortafolio().getTituloPortafolio(),rr.getIncorrectas());
+        	double totalPreguntas = (rr.getCorrectas()+ rr.getIncorrectas()+rr.getNocontestadas());
+        	double totalIncorrectas = rr.getIncorrectas();
+        	double porcentajeIncorrectas = (totalIncorrectas / totalPreguntas) * 100 ;
+        	incorrectas.set(rr.getPortafolio().getTituloPortafolio(),porcentajeIncorrectas);
         }
  
         ChartSeries nocontestadas = new ChartSeries();
         nocontestadas.setLabel("No Contestadas");
         for (Reportecursodetalle rr : lista2) {
-        	nocontestadas.set(rr.getPortafolio().getTituloPortafolio(),rr.getNocontestadas());
+        	double totalPreguntas = (rr.getCorrectas()+ rr.getIncorrectas()+rr.getNocontestadas());
+        	double totalNocontestadas = rr.getNocontestadas();
+        	double porcentajeNocontestadas = (totalNocontestadas / totalPreguntas) * 100 ;
+        	nocontestadas.set(rr.getPortafolio().getTituloPortafolio(),porcentajeNocontestadas);
         }
         
         barModel.addSeries(correctas);
@@ -162,16 +172,20 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
 		
         //barModel.setTitle("Bar Chart");
         //barModel.setLegendPosition("ne");
-        barModel.setLegendPosition("ne");
-        barModel.setStacked(false);
+        //barModel.setLegendPosition("ne");
+        //barModel.setLegendPlacement(LegendPlacement.OUTSIDE);              
+        barModel.setSeriesColors("00FF00, FF0000, BDBDBD, 0174DF");
+        //barModel.setLegendRows(3);
+        barModel.setStacked(true);
          
         Axis xAxis = barModel.getAxis(AxisType.X);
-        xAxis.setLabel("Cuestionarios");
+        xAxis.setLabel("Desempeño");
+        xAxis.setTickAngle(-50);
          
         Axis yAxis = barModel.getAxis(AxisType.Y);
-        yAxis.setLabel("Preguntas");
+        yAxis.setLabel("Preguntas (%)");
         yAxis.setMin(0);
-        yAxis.setMax(75);
+        yAxis.setMax(100);
 	}
 
 
@@ -180,7 +194,6 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
 		String msg;
 		int codigoUsuario = reporteusuariocursospuestos.getCodigoUsuario();
 		
-		System.out.println("Probando");
 		this.listarReportecursosdetalle = reporteusuarioscursospuestosDao.ListarReporteUsuariosCursosDetalle(codigoUsuario);
 				
 		if (this.listarReportecursosdetalle != null) {
@@ -192,6 +205,28 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
 			msg = "Error al mostrar el listado...";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
 			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+
+		return listarReportecursosdetalle;
+		
+	}
+	
+	
+	public List<Reportecursodetalle> btnBuscarReporteCursoDetalleUnico(Integer codigoUsuario, Integer codigoCurso) {
+		ReporteUsuariosCursosPuestosDao reporteusuarioscursospuestosDao = new ReporteUsuariosCursosPuestosDaoImpl();
+		String msg;
+		
+		this.listarReportecursosdetalle = reporteusuarioscursospuestosDao.ListarReporteUsuariosCursosDetalleUnico(codigoUsuario, codigoCurso);
+				
+		if (this.listarReportecursosdetalle != null) {
+			/*msg = "Se muestra correctamente el detalle del curso...";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+			FacesContext.getCurrentInstance().addMessage(null, message);*/
+			//listarCursoCuestionario(reporteusuariocursospuestos);
+		} else {
+			/*msg = "Error al mostrar el detalle del curso...";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
+			FacesContext.getCurrentInstance().addMessage(null, message);*/
 		}
 
 		return listarReportecursosdetalle;

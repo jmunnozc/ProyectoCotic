@@ -1,5 +1,6 @@
 package pe.com.cotic.test.daoImpl;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -370,7 +371,8 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 			Query query = session.createQuery(hql);
 			List<Object[]> res = query.list();
 
-			listarReporteUsuariosCursosDetalle = new ArrayList<Reportecursodetalle>();			
+			listarReporteUsuariosCursosDetalle = new ArrayList<Reportecursodetalle>();
+			DecimalFormat df = new DecimalFormat("#.00");
 			for (Object[] elements: res){
 				Reportecursodetalle rd = new Reportecursodetalle();
 				Portafolio p = new Portafolio();
@@ -381,11 +383,18 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 				u.setCodigoUsuario(Integer.parseInt(elements[1].toString()));
 				rd.setUsuario(u);
 				rd.setIntentos(Integer.parseInt(elements[3].toString()));
-				rd.setCorrectas(Integer.parseInt(elements[4].toString()));
+				/*rd.setCorrectas(Integer.parseInt(elements[4].toString()));
 				rd.setIncorrectas(Integer.parseInt(elements[5].toString()));
 				rd.setNocontestadas(Integer.parseInt(elements[6].toString()));
+				rd.setPreguntas(Integer.parseInt(elements[7].toString()));*/				
+				rd.setCorrectas(Double.parseDouble(df.format(Double.parseDouble(elements[4].toString())/Double.parseDouble(elements[7].toString())*100).toString().replace(",", ".")));
+				rd.setIncorrectas(Double.parseDouble(df.format(Double.parseDouble(elements[5].toString())/Double.parseDouble(elements[7].toString())*100).toString().replace(",", ".")));				
+				rd.setNocontestadas(Double.parseDouble(df.format(Double.parseDouble(elements[6].toString())/Double.parseDouble(elements[7].toString())*100).toString().replace(",", ".")));
+				if ((rd.getCorrectas().doubleValue() + rd.getIncorrectas().doubleValue() + rd.getNocontestadas().doubleValue()) != 100.00) {
+					rd.setNocontestadas(Double.parseDouble(df.format(100.00 - (rd.getCorrectas().doubleValue() + rd.getIncorrectas().doubleValue())).toString().replace(",", ".")));
+				}
+				//rd.setPreguntas(Double.parseDouble(df.format(Double.parseDouble(elements[7].toString())/Double.parseDouble(elements[7].toString())*100).toString().replace(",", ".")));
 				rd.setPreguntas(Integer.parseInt(elements[7].toString()));
-				
 				listarReporteUsuariosCursosDetalle.add(rd);
 			}								
 			session.close();
@@ -395,6 +404,97 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 			transaction.rollback();
 		}
 
+		
+		return listarReporteUsuariosCursosDetalle;
+	}
+
+
+	@Override
+	public List<Reportecursodetalle> ListarReporteUsuariosCursosDetalleUnico(int codigoUsuario, int codigoCurso) {
+
+		System.out.println("--> USUARIO " + codigoUsuario + " CURSO " + codigoCurso);
+		List<Reportecursodetalle> listarReporteUsuariosCursosDetalle = null;
+		Usuario usuario = null;		
+		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		// Consulta Intentos Realizados para un Curso
+		String administrador = System.getProperty("usuario_administrador") != null ? System.getProperty("usuario_administrador") : "";
+		String hql = "";
+		hql = "SELECT rc.codigoRespuestaCabecera "
+				+	"FROM Respuestacabecera rc "
+				+	"WHERE rc.usuario.codigoUsuario = " + codigoUsuario
+				+	"	AND rc.portafolio.codigoPortafolio = " + codigoCurso ;
+		
+		try {
+			Query query = session.createQuery(hql);
+			List<Integer> res = query.list();
+			System.out.println("-------------------------------------------------------------");
+			for (Integer elements: res){
+				System.out.println(elements.toString());
+				// Consulta Respuestas Contestadas por cada Intento
+				String hql1 = "";
+				hql1 = "SELECT SUM(1) as cantidadPreguntas, " 
+						+ "	SUM( (CASE WHEN rd.flagAlternativaCorrecta = 1 THEN 1 ELSE 0 END) ) as correctas, "
+						+ "	SUM( (CASE WHEN rd.flagAlternativaCorrecta = 0 THEN 1 ELSE 0 END) ) as incorrectas, "
+						+ "	SUM(0) as nocontestadas "
+						+ "FROM Respuestacabecera rc " 
+						+ "	LEFT JOIN rc.respuestadetalles rd "
+						+ "WHERE rc.usuario.codigoUsuario = " + codigoUsuario
+						+ "	AND rc.portafolio.codigoPortafolio = " + codigoCurso
+						+ "	AND rc.codigoRespuestaCabecera = " + elements;
+				
+				try {
+					Query query1 = session.createQuery(hql1);
+					List<Object[]> res1 = query1.list();					
+					for (Object[] elements1: res1){
+						if (elements1 != null)
+						System.out.println(elements1[0].toString() + " - " + elements1[1].toString() + " - " + elements1[2].toString() + " - " + elements1[3].toString());
+					}					
+					
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+					transaction.rollback();
+				}
+				
+				
+				// Consulta Respuestas No Contestadas por cada Intento
+				String hql2 = "";
+				hql2 = "select SUM(1) as cantidadPreguntas, "
+						+ "	SUM(0) as correctas, "
+						+ "	SUM(0) as incorrectas, "
+						+ "	SUM(1) as nocontestadas "
+						+ "from Portafolio p "
+						+ "	inner join p.preguntas pr "
+						+ "where p.codigoPortafolio = " + codigoCurso
+						+ "	and pr.portafolio.codigoPortafolio = " + codigoCurso
+						+ "	and codigoPregunta not in  (select d.pregunta.codigoPregunta "
+						+ "								from Respuestacabecera c left join c.respuestadetalles d "
+						+ "								where c.usuario.codigoUsuario = " + codigoUsuario
+						+ "									and c.codigoRespuestaCabecera = " + elements
+						+ ")";
+				
+				try {
+					Query query2 = session.createQuery(hql2);
+					List<Object[]> res2 = query2.list();					
+					for (Object[] elements2: res2){
+						if (elements2 != null)
+							System.out.println(elements2[0].toString() + " - " + elements2[1].toString() + " - " + elements2[2].toString() + " - " + elements2[3].toString());
+					}
+				
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+					transaction.rollback();
+				}
+				
+				System.out.println("-------------------------------------------------------------");
+			}
+			
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			transaction.rollback();
+		}
 		
 		return listarReporteUsuariosCursosDetalle;
 	}
