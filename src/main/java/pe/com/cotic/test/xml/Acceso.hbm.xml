@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 14/11/2017 04:57:38 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.com.cotic.test.modelo.Acceso" table="acceso" catalog="cotic">
+        <id name="codigoAcceso" type="java.lang.Integer">
+            <column name="codigoAcceso" />
+            <generator class="identity" />
+        </id>
+        <property name="codigoUsuario" type="java.lang.Integer">
+            <column name="codigoUsuario" />
+        </property>
+        <property name="fechaAcceso" type="timestamp">
+            <column name="fechaAcceso" length="19" />
+        </property>
+        <property name="horaAcceso" type="timestamp">
+            <column name="horaAcceso" length="19" />
+        </property>
+        <property name="accionAcceso" type="java.lang.Boolean">
+            <column name="accionAcceso" />
+        </property>
+    </class>
+</hibernate-mapping>

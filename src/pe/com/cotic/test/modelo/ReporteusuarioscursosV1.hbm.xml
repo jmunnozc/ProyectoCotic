@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 17/11/2017 11:16:10 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="pe.com.cotic.test.modelo.Reporteusuarioscursos" table="reporteusuarioscursos" catalog="cotic">
+    <class name="pe.com.cotic.test.modelo.ReporteusuarioscursosV1" table="reporteusuarioscursos_v1" catalog="cotic">
         <id name="codigoRespuestaCabecera" type="int">
             <column name="codigoRespuestaCabecera" />
             <generator class="assigned" />
@@ -40,15 +40,6 @@
         </property>
         <property name="codigoInstitucion" type="java.lang.Integer">
             <column name="codigoInstitucion" />
-        </property>
-        <property name="cantidadNocontestadas" type="java.lang.Integer">
-            <column name="cantidadNocontestadas" />
-        </property>
-        <property name="porcentajeNocontestadas" type="java.lang.Double">
-            <column name="porcentajeNocontestadas" precision="22" scale="0" />
-        </property>
-        <property name="fechaActualizacion" type="timestamp">
-            <column name="fechaActualizacion" length="19" />
         </property>
     </class>
 </hibernate-mapping>

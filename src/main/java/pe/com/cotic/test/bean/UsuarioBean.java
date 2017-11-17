@@ -17,6 +17,7 @@ import org.primefaces.context.RequestContext;
 
 import pe.com.cotic.test.dao.UsuarioDao;
 import pe.com.cotic.test.daoImpl.UsuarioDaoImpl;
+import pe.com.cotic.test.modelo.CambiaClave;
 import pe.com.cotic.test.modelo.Institucion;
 import pe.com.cotic.test.modelo.Rol;
 import pe.com.cotic.test.modelo.Rolusuario;
@@ -35,6 +36,7 @@ public class UsuarioBean implements Serializable {
 	private UsuarioDao usuarioDao;
 	private List<Usuario> listarUsuarios;
 	private Usuario selectedUsuario;
+	private CambiaClave claveUsuario;
 	private Rol selectedRol;
 	private Rolusuario selectedRolusuario;
 
@@ -50,6 +52,7 @@ public class UsuarioBean implements Serializable {
 		}
 		this.listarUsuarios = new ArrayList<Usuario>();
 		this.selectedUsuario = new Usuario();
+		this.claveUsuario = new CambiaClave();
 	}
 
 	public Usuario getUsuario() {
@@ -161,6 +164,14 @@ public class UsuarioBean implements Serializable {
 
 	public void setListarPerfil(List<SelectItem> listarPerfil) {
 		this.listarPerfil = listarPerfil;
+	}
+	
+	public CambiaClave getClaveUsuario() {
+		return claveUsuario;
+	}
+
+	public void setClaveUsuario(CambiaClave claveUsuario) {
+		this.claveUsuario = claveUsuario;
 	}
 
 	public void verificarDatos() throws Exception {
@@ -342,10 +353,37 @@ public class UsuarioBean implements Serializable {
 		}
 	}
 	
-	
-	public void btnCambiarClaveUsuario() {
+	public void btnResetearUsuario() {
 		UsuarioDao usuarioDao = new UsuarioDaoImpl();
 		String msg;
+		if (usuarioDao.resetearUsuario(this.selectedUsuario)) {
+			msg = "Se reseteo correctamente el usuario...";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		} else {
+			msg = "Error al realizar el reseteo del usuario seleccionado...";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+	}
+	
+	public void btnGrabarCambiaClaveUsuario() {
+		String msg;				
 		
+		if (this.claveUsuario.getClaveAnterior().toUpperCase().equals(this.claveUsuario.getClaveNueva().toUpperCase())) {
+			msg = "La clave nueva no puede ser igual a la clave anterior...";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		} else {
+			if (usuarioDao.cambiarClaveUsuario(this.claveUsuario)) {
+				msg = "La clave nueva se registró correctamente...";
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+				FacesContext.getCurrentInstance().addMessage(null, message);
+			} else {
+				msg = "Error al realizar el registro de la nueva clave...";
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+				FacesContext.getCurrentInstance().addMessage(null, message);	
+			}
+		}
 	}
 }

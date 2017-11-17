@@ -3,16 +3,16 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 17/11/2017 11:16:10 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="pe.com.cotic.test.modelo.Rolmenu" table="rolmenu" catalog="cotic">
-        <id name="codigoRolMenu" type="java.lang.Integer">
-            <column name="codigoRolMenu" />
+    <class name="pe.com.cotic.test.modelo.Rolusuario" table="rolusuario" catalog="cotic">
+        <id name="codigoRolUsuario" type="java.lang.Integer">
+            <column name="codigoRolUsuario" />
             <generator class="identity" />
         </id>
         <many-to-one name="rol" class="pe.com.cotic.test.modelo.Rol" fetch="select">
             <column name="codigoRol" not-null="true" />
         </many-to-one>
-        <many-to-one name="menu" class="pe.com.cotic.test.modelo.Menu" fetch="select">
-            <column name="codigoMenu" not-null="true" />
+        <many-to-one name="usuario" class="pe.com.cotic.test.modelo.Usuario" fetch="select">
+            <column name="codigoUsuario" not-null="true" />
         </many-to-one>
     </class>
 </hibernate-mapping>

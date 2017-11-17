@@ -32,6 +32,9 @@
 					<p:commandButton id="btnUsuarioCreate" update=":formCreate"
 						oncomplete="PF('dialogUsuarioCreate').show()" icon="icon-new"
 						title="Crear" value="Crear Usuario" />
+					<p:commandButton id="btnUsuarioCambiaClave" update=":formCambiaClave"
+						oncomplete="PF('dialogUsuarioCambiaClave').show()" icon="icon-clave"
+						title="Cambiar" value="Cambiar Clave Usuario" />
 				</h:form>
 				<div style="height: 5px" />
 				<h:form id="formDataTable">
@@ -43,10 +46,10 @@
 						<p:column headerText="Código" style="width:60px;text-align: center">
 							<h:outputText value="#{usuario.codigoUsuario}" />
 						</p:column>
-						<p:column headerText="Usuario" style="text-align: center">
+						<p:column headerText="Usuario" style="text-align: left">
 							<h:outputText value="#{usuario.correo}" />
 						</p:column>
-						<p:column headerText="Nombres y Apellidos" style="width:500px;text-align: center">
+						<p:column headerText="Nombres y Apellidos" style="width:500px;text-align: left">
 							<h:outputText value="#{usuario.nombres} #{usuario.apellidoPaterno} #{usuario.apellidoMaterno}" />
 						</p:column>
 						<p:column headerText="Fecha Nacimiento">
@@ -56,13 +59,13 @@
 							<h:outputText value="#{usuario.institucion.nombreInstitucion}" />
 						</p:column>
 						<p:column headerText="Perfil">
-							<h:outputText value="#{usuario.perfil}" />
+							<h:outputText value="#{usuario.perfil}" style="text-align: left"/>
 						</p:column>
-						<p:column headerText="Estado">
+						<p:column headerText="Estado" style="text-align: left">
 							<h:outputText value="#{usuario.estado}" converter="estadoConverter" />
 						</p:column>
 						<h:outputText value="#{usuarioBean.usuario.perfil}" />
-						<p:column headerText="Opciones" style="width:100px;text-align: center" rendered="#{usuarioBean.usuario.perfil != 'USUARIO'}">
+						<p:column headerText="Opciones" style="width:120px;text-align: center" rendered="#{usuarioBean.usuario.perfil != 'USUARIO'}">
 							<p:commandButton id="btnModificar" update=":formModificar" oncomplete="PF('dialogUsuarioModificar').show()"
 								icon="ui-icon-pencil" title="Modificar" >
 								<f:setPropertyActionListener value="#{usuario}" target="#{usuarioBean.selectedUsuario}" />
@@ -73,6 +76,10 @@
 							</p:commandButton>
 							<p:commandButton id="btnPerfil" update=":formModificarPerfil" oncomplete="PF('dialogUsuarioModificarPerfil').show()"
 								icon="ui-icon-person" title="Perfil" >
+								<f:setPropertyActionListener value="#{usuario}" target="#{usuarioBean.selectedUsuario}" />
+							</p:commandButton>
+							<p:commandButton id="btnReset" update=":formReseteoClave" oncomplete="PF('dialogUsuarioResetearClave').show()"
+								icon="ui-icon-refresh" title="Reseteo Clave" >
 								<f:setPropertyActionListener value="#{usuario}" target="#{usuarioBean.selectedUsuario}" />
 							</p:commandButton>
 						</p:column>
@@ -135,6 +142,40 @@
 						</p:outputPanel>
 					</p:dialog>
 				</h:form>
+
+				<h:form id="formCambiaClave">
+					<h:inputHidden value="#{usuarioBean.selectedUsuario.codigoUsuario}"/>
+					<h:inputHidden value="#{usuarioBean.claveUsuario.correo}"/>
+					<h:inputHidden value="#{usuarioBean.claveUsuario.claveAnterior}" />
+					<h:inputHidden value="#{usuarioBean.claveUsuario.claveNueva}" />				
+					<p:dialog header="Cambia Clave Usuario" widgetVar="dialogUsuarioCambiaClave"
+						modal="true" showEffect="fade" hideEffect="explode"
+						resizable="false" id="dlgUsuarioCambiaClave">
+						<p:outputPanel id="usuarioDetailCambiaClave" style="text-align:center;">
+							<p:panelGrid id="display" columns="2" cellpadding="4"
+								columnClasses="label,value">
+								<h:outputText value="Correo:" />
+								<p:inputText value="#{usuarioBean.claveUsuario.correo}" style="text-transform:uppercase;" />
+								<h:outputText value="Clave Anterior" />
+								<p:password value="#{usuarioBean.claveUsuario.claveAnterior}" style="text-transform:uppercase;" />
+								<h:outputText value="Clave Nueva" />
+								<p:password value="#{usuarioBean.claveUsuario.claveNueva}" style="text-transform:uppercase;" />
+								<div style="height: 5px" />
+								<f:facet name="footer">
+									<p:commandButton id="btnCambiaClaveAceptar"
+										update=":formDataTable :msgs"
+										oncomplete="PF('dialogUsuarioCambiaClave').hide()"
+										actionListener="#{usuarioBean.btnGrabarCambiaClaveUsuario()}"
+										icon="icon-save" title="Guardar" value="Guardar" />
+									<p:commandButton id="btnCambiaClaveCancelar"
+										oncomplete="PF('dialogUsuarioCambiaClave').hide()"
+										icon="icon-cancel" title="Cancelar" value="Cancelar" />
+								</f:facet>
+							</p:panelGrid>
+						</p:outputPanel>
+					</p:dialog>
+				</h:form>
+
 
 				<h:form id="formModificar">
 					<h:inputHidden value="#{usuarioBean.selectedUsuario.codigoUsuario}"/>
@@ -257,15 +298,32 @@
 					</p:dialog>
 				</h:form>
 
+				<h:form id="formReseteoClave">
+					<h:inputHidden value="#{usuarioBean.selectedUsuario.codigoUsuario}"/>
+					<p:confirmDialog id="confirmDialog"
+						message="¿Esta seguro Resetear la clave del usuario?"
+						header="Proceso de reseteo de clave..." severity="alert"
+						widgetVar="dialogUsuarioResetearClave" showEffect="fade"
+						hideEffect="explode">
+						<p:commandButton id="confirm" value="Aceptar" update=":formDataTable :msgs"
+							oncomplete="PF('dialogUsuarioResetearClave').hide()"
+							actionListener="#{usuarioBean.btnResetearUsuario()}"
+							icon="icon-acept-green" />
+						<p:commandButton id="decline" value="Cancelar"
+							onclick="PF('dialogUsuarioResetearClave').hide()" type="button"
+							icon="icon-cancel" />
+					</p:confirmDialog>
+				</h:form>
 
 			</div>
 		</ui:define>
-		
+<!-- 
 		<ui:define name="bottom">
-			<h:form rendered="#{usuarioBean.verificarSesion()}">
+			<h:form rendered="{usuarioBean.verificarSesion()}">
 				<ui:include src="/views/pie.xhtml" />
 			</h:form>
-		</ui:define>		
+		</ui:define>
+ -->
 	</ui:composition>
 
 </body>

@@ -21,6 +21,7 @@
 		<property name="hibernate.connection.pool_size">1</property>
 		<!--  <property name="hibernate.hbm2ddl.auto">update</property>  -->
 
+		<mapping resource="pe/com/cotic/test/xml/Acceso.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Alternativa.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Institucion.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Menu.hbm.xml" />

@@ -5,15 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.LegendPlacement;
+import org.primefaces.model.chart.LineChartModel;
+import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
 
 import pe.com.cotic.test.dao.ReporteUsuariosCursosPuestosDao;
@@ -35,6 +34,7 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
 	
 	private PieChartModel model;
 	private BarChartModel barModel;	
+	private LineChartModel lineModel;
 
 	public ReporteUsuariosCursosDetalleBean() {
 		reportecursodetalle = new Reportecursodetalle(); 
@@ -96,6 +96,10 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
 
 	public BarChartModel getBarModel() {
 		return barModel;
+	}	
+	
+	public LineChartModel getLineModel() {
+		return lineModel;
 	}
 
 	public void listarCursoCuestionario(Reporteusuarioscursospuestos reporteusuariocursospuestos) {
@@ -188,7 +192,32 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
         yAxis.setMax(100);
 	}
 
-
+	private void graficarCursoCuestionarioLine(List<Reportecursodetalle> lista4) {
+		LineChartModel model = new LineChartModel();		 
+        LineChartSeries series1 = new LineChartSeries();
+        series1.setLabel("Series 1");
+        int columna = System.getProperty("intentos_evaluados") != null ? Integer.parseInt(System.getProperty("intentos_evaluados")) : 4;
+        for (Reportecursodetalle rr : lista4) {
+        	series1.set(columna--,rr.getCorrectas());
+        }
+        /*series1.set(1, 54.55);
+        series1.set(2, 81.82);
+        series1.set(3, 72.73);
+        series1.set(4, 90.91);*/        
+        model.addSeries(series1);
+        lineModel = model;		
+        //lineModel.setTitle("Linear Chart");
+        //lineModel.setLegendPosition("e");
+        Axis yAxis = lineModel.getAxis(AxisType.Y);
+        yAxis.setMin(0);
+        yAxis.setMax(10);
+         
+        yAxis.setLabel("Desempeño %");
+        yAxis.setMin(0);
+        yAxis.setMax(100);
+	}
+	
+	
 	public List<Reportecursodetalle> btnBuscarReporteCursoDetalle(Reporteusuarioscursospuestos reporteusuariocursospuestos) {
 		ReporteUsuariosCursosPuestosDao reporteusuarioscursospuestosDao = new ReporteUsuariosCursosPuestosDaoImpl();
 		String msg;
@@ -197,14 +226,14 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
 		this.listarReportecursosdetalle = reporteusuarioscursospuestosDao.ListarReporteUsuariosCursosDetalle(codigoUsuario);
 				
 		if (this.listarReportecursosdetalle != null) {
-			msg = "Se muestra correctamente el listado...";
+			/*msg = "Se muestra correctamente el listado...";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
-			FacesContext.getCurrentInstance().addMessage(null, message);
+			FacesContext.getCurrentInstance().addMessage(null, message);*/
 			listarCursoCuestionario(reporteusuariocursospuestos);
 		} else {
-			msg = "Error al mostrar el listado...";
+			/*msg = "Error al mostrar el listado...";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
-			FacesContext.getCurrentInstance().addMessage(null, message);
+			FacesContext.getCurrentInstance().addMessage(null, message);*/
 		}
 
 		return listarReportecursosdetalle;
@@ -213,22 +242,19 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
 	
 	
 	public List<Reportecursodetalle> btnBuscarReporteCursoDetalleUnico(Integer codigoUsuario, Integer codigoCurso) {
-		ReporteUsuariosCursosPuestosDao reporteusuarioscursospuestosDao = new ReporteUsuariosCursosPuestosDaoImpl();
-		String msg;
-		
+		ReporteUsuariosCursosPuestosDao reporteusuarioscursospuestosDao = new ReporteUsuariosCursosPuestosDaoImpl();		
 		this.listarReportecursosdetalle = reporteusuarioscursospuestosDao.ListarReporteUsuariosCursosDetalleUnico(codigoUsuario, codigoCurso);
-				
-		if (this.listarReportecursosdetalle != null) {
-			/*msg = "Se muestra correctamente el detalle del curso...";
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
-			FacesContext.getCurrentInstance().addMessage(null, message);*/
-			//listarCursoCuestionario(reporteusuariocursospuestos);
-		} else {
-			/*msg = "Error al mostrar el detalle del curso...";
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
-			FacesContext.getCurrentInstance().addMessage(null, message);*/
-		}
-
+		List<Reportecursodetalle> lista3;
+		List<Reportecursodetalle> lista4 = new ArrayList<Reportecursodetalle>();
+		lista3 = this.listarReportecursosdetalle;
+		int intentos = System.getProperty("intentos_evaluados") != null ? Integer.parseInt(System.getProperty("intentos_evaluados")) : 4;
+		for (int a=0; a<intentos; a++) {
+			Reportecursodetalle rcd = new Reportecursodetalle();
+			rcd.setCorrectas(Double.parseDouble(lista3.get(a).getCorrectas().toString()));
+			lista4.add(rcd);
+		}		
+		graficarCursoCuestionarioLine(lista4);		
+		
 		return listarReportecursosdetalle;
 		
 	}

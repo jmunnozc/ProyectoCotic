@@ -412,7 +412,7 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 	@Override
 	public List<Reportecursodetalle> ListarReporteUsuariosCursosDetalleUnico(int codigoUsuario, int codigoCurso) {
 
-		System.out.println("--> USUARIO " + codigoUsuario + " CURSO " + codigoCurso);
+		//System.out.println("--> USUARIO " + codigoUsuario + " CURSO " + codigoCurso);
 		List<Reportecursodetalle> listarReporteUsuariosCursosDetalle = null;
 		Usuario usuario = null;		
 		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
@@ -424,14 +424,19 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 		hql = "SELECT rc.codigoRespuestaCabecera "
 				+	"FROM Respuestacabecera rc "
 				+	"WHERE rc.usuario.codigoUsuario = " + codigoUsuario
-				+	"	AND rc.portafolio.codigoPortafolio = " + codigoCurso ;
+				+	"	AND rc.portafolio.codigoPortafolio = " + codigoCurso 
+				+	"ORDER BY rc.fechaRespuesta desc";
 		
 		try {
 			Query query = session.createQuery(hql);
 			List<Integer> res = query.list();
-			System.out.println("-------------------------------------------------------------");
+			listarReporteUsuariosCursosDetalle = new ArrayList<Reportecursodetalle>();
+			double correctas = 0.0, incorrectas = 0.0, nocontestadas = 0.0;
+			int cantidadPreguntas = 0;
+			DecimalFormat df = new DecimalFormat("#.00");
+			//System.out.println("-------------------------------------------------------------");
 			for (Integer elements: res){
-				System.out.println(elements.toString());
+				//System.out.println(elements.toString());
 				// Consulta Respuestas Contestadas por cada Intento
 				String hql1 = "";
 				hql1 = "SELECT SUM(1) as cantidadPreguntas, " 
@@ -446,15 +451,16 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 				
 				try {
 					Query query1 = session.createQuery(hql1);
-					List<Object[]> res1 = query1.list();					
+					List<Object[]> res1 = query1.list();
 					for (Object[] elements1: res1){
-						if (elements1 != null)
-						System.out.println(elements1[0].toString() + " - " + elements1[1].toString() + " - " + elements1[2].toString() + " - " + elements1[3].toString());
-					}					
-					
+						//System.out.println(elements1[0].toString() + " - " + elements1[1].toString() + " - " + elements1[2].toString() + " - " + elements1[3].toString());
+						cantidadPreguntas += Integer.parseInt(elements1[0].toString());
+						correctas += Double.parseDouble(elements1[1].toString());
+						incorrectas += Double.parseDouble(elements1[2].toString());
+						nocontestadas += Double.parseDouble(elements1[3].toString());
+					}
 				} catch (Exception e) {
-					System.out.println(e.getMessage());
-					transaction.rollback();
+					//System.out.println(e.getMessage());
 				}
 				
 				
@@ -476,18 +482,29 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 				
 				try {
 					Query query2 = session.createQuery(hql2);
-					List<Object[]> res2 = query2.list();					
+					List<Object[]> res2 = query2.list();
 					for (Object[] elements2: res2){
-						if (elements2 != null)
-							System.out.println(elements2[0].toString() + " - " + elements2[1].toString() + " - " + elements2[2].toString() + " - " + elements2[3].toString());
+						//System.out.println(elements2[0].toString() + " - " + elements2[1].toString() + " - " + elements2[2].toString() + " - " + elements2[3].toString());
+						cantidadPreguntas += Integer.parseInt(elements2[0].toString());
+						correctas += Double.parseDouble(elements2[1].toString());
+						incorrectas += Double.parseDouble(elements2[2].toString());
+						nocontestadas += Double.parseDouble(elements2[3].toString());						
 					}
-				
 				} catch (Exception e) {
-					System.out.println(e.getMessage());
-					transaction.rollback();
+					//System.out.println(e.getMessage());
 				}
 				
-				System.out.println("-------------------------------------------------------------");
+				//System.out.println("-------------------------------------------------------------");
+				Reportecursodetalle rcd = new Reportecursodetalle();
+				rcd.setCorrectas(Double.parseDouble(df.format((correctas*100)/cantidadPreguntas).toString().replace(",", ".")));
+				rcd.setIncorrectas(Double.parseDouble(df.format((incorrectas*100)/cantidadPreguntas).toString().replace(",", ".")));
+				rcd.setNocontestadas(Double.parseDouble(df.format((nocontestadas*100)/cantidadPreguntas).toString().replace(",", ".")));
+				rcd.setPreguntas(cantidadPreguntas);
+				listarReporteUsuariosCursosDetalle.add(rcd);
+				correctas = 0.0; 
+				incorrectas = 0.0; 
+				nocontestadas = 0.0;
+				cantidadPreguntas = 0;
 			}
 			
 			

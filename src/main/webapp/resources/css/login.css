@@ -75,3 +75,7 @@ body {
 .ui-state-default .icon-users {
 	background-image: url(../images/icons/icon_user_users_16x16.png);
 }
+
+.ui-state-default .icon-clave {
+	background-image: url(../images/icons/icon_user_change_16x16.png);
+}

@@ -1,6 +1,11 @@
 package pe.com.cotic.test.daoImpl;
 
+import java.security.NoSuchAlgorithmException;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -11,6 +16,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import pe.com.cotic.test.dao.UsuarioDao;
+import pe.com.cotic.test.modelo.Acceso;
+import pe.com.cotic.test.modelo.CambiaClave;
 import pe.com.cotic.test.modelo.Institucion;
 import pe.com.cotic.test.modelo.Reportecurso;
 import pe.com.cotic.test.modelo.Rol;
@@ -53,7 +60,18 @@ public class UsuarioDaoImpl implements UsuarioDao {
 					if (elements[1] != null) {
 						us.setPerfil(elements[1].toString().trim().toUpperCase());
 					}					
-				}			
+				}
+				// Campos de Auditoria
+				Date today = new Date();
+				String fechaAcceso = new SimpleDateFormat("yyyy-MM-dd").format(today);
+				String horaAcceso = new SimpleDateFormat("HH:MM:SS").format(today);
+				DateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+				Acceso ac = new Acceso();
+				ac.setCodigoUsuario(us.getCodigoUsuario());
+				ac.setFechaAcceso(java.sql.Date.valueOf(fechaAcceso));
+				ac.setHoraAcceso(sdf.parse(horaAcceso));
+				ac.setAccionAcceso(true);
+				boolean flag = grabarAccesoUsuario(ac);
 				session.close();				
 			}
 			
@@ -162,7 +180,29 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		
 		return listarUsuarios1;
 	}
-
+	
+	
+	@Override
+	public boolean grabarAccesoUsuario(Acceso usuario) {
+		boolean flag = false;		
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			
+			session.save(usuario);
+			transaction.commit();
+			session.close();
+			flag = true;
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			flag = false;
+			transaction.rollback();
+		}
+		return flag;
+	}
+	
+	
 	@Override
 	public boolean grabarUsuario(Usuario usuario) {
 		boolean flag = false;		
@@ -310,6 +350,96 @@ public class UsuarioDaoImpl implements UsuarioDao {
 			
 			session.save(rolusuario);
 			transaction.commit();
+			session.close();
+			flag = true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			flag = false;
+			transaction.rollback();
+		}
+		return flag;
+	}
+
+	@Override
+	public boolean resetearUsuario(Usuario usuario) {
+		Usuario us = null;
+		boolean flag = false;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();		
+		String hql = "UPDATE Usuario "
+				+	" SET clave =:pass "  	  
+				+	" WHERE codigoUsuario=:user";
+				
+		String hql1 = "SELECT u, rr.rol.descripcionRol "
+				+	" FROM Usuario u " 
+				+	" 	INNER JOIN FETCH u.institucion i "
+				+	" 	INNER JOIN FETCH u.rolusuarios rr " 	  
+				+	" WHERE u.codigoUsuario=:cu";									
+		
+		try {
+			//session.update(usuario);		
+			Query query = session.createQuery(hql);
+			query.setInteger("user", usuario.getCodigoUsuario());
+			query.setString("pass", Seguridad.fn_sEncrypting("PASSCANGA", usuario.getClave().toUpperCase()));	
+			int result = query.executeUpdate();
+			session.getTransaction().commit();
+			//transaction.commit();
+			
+			Query query1 = session.createQuery(hql1);
+			query1.setInteger("cu", usuario.getCodigoUsuario());
+			
+			if (!query1.list().isEmpty()) {			
+				List<Object[]> res = query1.list();
+				for (Object[] elements: res){
+					us = (Usuario) elements[0];
+				}
+			}
+			System.out.println("Usuario reseteado -> " + us.getUsuario().toString());
+			session.close();
+			flag = true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			flag = false;
+			transaction.rollback();
+		}
+		return flag;
+	}
+
+	@Override
+	public boolean cambiarClaveUsuario(CambiaClave usuario) {
+		Usuario us = null;
+		boolean flag = false;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();		
+		String hql = "UPDATE Usuario "
+				+	" SET clave =:pass "  	  
+				+	" WHERE correo=:correo";
+				
+		String hql1 = "SELECT u, rr.rol.descripcionRol "
+				+	" FROM Usuario u " 
+				+	" 	INNER JOIN FETCH u.institucion i "
+				+	" 	INNER JOIN FETCH u.rolusuarios rr " 	  
+				+	" WHERE u.correo=:cu";									
+		
+		try {
+			//session.update(usuario);		
+			Query query = session.createQuery(hql);
+			query.setString("correo", usuario.getCorreo());
+			query.setString("pass", Seguridad.fn_sEncrypting("PASSCANGA", usuario.getClaveNueva().toUpperCase()));	
+			int result = query.executeUpdate();
+			session.getTransaction().commit();
+			//transaction.commit();
+			
+			Query query1 = session.createQuery(hql1);
+			query1.setString("cu", usuario.getCorreo());
+			
+			if (!query1.list().isEmpty()) {			
+				List<Object[]> res = query1.list();
+				for (Object[] elements: res){
+					us = (Usuario) elements[0];
+				}
+			}
+			System.out.println("Usuario con clave cambiada -> " + us.getUsuario().toString());
 			session.close();
 			flag = true;
 		} catch (Exception e) {
