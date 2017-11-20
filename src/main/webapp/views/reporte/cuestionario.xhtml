@@ -113,7 +113,7 @@
 									<p:rowExpansion>
 						                <f:facet name="header">DETALLE DE LOS CURSOS</f:facet>
 					                	<p:growl id="msgsCursosDetalle" showDetail="true" />
-					                	<p:panelGrid id="display" columns="2" cellpadding="2" columnClasses="label,value" >
+					                	<p:panelGrid id="display" columns="2" cellpadding="2" columnClasses="label,value">
 											<p:dataTable id="tablaMostrarDetalleCursos" var="mostrarcursosdetalle" value="#{reporteUsuariosCursosDetalleBean.btnBuscarReporteCursoDetalleUnico(cursosdetalle.usuario.codigoUsuario, cursosdetalle.portafolio.codigoPortafolio)}" style="width:350px" emptyMessage="No hay datos del detalle del curso seleccionado...">
 												<p:column headerText="Correctas" style="width:80px;text-align: center">
 													<h:outputText value="#{mostrarcursosdetalle.correctas} %" />

@@ -425,7 +425,7 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 				+	"FROM Respuestacabecera rc "
 				+	"WHERE rc.usuario.codigoUsuario = " + codigoUsuario
 				+	"	AND rc.portafolio.codigoPortafolio = " + codigoCurso 
-				+	"ORDER BY rc.fechaRespuesta desc";
+				+	"ORDER BY rc.codigoRespuestaCabecera desc";
 		
 		try {
 			Query query = session.createQuery(hql);
