@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -500,6 +501,7 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 				rcd.setIncorrectas(Double.parseDouble(df.format((incorrectas*100)/cantidadPreguntas).toString().replace(",", ".")));
 				rcd.setNocontestadas(Double.parseDouble(df.format((nocontestadas*100)/cantidadPreguntas).toString().replace(",", ".")));
 				rcd.setPreguntas(cantidadPreguntas);
+				rcd.setFechaRespuesta(Date.parse(fechaRespuesta));
 				listarReporteUsuariosCursosDetalle.add(rcd);
 				correctas = 0.0; 
 				incorrectas = 0.0; 

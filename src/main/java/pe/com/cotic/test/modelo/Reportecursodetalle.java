@@ -1,5 +1,7 @@
 package pe.com.cotic.test.modelo;
 
+import java.sql.Date;
+
 public class Reportecursodetalle {
 	
 	private Portafolio portafolio;
@@ -11,6 +13,7 @@ public class Reportecursodetalle {
 	private Integer puestos;
 	private Integer cumplimiento;
 	private Integer preguntas;
+	private Date fechaRespuesta;
 	
 	public Portafolio getPortafolio() {
 		return portafolio;
@@ -66,7 +69,11 @@ public class Reportecursodetalle {
 	public void setPreguntas(Integer preguntas) {
 		this.preguntas = preguntas;
 	}
-	
-
+	public Date getFechaRespuesta() {
+		return fechaRespuesta;
+	}
+	public void setFechaRespuesta(Date fechaRespuesta) {
+		this.fechaRespuesta = fechaRespuesta;
+	}	
 	
 }
