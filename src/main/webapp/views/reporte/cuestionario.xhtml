@@ -4,40 +4,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"> 
-
-<h:head>
-
-	<script>
-	$(document).ready(function(){
-	        var s1 = [2, 6, 7, 10];
-	        var s2 = [7, 5, 3, 2];
-	        var s3 = [14, 9, 3, 8];
-	        plot3 = $.jqplot('chart3', [s1, s2, s3], {
-	            stackSeries: true,
-	            captureRightClick: true,
-	            seriesDefaults:{
-	                renderer:$.jqplot.BarRenderer,
-	                rendererOptions: {
-	                    highlightMouseDown: true   
-	                },
-	                pointLabels: {show: true}
-	            },
-	            legend: {
-	                show: true,
-	                location: 'e',
-	                placement: 'outside'
-	            }      
-	        });
-	     
-	        $('#chart3').bind('jqplotDataRightClick', 
-	            function (ev, seriesIndex, pointIndex, data) {
-	                $('#info3').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
-	            }
-	        ); 
-	    });
-	</script>
-
-</h:head> 
+ 
 <body> 
 <ui:composition template="./../../template/plantilla.xhtml">
 		<ui:define name="top">
@@ -69,76 +36,107 @@
 							<h:outputText value="#{cursosPuestos.fullNombre}" />
 						</p:column>
 						<p:column headerText="Cuestionarios" style="width:80px;text-align: center">
-							<h:outputText value="#{cursosPuestos.totalCuestionarios}" />
+							<h:outputText value="#{cursosPuestos.totalCuestionariosContestados} / #{cursosPuestos.totalCuestionarios}" />
 						</p:column>
 						<p:column headerText="Ubicación Alta" style="text-align: center">
-							<h:outputText value="#{cursosPuestos.ubicacionPrimera}">
-							</h:outputText>
+							<h:outputText value="#{cursosPuestos.ubicacionPrimera}" />
 						</p:column>
 						<p:column headerText="Ubicación Baja" style="text-align: center">
-							<h:outputText value="#{cursosPuestos.ubicacionUltima}">
-							</h:outputText>
+							<h:outputText value="#{cursosPuestos.ubicacionUltima}" />
 						</p:column>
 						<p:column headerText="Cumplimiento" style="text-align: center">
 						</p:column>
-						
+						<p:column headerText="Última Fecha" style="text-align: center">
+							<h:outputText value="#{cursosPuestos.fechaUltimoCuestionario}" />
+						</p:column>
+												
 						<p:rowExpansion>
 			                <f:facet name="header">DETALLE DE LOS USUARIOS</f:facet>
 		                	<p:growl id="msgsCursos" showDetail="true" />
 		                	<p:panelGrid id="display" columns="2" cellpadding="2" columnClasses="label,value" >
  
-								<p:dataTable id="tablaMostrarDetalle" var="cursosdetalle" value="#{reporteUsuariosCursosDetalleBean.btnBuscarReporteCursoDetalle(cursosPuestos)}" style="width:750px" emptyMessage="No hay datos del detalle de cursos...">									
-									<p:column style="width:16px">
+								<p:dataTable id="tablaMostrarDetalle" var="cursosdetalle" value="#{reporteUsuariosCursosDetalleBean.btnBuscarReporteCursoDetalle(cursosPuestos)}" style="width:590px" emptyMessage="No hay datos del detalle de cursos...">									
+									<p:column style="width:6px">
 							            <p:rowToggler />
 							        </p:column>
-									<p:column headerText="Curso" style="width:150px;text-align: left">
+									<p:column headerText="Curso" style="width:100px;text-align: left">
 										<h:outputText value="#{cursosdetalle.portafolio.tituloPortafolio} " />
 									</p:column>
-									<p:column headerText="Respuesta Correcta" style="width:80px;text-align: center">
+									<p:column headerText="Aciertos" style="width:40px;text-align: center">
 										<h:outputText value="#{cursosdetalle.correctas} %" />
 									</p:column>
-									<p:column headerText="Respuesta Incorrecta" style="width:80px;text-align: center">
+									<p:column headerText="Erradas" style="width:40px;text-align: center">
 										<h:outputText value="#{cursosdetalle.incorrectas} %" />
 									</p:column>
-									<p:column headerText="Respuesta No Contestadas" style="width:80px;text-align: center">
+									<p:column headerText="No Contestadas" style="width:40px;text-align: center">
 										<h:outputText value="#{cursosdetalle.nocontestadas} %" />
 									</p:column>
-									<p:column headerText="Cantidad Preguntas" style="width:80px;text-align: center">
+									<p:column headerText="Cantidad Preguntas" style="width:40px;text-align: center">
 										<h:outputText value="#{cursosdetalle.preguntas}" />
 									</p:column>
-									<p:column headerText="Intentos" style="width:80px;text-align: center">
-										<h:outputText value="#{cursosdetalle.intentos} " />
+									<p:column headerText="Intentos" style="width:30px;text-align: center">
+										<h:outputText value="#{cursosdetalle.intentos}" />
+									</p:column>
+									<p:column headerText="Última Fecha" style="width:60px;text-align: center">
+										<h:outputText value="#{cursosdetalle.fechaUltima}" />
 									</p:column>
 
 									<p:rowExpansion>
 						                <f:facet name="header">DETALLE DE LOS CURSOS</f:facet>
 					                	<p:growl id="msgsCursosDetalle" showDetail="true" />
-					                	<p:panelGrid id="display" columns="2" cellpadding="2" columnClasses="label,value">
-											<p:dataTable id="tablaMostrarDetalleCursos" var="mostrarcursosdetalle" value="#{reporteUsuariosCursosDetalleBean.btnBuscarReporteCursoDetalleUnico(cursosdetalle.usuario.codigoUsuario, cursosdetalle.portafolio.codigoPortafolio)}" style="width:350px" emptyMessage="No hay datos del detalle del curso seleccionado...">
-												<p:column headerText="Correctas" style="width:80px;text-align: center">
+					                	<p:panelGrid id="display" columns="2" cellpadding="0" cellspacing="0" columnClasses="label,value">
+											<p:dataTable id="tablaMostrarDetalleCursos" var="mostrarcursosdetalle" value="#{reporteUsuariosCursosDetalleBean.btnBuscarReporteCursoDetalleUnico(cursosdetalle.usuario.codigoUsuario, cursosdetalle.portafolio.codigoPortafolio)}" 
+											style="width:270px" emptyMessage="No hay datos del detalle del curso seleccionado...">
+												<p:column headerText="Aciertos" style="width:30px;text-align: center">
 													<h:outputText value="#{mostrarcursosdetalle.correctas} %" />
 												</p:column>
-												<p:column headerText="Incorrectas" style="width:80px;text-align: center">
+												<p:column headerText="Erradas" style="width:30px;text-align: center">
 													<h:outputText value="#{mostrarcursosdetalle.incorrectas} %" />
 												</p:column>
-												<p:column headerText="No Contestadas" style="width:80px;text-align: center">
+												<p:column headerText="No Contestadas" style="width:30px;text-align: center">
 													<h:outputText value="#{mostrarcursosdetalle.nocontestadas} %" />
 												</p:column>
+												<p:column headerText="Fecha" style="width:75px;text-align: center">
+													<h:outputText value="#{mostrarcursosdetalle.fechaUltima}" />
+												</p:column>
 											</p:dataTable>
-											<p:chart type="line" model="#{reporteUsuariosCursosDetalleBean.lineModel}" style="width:300px; height:150px"/>
+											<p:chart type="line" model="#{reporteUsuariosCursosDetalleBean.lineModel}" style="width:280px; height:150px"/>
 										</p:panelGrid>
 					        		</p:rowExpansion>
 																		
 								</p:dataTable>
  
 								<p:fieldset>
-									<!-- <p:chart type="pie" model="{reporteUsuariosCursosDetalleBean.model}"/>  -->
-									<p:chart type="bar" model="#{reporteUsuariosCursosDetalleBean.barModel}" style="width:500px; height:300px" />
-									<table id="leyenda" cellpadding="0" cellspacing="0" border="0px;" style="width: 130px; font-size: 9px;">
-										<tr><td style="width: 20px"><table style="width:10px; border: 0px"><tr><td bgcolor="#00FF00" bordercolor="#00FF00"></td></tr></table></td><td>Correcta</td></tr>
-										<tr><td style="width: 20px"><table style="width:10px; border: 0px"><tr><td bgcolor="#FF0000" bordercolor="#FF0000"></td></tr></table></td><td>Incorrecta</td></tr>
-										<tr><td style="width: 20px"><table style="width:10px; border: 0px"><tr><td bgcolor="#BDBDBD" bordercolor="#BDBDBD"></td></tr></table></td><td>No Contestada</td></tr>
+									<p:chart type="bar" model="#{reporteUsuariosCursosDetalleBean.barModel}" style="width:500px; height:300px" />									
+									<!-- 
+									<table id="leyenda" cellpadding="1" cellspacing="1" style="width: 100px; font-size: 9px; border: 1px" >
+										<tr style="border-style: hidden;">
+											<td style="border-style: hidden; width: 20px" bgcolor="#00FF00"></td><td style="border-style: hidden; width: 80px">Correcta</td>
+										</tr>
+										<tr style="border-style: hidden;">
+											<td style="border-style: hidden;" bgcolor="#FF0000"></td><td style="border-style: hidden;">Incorrecta</td>
+										</tr>
+										<tr style="border-style: hidden;">
+											<td style="border-style: hidden;" bgcolor="#BDBDBD"></td><td style="border-style: hidden;">No Contestada</td>
+										</tr>										
+									</table> 
+									<table id="leyenda" cellpadding="0" cellspacing="0" style="width: 130px; font-size: 9px; border-style: hidden;" >
+										<tr><td style="width: 20px; border-style: hidden;" ><table style="width:10px; border-style: hidden;" cellpadding="0" cellspacing="0" ><tr><td style="border-style: hidden;" bgcolor="#00FF00"></td></tr></table></td><td style="width: 110px; border-style: hidden;"><table style="width:100px; border-style: hidden;"><tr><td style="border-style: hidden;">Correcta</td></tr></table></td></tr>
+										<tr><td style="width: 20px; border-style: hidden;" ><table style="width:10px; border-style: hidden;" cellpadding="0" cellspacing="0" ><tr><td style="border-style: hidden;" bgcolor="#FF0000"></td></tr></table></td><td style="width: 110px; border-style: hidden;"><table style="width:100px; border-style: hidden;"><tr><td style="border-style: hidden;">Incorrecta</td></tr></table></td></tr>
+										<tr><td style="width: 20px; border-style: hidden;" ><table style="width:10px; border-style: hidden;" cellpadding="0" cellspacing="0" ><tr><td style="border-style: hidden;" bgcolor="#BDBDBD"></td></tr></table></td><td style="width: 110px; border-style: hidden;"><table style="width:100px; border-style: hidden;"><tr><td style="border-style: hidden;">No Contestada</td></tr></table></td></tr>
 									</table>
+									 -->									 
+									<div style="width: 130px; border: 0px hidden; display: table;">
+										<div style="display: table-row;">
+											<div style="background-color: #00FF00; width: 30px; height: 15px; display: table-cell;">&nbsp;</div><div style="display: table-cell; vertical-align: middle; padding-left: 5px;">Aciertos</div>
+										</div>
+										<div style="display: table-row;">
+											<div style="background-color: #FF0000; width: 30px; height: 15px; display: table-cell;">&nbsp;</div><div style="display: table-cell; vertical-align: middle; padding-left: 5px;">Erradas</div>
+										</div>
+										<div style="display: table-row;">
+											<div style="background-color: #BDBDBD; width: 30px; height: 15px; display: table-cell;">&nbsp;</div><div style="display: table-cell; vertical-align: middle; padding-left: 5px;">No Contestadas</div>
+										</div>
+									</div>
 								</p:fieldset>								
 							</p:panelGrid>
 				        </p:rowExpansion>	

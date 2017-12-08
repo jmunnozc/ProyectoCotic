@@ -14,6 +14,7 @@ public class Reportecursodetalle {
 	private Integer cumplimiento;
 	private Integer preguntas;
 	private Date fechaRespuesta;
+	private String fechaUltima;
 	
 	public Portafolio getPortafolio() {
 		return portafolio;
@@ -74,6 +75,12 @@ public class Reportecursodetalle {
 	}
 	public void setFechaRespuesta(Date fechaRespuesta) {
 		this.fechaRespuesta = fechaRespuesta;
+	}
+	public String getFechaUltima() {
+		return fechaUltima;
+	}
+	public void setFechaUltima(String fechaUltima) {
+		this.fechaUltima = fechaUltima;
 	}	
 	
 }

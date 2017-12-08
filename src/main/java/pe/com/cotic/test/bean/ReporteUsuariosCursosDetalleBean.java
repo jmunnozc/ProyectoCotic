@@ -11,6 +11,7 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.LegendPlacement;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
@@ -196,7 +197,9 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
 		LineChartModel model = new LineChartModel();		 
         LineChartSeries series1 = new LineChartSeries();
         series1.setLabel("Series 1");
-        int columna = System.getProperty("intentos_evaluados") != null ? Integer.parseInt(System.getProperty("intentos_evaluados")) : 4;
+        int columna = System.getProperty("intentos_evaluados") != null ? Integer.parseInt(System.getProperty("intentos_evaluados")) : lista4.size();
+        if (lista4.size() < columna) columna = lista4.size();
+        
         for (Reportecursodetalle rr : lista4) {
         	series1.set(columna--,rr.getCorrectas());
         }
@@ -208,9 +211,14 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
         lineModel = model;		
         //lineModel.setTitle("Linear Chart");
         //lineModel.setLegendPosition("e");
+                
         Axis yAxis = lineModel.getAxis(AxisType.Y);
         yAxis.setMin(0);
         yAxis.setMax(10);
+        
+        /*Axis xAxis = lineModel.getAxis(AxisType.X);
+        xAxis.setMin(0);
+        xAxis.setMin(4);*/
          
         yAxis.setLabel("Desempeño %");
         yAxis.setMin(0);
@@ -248,6 +256,7 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
 		List<Reportecursodetalle> lista4 = new ArrayList<Reportecursodetalle>();
 		lista3 = this.listarReportecursosdetalle;
 		int intentos = System.getProperty("intentos_evaluados") != null ? Integer.parseInt(System.getProperty("intentos_evaluados")) : 4;
+		if (lista3.size() < intentos) intentos = lista3.size();
 		for (int a=0; a<intentos; a++) {
 			Reportecursodetalle rcd = new Reportecursodetalle();
 			rcd.setCorrectas(Double.parseDouble(lista3.get(a).getCorrectas().toString()));

@@ -69,3 +69,9 @@
 	margin-left: auto;
 	margin-right: auto;
 }
+
+.ui-widget-content {
+	border: 0px solid #a6c9e2;
+	background:#fcfdfd url("/ProyectoWeb/javax.faces.resource/images/ui-bg_inset-hard_100_fcfdfd_1x100.png.jsf?ln=primefaces-redmond") 50% bottom repeat-x;
+	color:#222222;
+}

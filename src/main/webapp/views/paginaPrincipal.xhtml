@@ -25,9 +25,9 @@
 				<h:form id="formDataTable">
 
 					<p:dataTable id="tablaMostrarReporte" var="reporte" emptyMessage="No hay datos de Reportes..."
-						value="#{reporteUsuariosCursosBean.listarReporteUsuariosCursos}" rows="10" paginator="true" draggableColumns="true"
+						value="#{reporteUsuariosCursosBean.listarReporteUsuariosCursos}" rows="30" paginator="true" draggableColumns="true"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="5,10,15">
+                         rowsPerPageTemplate="30,40,50">
 						<f:facet name="header">
 					        REPORTE GENERAL
 					        <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator" />					        
@@ -51,8 +51,11 @@
 						<p:column headerText="Usuario" style="width:100px;text-align: center;">
 							<h:outputText value="#{reporte.nombreUsuarioFull}" />
 						</p:column>
-						<p:column headerText="Fecha y Hora" style="width:50px;text-align: center">
-							<h:outputText value="#{reporte.fechaRespuesta}" />
+						<p:column headerText="Fecha" style="width:50px;text-align: center">
+							<h:outputText value="#{reporte.fechaRespuesta.substring(0,10)}" />
+						</p:column>
+						<p:column headerText="Hora" style="width:50px;text-align: center">
+							<h:outputText value="#{reporte.fechaRespuesta.substring(11)}" />
 						</p:column>
 						<p:column headerText="Cantidad Preguntas" style="width:100px;text-align: center">
 							<h:outputText value="#{reporte.cantidadPreguntas}" />

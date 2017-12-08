@@ -58,7 +58,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 				for (Object[] elements: res){
 					us = (Usuario) elements[0];
 					if (elements[1] != null) {
-						us.setPerfil(elements[1].toString().trim().toUpperCase());
+						us.setPerfil(elements[1].toString().trim().toUpperCase());						
 					}					
 				}
 				// Campos de Auditoria
@@ -88,6 +88,8 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+		
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", us);		
 
 		return us;
 	}
@@ -264,7 +266,8 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		List<Institucion> listarInstituciones = null;
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
-		String hql = "FROM Institucion ";
+		String hql = "FROM Institucion "
+				+	" WHERE codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion();
 
 		try {
 			listarInstituciones = session.createQuery(hql).list();

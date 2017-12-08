@@ -9,7 +9,24 @@ body {
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 10%;
-	font-size: 85%;
+	font-size: 90%;
+}
+
+.container {
+  /* Por defecto en modo fila, uno al lado del otro */
+  display: flex;
+  flex-flow: row;
+}
+
+.item {
+  flex: 1 1 auto;  
+}
+
+@media (max-width: 750px) {
+  .container {
+    /* si es muy angosta, uno debajo del otro */
+    flex-flow: column;
+  }
 }
 
 .ui-panelgrid .ui-panelgrid-cell {

@@ -7,6 +7,8 @@ public class Reporteusuarioscursospuestos {
 	private Integer ubicacionPrimera;
 	private Integer ubicacionUltima;
 	private Integer noCumplimiento;
+	private Integer totalCuestionariosContestados;
+	private String fechaUltimoCuestionario;
 
 	public Integer getCodigoUsuario() {
 		return codigoUsuario;
@@ -43,6 +45,19 @@ public class Reporteusuarioscursospuestos {
 	}
 	public void setNoCumplimiento(Integer noCumplimiento) {
 		this.noCumplimiento = noCumplimiento;
+	}
+	public Integer getTotalCuestionariosContestados() {
+		return totalCuestionariosContestados;
+	}
+	public void setTotalCuestionariosContestados(
+			Integer totalCuestionariosContestados) {
+		this.totalCuestionariosContestados = totalCuestionariosContestados;
+	}
+	public String getFechaUltimoCuestionario() {
+		return fechaUltimoCuestionario;
+	}
+	public void setFechaUltimoCuestionario(String fechaUltimoCuestionario) {
+		this.fechaUltimoCuestionario = fechaUltimoCuestionario;
 	}
 	
 }
