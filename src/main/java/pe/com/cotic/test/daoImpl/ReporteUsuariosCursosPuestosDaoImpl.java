@@ -3,10 +3,10 @@ package pe.com.cotic.test.daoImpl;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -24,6 +24,7 @@ import pe.com.cotic.test.modelo.Reporteusuarioscursospuestos;
 import pe.com.cotic.test.modelo.Usuario;
 import pe.com.cotic.test.modelo.Usuarioportafolio;
 import pe.com.cotic.test.modelo.Usuariospuesto;
+import pe.com.cotic.test.util.CursoComparatorByTotal;
 import pe.com.cotic.test.util.HibernateUtil;
 
 public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCursosPuestosDao {
@@ -347,7 +348,7 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 
 
 	@Override
-	public List<Reportecursodetalle> ListarReporteUsuariosCursosDetalle(int codigoUsuario) {
+	/*public List<Reportecursodetalle> ListarReporteUsuariosCursosDetalle(int codigoUsuario) {
 		List<Reportecursodetalle> listarReporteUsuariosCursosDetalle = null;
 		Usuario usuario = null;		
 		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
@@ -413,9 +414,9 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 		}
 		
 		return listarReporteUsuariosCursosDetalle;
-	}
+	}*/
 	
-	/*public List<Reportecursodetalle> ListarReporteUsuariosCursosDetalle(int codigoUsuario) {
+	public List<Reportecursodetalle> ListarReporteUsuariosCursosDetalle(int codigoUsuario) {
 		System.out.println("ListarReporteUsuariosCursosDetalle(int codigoUsuario)");
 		List<Reportecursodetalle> listarReporteUsuariosCursosDetalle = null;
 		Usuario usuario = null;		
@@ -474,12 +475,93 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 				    // el que formatea
 					SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");										
 					for (String elements2: res2){						
-						Date fechaResp = parseador.parse(elements2.toString());
+						Date fechaResp = null;
+						fechaResp = parseador.parse(elements2.toString());
 						rd.setFechaUltima( formateador.format(fechaResp) );
-					}					
-				}
+					}
+				}				
+								
+				/* Obteniendo el Ranking */
+				List<Usuariospuesto> listadoRanking = new ArrayList<Usuariospuesto>();
+				//Cursos Asignados al Usuario
+				Integer aciertos = 0;
+				/*String hql10 = "SELECT distinct p.portafolioByCodigoPortafolio.codigoPortafolio " 
+						+	"FROM Usuarioportafolio p " 
+						+	"WHERE p.usuario.codigoUsuario = " + codigoUsuario
+						+ 	"	AND p.nivel.codigoNivel = 3 ";
+				Query query10 = session.createQuery(hql10);
+				List<Integer> res10 = query10.list();
+				for (Integer elements10: res10){*/
+					//System.out.println(".::. Cursos " + elements10.toString());
+					System.out.println(".::. Cursos " + rd.getPortafolio().getCodigoPortafolio());
+					//Consultar todos los usuarios que tienen el Curso Asignado
+					String hql11 = "SELECT distinct rc.usuario.codigoUsuario " 
+							+	"FROM Respuestacabecera rc " 
+							+	"WHERE rc.portafolio.codigoPortafolio = " + rd.getPortafolio().getCodigoPortafolio() //elements10
+							+	"ORDER BY rc.usuario.codigoUsuario "; 
+					Query query11 = session.createQuery(hql11);
+					List<Integer> res11 = query11.list();
+					for (Integer elements11: res11){
+						Usuariospuesto usupue = new Usuariospuesto();						
+						//System.out.println(" --> Usuarios " + elements11.toString());
+						usupue.setCodigoUsuario(elements11);
+						//Seleccionamos el ultimo intento realizado
+						String hql12 = "SELECT max(rc.codigoRespuestaCabecera) "
+								+	"FROM Respuestacabecera rc "
+								+	"WHERE rc.usuario.codigoUsuario = " + elements11;
+						Query query12 = session.createQuery(hql12);
+						List<Integer> res12 = query12.list();
+						for (Integer elements12: res12){
+							//System.out.println(" --> Maximo <-- " + elements12.toString());
+							//Obtenemos el total de respuestas correctas
+							String hql13 = "SELECT count(rd.flagAlternativaCorrecta) "
+									+ "FROM Respuestadetalle rd "
+									+ "WHERE rd.respuestacabecera = " + elements12;
+							Query query13 = session.createQuery(hql13);
+							List<Long> res13 = query13.list();
+							for (Long elements13: res13){							
+								if (elements13>0) {
+									String hql14 = "SELECT sum(rd.flagAlternativaCorrecta)  as total " 
+											+	"FROM Respuestadetalle rd " 
+											+	"WHERE rd.respuestacabecera = " + elements12;
+									Query query14 = session.createQuery(hql14);
+									List<Long> res14 = query14.list();
+									for (Long elements14: res14){
+										aciertos = Integer.parseInt(elements14.toString()); 
+									}								
+								} else {
+									aciertos = Integer.parseInt(elements13.toString());
+								}
+								//System.out.println(" --> Total Acertadas <-- " + aciertos.toString());
+								usupue.setTotal(aciertos);
+							}
+				
+						}
+						listadoRanking.add(usupue);
+					}
+					//Ordenar ascendentemente un list
+					/*Iterator itListaRanking = listadoRanking.iterator();
+					while (itListaRanking.hasNext()) {
+						Usuariospuesto elementoLista=(Usuariospuesto) itListaRanking.next();
+						System.out.println(elementoLista.getCodigoUsuario() + " " + elementoLista.getTotal());
+					}*/
+					Collections.sort(listadoRanking, new CursoComparatorByTotal(false));
+					Iterator itListaRanking = listadoRanking.iterator();
+					Integer posicion = 1;
+					while (itListaRanking.hasNext()) {
+						Usuariospuesto elementoLista=(Usuariospuesto) itListaRanking.next();
+						System.out.println(elementoLista.getCodigoUsuario() + " " + elementoLista.getTotal());
+						if (elementoLista.getCodigoUsuario().equals(rd.getUsuario().getCodigoUsuario())) {
+							rd.setPuestos(posicion);
+						} else {
+							posicion++;
+						}
+					}
+				/*}*/				
+			/* Termina el proceso de Obteniendo Ranking */				
 				listarReporteUsuariosCursosDetalle.add(rd);
 			}								
+
 			session.close();
 
 		} catch (Exception e) {
@@ -489,7 +571,7 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 
 		
 		return listarReporteUsuariosCursosDetalle;
-	}*/
+	}
 
 
 	@Override
