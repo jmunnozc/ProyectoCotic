@@ -303,6 +303,9 @@ public class UsuarioBean implements Serializable {
 		this.selectedUsuario.setFechaCreacion(java.sql.Date.valueOf(fechaActual));
 		this.selectedUsuario.setUsuarioModificacion(usuario.getCodigoUsuario().toString());
 		this.selectedUsuario.setFechaModificacion(java.sql.Date.valueOf(fechaActual));
+		Institucion inst = new Institucion();
+		inst.setCodigoInstitucion(usuario.getInstitucion().getCodigoInstitucion());
+		this.selectedUsuario.setInstitucion(inst);	
 		
 		/*institucion.setCodigoInstitucion(1);
 		this.selectedUsuario.setInstitucion(institucion);*/
