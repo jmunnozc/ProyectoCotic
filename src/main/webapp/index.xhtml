@@ -46,13 +46,13 @@
 				<f:facet name="header">
 					<p:graphicImage url="resources/images/icons/icon_id_48x48.png" />Acceso a la aplicación
          </f:facet>
-				<h:panelGrid columns="2" cellpadding="5">
-					<h:outputLabel for="usuario" value="Usuario:" />
+				<h:panelGrid columns="2" cellpadding="6">
+					<h:outputLabel for="usuario" value="Usuario: " />
 					<p:inputText id="usuario" value="#{usuarioBean.usuario.usuario}" label="usuario"  
-						required="true" a:placeholder="ingrese su correo" />
-					<h:outputLabel for="clave" value="Clave:" />
+						required="true" a:placeholder="ingrese su correo" style="width:250px" />
+					<h:outputLabel for="clave" value="Clave: " />
 					<p:password id="clave" value="#{usuarioBean.usuario.clave}" label="clave"  
-						required="true" a:placeholder="ingrese su clave" />
+						required="true" a:placeholder="ingrese su clave" style="width:250px" />
 					<f:facet name="footer">
 						<p:commandButton id="loginButton" value="Login"
 							action="#{usuarioBean.verificarDatos()}" update=":mensajes"

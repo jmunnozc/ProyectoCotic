@@ -116,12 +116,7 @@
 								<p:inputText value="#{usuarioBean.selectedUsuario.correo}" style="text-transform:lowercase;" />
 								<h:outputText value="Celular" />
 								<p:inputText value="#{usuarioBean.selectedUsuario.celular}" />
-								<h:outputText value="Institución:" />
-								<p:selectOneMenu id="institucion"
-									value="#{usuarioBean.selectedUsuario.institucion.codigoInstitucion}">
-									<f:selectItem itemLabel="-- Seleccione --" />
-									<f:selectItems value="#{usuarioBean.listarInstitucion}" />
-								</p:selectOneMenu>
+
 								<h:outputText value="Estado" />
 								<p:selectOneMenu id="estado" value="#{usuarioBean.selectedUsuario.estado}">
 									<f:selectItem itemLabel="-- Seleccione --" />

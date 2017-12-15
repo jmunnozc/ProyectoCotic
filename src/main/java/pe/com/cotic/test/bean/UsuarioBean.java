@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -260,6 +261,9 @@ public class UsuarioBean implements Serializable {
 		
 		this.selectedUsuario.setUsuarioCreacion(usuario.getCodigoUsuario().toString());
 		this.selectedUsuario.setFechaCreacion(java.sql.Date.valueOf(fechaActual));
+		Institucion inst = new Institucion();
+		inst.setCodigoInstitucion(usuario.getInstitucion().getCodigoInstitucion());
+		this.selectedUsuario.setInstitucion(inst);	
 		
 		Rolusuario rolusuario = new Rolusuario();
 		Rol rol = new Rol();
@@ -267,7 +271,8 @@ public class UsuarioBean implements Serializable {
 		rol.setCodigoRol(2);
 		usu.setCodigoUsuario(this.selectedUsuario.getCodigoUsuario());
 		rolusuario.setUsuario(usu);
-		rolusuario.setRol(rol);				
+		rolusuario.setRol(rol);
+		this.selectedUsuario.setRolusuario(rolusuario);
 
 		if (usuarioDao.grabarUsuario(this.selectedUsuario)) {
 			usuarioDao.grabarRolUsuario(rolusuario);

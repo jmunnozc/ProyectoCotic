@@ -13,6 +13,7 @@ public class Usuario implements java.io.Serializable {
 
 	private Integer codigoUsuario;
 	private Institucion institucion;
+	private Rolusuario rolusuario;
 	private String usuario;
 	private String clave;
 	private String dni;
@@ -107,6 +108,14 @@ public class Usuario implements java.io.Serializable {
 
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
+	}
+
+	public Rolusuario getRolusuario() {
+		return rolusuario;
+	}
+
+	public void setRolusuario(Rolusuario rolusuario) {
+		this.rolusuario = rolusuario;
 	}
 
 	public String getClave() {
