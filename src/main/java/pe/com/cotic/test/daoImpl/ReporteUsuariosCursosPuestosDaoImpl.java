@@ -348,8 +348,9 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 
 
 	@Override
-	/*public List<Reportecursodetalle> ListarReporteUsuariosCursosDetalle(int codigoUsuario) {
-		List<Reportecursodetalle> listarReporteUsuariosCursosDetalle = null;
+	//Trabajandolo para probarlo...
+	public List<Reportecursodetalle> ListarReporteUsuariosCursosDetalle(int codigoUsuario) {
+		List<Reportecursodetalle> listarReporteUsuariosCursosDetalle = new ArrayList<Reportecursodetalle>();
 		Usuario usuario = null;		
 		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
 		session = HibernateUtil.getSessionFactory().openSession();
@@ -357,55 +358,166 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 		
 		String administrador = System.getProperty("usuario_administrador") != null ? System.getProperty("usuario_administrador") : "";
 		
-		//Cantidad de Portafolios Asignados al usuario
-		String hql = "";		
-		hql = "SELECT up.portafolioByCodigoPortafolio.codigoPortafolio "
+		//Cantidad de Portafolios Asignados al usuario		
+		String hql = "SELECT up.portafolioByCodigoPortafolio.codigoPortafolio, up.portafolioByCodigoPortafolio.tituloPortafolio "
 				+ "FROM Usuarioportafolio up "
 				+ "WHERE up.nivel.codigoNivel = 3 " 
-				+ "	AND up.usuario.codigoUsuario = " + codigoUsuario;
+				+ "	AND up.usuario.codigoUsuario = " + codigoUsuario
+				+ " AND up.portafolioByCodigoPortafolio.usuario.institucion.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion();
 		try {
 			Query query = session.createQuery(hql);
-			List<Integer> res = query.list();
-			System.out.println("Cuestionarios Asignados " + res.size() );
-			for (Integer elements : res){
-				System.out.println("Portafolio " + elements);
-				
-				//Cantidad de Intentos
-				String hql1 = "";		
-				hql1 = "SELECT DISTINCT rc.codigoRespuestaCabecera "
+			//List<Integer> res = query.list();
+			List<Object[]> res = query.list();
+			//System.out.println("Cuestionarios Asignados " + res.size() );
+			for (Object[] elements: res){
+				//System.out.println("--------- Inicia Portafolio " + elements);
+				Reportecursodetalle rcd = new Reportecursodetalle();
+				Portafolio pt = new Portafolio();
+				pt.setCodigoPortafolio(Integer.parseInt(elements[0].toString()));
+				pt.setTituloPortafolio(elements[1].toString());
+				//Cantidad de Intentos		
+				String hql1 = "SELECT DISTINCT rc.codigoRespuestaCabecera "
 						+ "FROM Respuestacabecera rc "
 						+ "	LEFT JOIN rc.respuestadetalles rd "
-						+ "WHERE rc.usuario.codigoUsuario = 4 "
-						+ "	AND rc.portafolio.codigoPortafolio = " + elements
+						+ "WHERE rc.usuario.codigoUsuario = " + codigoUsuario
+						+ "	AND rc.portafolio.codigoPortafolio = " + elements[0]
 						+ " ORDER BY rc.codigoRespuestaCabecera ";
 				try {
 					Query query1 = session.createQuery(hql1);
 					List<Integer> res1 = query1.list();
-					System.out.println("Intento " + res1.size() );
-					
-					//Cantidad de Preguntas del Portafolio Seleccionado
-					String hql2 = "";		
-					hql2 = "SELECT count(*) "
-							+ "FROM Pregunta p "
-							+ "WHERE p.portafolio.codigoPortafolio = " + elements;
-					try {
-						Query query2 = session.createQuery(hql2);
-						List<Integer> res2 = query2.list();
-						
-						for (Integer elements2 : res2){
-							System.out.println("Total Preguntas " + elements2.toString() );							
+					rcd.setUsuario(usuario);
+					rcd.setIntentos(res1.size());
+					rcd.setPortafolio(pt);
+					//System.out.println("Intentos " + res1.size() );					
+					//Cantidad de Preguntas de la Respuesta Seleccionada: aciertos, erradas, nocontestadas
+					List<Reporteusuarioscursos> listarReporteUsuariosCursos = new ArrayList<Reporteusuarioscursos>();
+					for (Integer elements1 : res1){
+						String hql2 = "SELECT rc.codigoRespuestaCabecera, rc.fechaRespuesta, rc.usuario.codigoUsuario, rc.portafolio.codigoPortafolio, 1 as cantidadPreguntas, rd.pregunta.codigoPregunta, "
+								+ " CASE WHEN rd.flagAlternativaCorrecta=1 THEN 1 ELSE 0 END as correctas, "
+								+ " CASE WHEN rd.flagAlternativaCorrecta=0 THEN 1 ELSE 0 END as incorrectas, "
+								+ " 0 as nocontestadas, "
+								+ " u.institucion.codigoInstitucion "
+								+ "FROM Respuestacabecera rc "
+								+ "	LEFT JOIN rc.respuestadetalles rd "
+								+ "	LEFT JOIN rc.usuario u "
+								+ "WHERE rc.usuario.codigoUsuario = " + codigoUsuario
+								+ "	AND rc.codigoRespuestaCabecera = " + elements1;
+						try {
+							Query query2 = session.createQuery(hql2);
+							List<Object[]> res2 = query2.list();
+							for (Object[] elements2: res2){
+								Reporteusuarioscursos ruc = new Reporteusuarioscursos();
+								//System.out.println(elements2[5]);
+								if (elements2[5]==null) {
+									String hql21 = "SELECT " + elements1 + " as codigoRespuestaCabecera, (select fechaRespuesta from Respuestacabecera reca where reca.codigoRespuestaCabecera=" + elements1 + ") as fechaRespuesta, " + codigoUsuario + " as codigoUsuario, " 
+												+	"" + elements[0] + " as codigoPortafolio, 1 as cantidadPreguntas, pr.codigoPregunta, 0 as correctas, 0 as incorrectas, 1 as nocontestadas, " + usuario.getInstitucion().getCodigoInstitucion() + " as codigoInstitucion "
+												+	"FROM Portafolio p "
+												+	"	INNER JOIN p.preguntas pr "
+												+	"WHERE p.codigoPortafolio=1 AND pr.portafolio.codigoPortafolio=1 ";
+									Query query21 = session.createQuery(hql21);
+									List<Object[]> res21 = query21.list();
+									for (Object[] elements21: res21){
+										ruc.setCodigoRespuestaCabecera(Integer.parseInt(elements21[0].toString()));
+										ruc.setFechaRespuesta(elements21[1].toString());
+										ruc.setCodigoUsuario(Integer.parseInt(elements21[2].toString()));
+										ruc.setCodigoPortafolio(Integer.parseInt(elements21[3].toString()));
+										ruc.setCantidadPreguntas(Integer.parseInt(elements21[4].toString()));
+										ruc.setCantidadCorrectas(Integer.parseInt(elements21[6].toString()));
+										ruc.setCantidadIncorrectas(Integer.parseInt(elements21[7].toString()));
+										ruc.setCantidadNocontestadas(Integer.parseInt(elements21[8].toString()));
+										ruc.setCodigoInstitucion(Integer.parseInt(elements21[9].toString()));
+										listarReporteUsuariosCursos.add(ruc);
+									}
+								} else {
+									ruc.setCodigoRespuestaCabecera(Integer.parseInt(elements2[0].toString()));
+									ruc.setFechaRespuesta(elements2[1].toString());
+									ruc.setCodigoUsuario(Integer.parseInt(elements2[2].toString()));
+									ruc.setCodigoPortafolio(Integer.parseInt(elements2[3].toString()));
+									ruc.setCantidadPreguntas(Integer.parseInt(elements2[4].toString()));
+									ruc.setCantidadCorrectas(Integer.parseInt(elements2[6].toString()));
+									ruc.setCantidadIncorrectas(Integer.parseInt(elements2[7].toString()));
+									ruc.setCantidadNocontestadas(Integer.parseInt(elements2[8].toString()));
+									ruc.setCodigoInstitucion(Integer.parseInt(elements2[9].toString()));
+									listarReporteUsuariosCursos.add(ruc);
+								}
+							}
+							
+						} catch (Exception e) {
+							System.out.println(e.getMessage());
 						}
 						
-					} catch (Exception e) {
-						System.out.println(e.getMessage());
-					}		
+						String hql3 = "SELECT " + elements1 + " as codigoRespuestaCabecera, (select fechaRespuesta from Respuestacabecera reca where reca.codigoRespuestaCabecera=" + elements1 + ") as fechaRespuesta, " + codigoUsuario + " as codigoUsuario, " 
+								+	"" + elements[0] + " as codigoPortafolio, 1 as cantidadPreguntas, pr.codigoPregunta, 0 as correctas, 0 as incorrectas, 1 as nocontestadas, " + usuario.getInstitucion().getCodigoInstitucion() + " as codigoInstitucion "
+								+	"FROM Portafolio p "
+								+	"	INNER JOIN p.preguntas pr "
+								+	"WHERE p.codigoPortafolio=1 AND pr.portafolio.codigoPortafolio=1 AND " 
+								+	"	pr.codigoPregunta NOT IN ( "
+								+	"			SELECT rd.pregunta.codigoPregunta "
+								+	"			FROM Respuestacabecera rc "
+								+	"				LEFT JOIN rc.respuestadetalles rd "
+								+	"				LEFT JOIN rc.usuario u "
+								+	"			WHERE rc.usuario.codigoUsuario=" + codigoUsuario + " AND rc.codigoRespuestaCabecera=" + elements1 + ")";
+						try {
+							Query query3 = session.createQuery(hql3);
+							List<Object[]> res3 = query3.list();
+							for (Object[] elements3: res3){
+								Reporteusuarioscursos ruc = new Reporteusuarioscursos();
+								ruc.setCodigoRespuestaCabecera(Integer.parseInt(elements3[0].toString()));
+								ruc.setFechaRespuesta(elements3[1].toString());
+								ruc.setCodigoUsuario(Integer.parseInt(elements3[2].toString()));
+								ruc.setCodigoPortafolio(Integer.parseInt(elements3[3].toString()));
+								ruc.setCantidadPreguntas(Integer.parseInt(elements3[4].toString()));
+								ruc.setCantidadCorrectas(Integer.parseInt(elements3[6].toString()));
+								ruc.setCantidadIncorrectas(Integer.parseInt(elements3[7].toString()));
+								ruc.setCantidadNocontestadas(Integer.parseInt(elements3[8].toString()));
+								ruc.setCodigoInstitucion(Integer.parseInt(elements3[9].toString()));
+								listarReporteUsuariosCursos.add(ruc);
+							}
+							
+						} catch (Exception e) {
+							System.out.println(e.getMessage());
+						}						
+					}	
+					
+					//Sumando todos los registros y pasadndo a porcentaje de aciertos, erradas y no contestadas
+					double aciertos=0.0; double erradas=0.0; double nocontestadas=0.0; int cantidadpreguntas=0; int codigoCabecera=0; String ultimafecha="";
+					DecimalFormat df = new DecimalFormat("#.00");
+					for (int a=0; a<listarReporteUsuariosCursos.size();a++) {
+						
+						//System.out.println("Cabecera[" + listarReporteUsuariosCursos.get(a).getCodigoRespuestaCabecera() + "]  Aciertos:" + listarReporteUsuariosCursos.get(a).getCantidadCorrectas().toString() + " Erradas:" + listarReporteUsuariosCursos.get(a).getCantidadIncorrectas().toString() + " No Contestadas:" + listarReporteUsuariosCursos.get(a).getCantidadNocontestadas().toString() + " Preguntas:" + listarReporteUsuariosCursos.get(a).getCantidadPreguntas().toString());
+						
+						aciertos+=Double.parseDouble(listarReporteUsuariosCursos.get(a).getCantidadCorrectas().toString());
+						erradas+=Double.parseDouble(listarReporteUsuariosCursos.get(a).getCantidadIncorrectas().toString());
+						nocontestadas+=Double.parseDouble(listarReporteUsuariosCursos.get(a).getCantidadNocontestadas().toString());
+						cantidadpreguntas+=Integer.parseInt(listarReporteUsuariosCursos.get(a).getCantidadPreguntas().toString());
+						if (a==0) {
+							codigoCabecera=listarReporteUsuariosCursos.get(a).getCodigoRespuestaCabecera();
+							ultimafecha=listarReporteUsuariosCursos.get(a).getFechaRespuesta();
+						} if (codigoCabecera<listarReporteUsuariosCursos.get(a).getCodigoRespuestaCabecera()) {
+							codigoCabecera=listarReporteUsuariosCursos.get(a).getCodigoRespuestaCabecera();
+							ultimafecha=listarReporteUsuariosCursos.get(a).getFechaRespuesta();
+						}
+					}
+					System.out.println("Aciertos[" + aciertos + "] Erradas[" + erradas + "] No Contestadas[" + nocontestadas + "] Total Preguntas[" + cantidadpreguntas + "]" );
+					
+					aciertos = Double.parseDouble(df.format((aciertos/cantidadpreguntas)*100).toString().replace(",", "."));
+					erradas = Double.parseDouble(df.format((erradas/cantidadpreguntas)*100).toString().replace(",", "."));
+					nocontestadas = Double.parseDouble(df.format((nocontestadas/cantidadpreguntas)*100).toString().replace(",", "."));
+					
+					rcd.setCorrectas(aciertos);
+					rcd.setIncorrectas(erradas);
+					rcd.setNocontestadas(nocontestadas);
+					rcd.setPreguntas(cantidadpreguntas);
+					rcd.setFechaUltima(ultimafecha);
+					listarReporteUsuariosCursosDetalle.add(rcd);
+					//System.out.println("Aciertos[" + aciertos + "] Erradas[" + erradas + "] No Contestadas[" + nocontestadas + "] Total Preguntas[" + cantidadpreguntas + "]" );
 					
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}
 				
+				//System.out.println("--------- Finaliza Portafolio " + elements);
 			}
-
 			
 			
 		} catch (Exception e) {
@@ -414,9 +526,9 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 		}
 		
 		return listarReporteUsuariosCursosDetalle;
-	}*/
+	}
 	
-	public List<Reportecursodetalle> ListarReporteUsuariosCursosDetalle(int codigoUsuario) {
+	/*public List<Reportecursodetalle> ListarReporteUsuariosCursosDetalle(int codigoUsuario) {
 		System.out.println("ListarReporteUsuariosCursosDetalle(int codigoUsuario)");
 		List<Reportecursodetalle> listarReporteUsuariosCursosDetalle = null;
 		Usuario usuario = null;		
@@ -481,17 +593,17 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 					}
 				}				
 								
-				/* Obteniendo el Ranking */
+				/// Obteniendo el Ranking 
 				List<Usuariospuesto> listadoRanking = new ArrayList<Usuariospuesto>();
 				//Cursos Asignados al Usuario
 				Integer aciertos = 0;
-				/*String hql10 = "SELECT distinct p.portafolioByCodigoPortafolio.codigoPortafolio " 
-						+	"FROM Usuarioportafolio p " 
-						+	"WHERE p.usuario.codigoUsuario = " + codigoUsuario
-						+ 	"	AND p.nivel.codigoNivel = 3 ";
-				Query query10 = session.createQuery(hql10);
-				List<Integer> res10 = query10.list();
-				for (Integer elements10: res10){*/
+				//String hql10 = "SELECT distinct p.portafolioByCodigoPortafolio.codigoPortafolio " 
+				//		+	"FROM Usuarioportafolio p " 
+				//		+	"WHERE p.usuario.codigoUsuario = " + codigoUsuario
+				//		+ 	"	AND p.nivel.codigoNivel = 3 ";
+				//Query query10 = session.createQuery(hql10);
+				//List<Integer> res10 = query10.list();
+				//for (Integer elements10: res10){
 					//System.out.println(".::. Cursos " + elements10.toString());
 					System.out.println(".::. Cursos " + rd.getPortafolio().getCodigoPortafolio());
 					//Consultar todos los usuarios que tienen el Curso Asignado
@@ -540,11 +652,11 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 						listadoRanking.add(usupue);
 					}
 					//Ordenar ascendentemente un list
-					/*Iterator itListaRanking = listadoRanking.iterator();
-					while (itListaRanking.hasNext()) {
-						Usuariospuesto elementoLista=(Usuariospuesto) itListaRanking.next();
-						System.out.println(elementoLista.getCodigoUsuario() + " " + elementoLista.getTotal());
-					}*/
+					//Iterator itListaRanking = listadoRanking.iterator();
+					//while (itListaRanking.hasNext()) {
+					//	Usuariospuesto elementoLista=(Usuariospuesto) itListaRanking.next();
+					//	System.out.println(elementoLista.getCodigoUsuario() + " " + elementoLista.getTotal());
+					//}
 					Collections.sort(listadoRanking, new CursoComparatorByTotal(false));
 					Iterator itListaRanking = listadoRanking.iterator();
 					Integer posicion = 1;
@@ -557,8 +669,8 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 							posicion++;
 						}
 					}
-				/*}*/				
-			/* Termina el proceso de Obteniendo Ranking */				
+				//}				
+			// Termina el proceso de Obteniendo Ranking 				
 				listarReporteUsuariosCursosDetalle.add(rd);
 			}								
 
@@ -571,7 +683,7 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 
 		
 		return listarReporteUsuariosCursosDetalle;
-	}
+	}*/
 
 
 	@Override
@@ -694,10 +806,26 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 			}
 			
 			
+			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			transaction.rollback();
 		}
+		
+		List<Reportecursodetalle> listarReporteUsuariosCursosDetalleFiltro = new ArrayList<Reportecursodetalle>();
+		for (int b=0; b<listarReporteUsuariosCursosDetalle.size(); b++)
+		{
+			Reportecursodetalle rcdf = new Reportecursodetalle();
+			if (b<5) {
+				rcdf.setCorrectas(listarReporteUsuariosCursosDetalle.get(b).getCorrectas());
+				rcdf.setIncorrectas(listarReporteUsuariosCursosDetalle.get(b).getIncorrectas());
+				rcdf.setNocontestadas(listarReporteUsuariosCursosDetalle.get(b).getNocontestadas());
+				rcdf.setPreguntas(listarReporteUsuariosCursosDetalle.get(b).getPreguntas());
+				rcdf.setFechaUltima(listarReporteUsuariosCursosDetalle.get(b).getFechaUltima());
+				listarReporteUsuariosCursosDetalleFiltro.add(rcdf);
+			}
+		}
+		listarReporteUsuariosCursosDetalle = listarReporteUsuariosCursosDetalleFiltro;
 		
 		return listarReporteUsuariosCursosDetalle;
 	}

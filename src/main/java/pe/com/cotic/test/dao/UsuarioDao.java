@@ -23,6 +23,7 @@ public interface UsuarioDao {
 	public boolean resetearUsuario(Usuario usuario);
 	public boolean cambiarClaveUsuario(CambiaClave usuario);
 	public int buscarCodigoRolusuario(Usuario usuario);
+	public int buscarCodigoUsuario(String usuario);
 	
 	public List<Institucion> ListarInstituciones(Usuario usuario);
 	public List<Rol> ListarPerfil(Usuario usuario);

@@ -1,6 +1,7 @@
 package pe.com.cotic.test.bean;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,6 +130,7 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
 			nocontestadas+=rr.getNocontestadas();
 			//model.set(rr.getPortafolio().toString(), rr.getIntentos());
 		}
+		//System.out.println("CORRECTAS " + correctas + " INCORRECTAS " + incorrectas + " NOCONTESTADAS " + nocontestadas);
 		model.set("Correctas", correctas);
 		model.set("Incorrectas", incorrectas);
 		model.set("No Contestadas", nocontestadas);
@@ -145,21 +147,24 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
 		barModel = new BarChartModel();
 
         ChartSeries correctas = new ChartSeries();
+        DecimalFormat df = new DecimalFormat("#.00");
         correctas.setLabel("Correctas");                    
         for (Reportecursodetalle rr : lista2) {
         	double totalPreguntas = (rr.getCorrectas()+ rr.getIncorrectas()+rr.getNocontestadas());
         	double totalCorrectas = rr.getCorrectas();
         	double porcentajeCorrectas = (totalCorrectas / totalPreguntas) * 100 ;        	
-        	correctas.set(rr.getPortafolio().getTituloPortafolio(),porcentajeCorrectas);
+        	correctas.set(rr.getPortafolio().getTituloPortafolio(),Double.parseDouble(df.format(porcentajeCorrectas).toString().replace(",", ".")));
+        	//System.out.println("Para Correctas: Portafolio " + rr.getPortafolio().getTituloPortafolio() + " % " + porcentajeCorrectas);
         }
- 
+        
         ChartSeries incorrectas = new ChartSeries();
         incorrectas.setLabel("Incorrectas");        
         for (Reportecursodetalle rr : lista2) {
         	double totalPreguntas = (rr.getCorrectas()+ rr.getIncorrectas()+rr.getNocontestadas());
         	double totalIncorrectas = rr.getIncorrectas();
         	double porcentajeIncorrectas = (totalIncorrectas / totalPreguntas) * 100 ;
-        	incorrectas.set(rr.getPortafolio().getTituloPortafolio(),porcentajeIncorrectas);
+        	incorrectas.set(rr.getPortafolio().getTituloPortafolio(),Double.parseDouble(df.format(porcentajeIncorrectas).toString().replace(",", ".")));
+        	//System.out.println("Para Incorrectas: Portafolio " + rr.getPortafolio().getTituloPortafolio() + " % " + porcentajeIncorrectas);        	
         }
  
         ChartSeries nocontestadas = new ChartSeries();
@@ -168,7 +173,8 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
         	double totalPreguntas = (rr.getCorrectas()+ rr.getIncorrectas()+rr.getNocontestadas());
         	double totalNocontestadas = rr.getNocontestadas();
         	double porcentajeNocontestadas = (totalNocontestadas / totalPreguntas) * 100 ;
-        	nocontestadas.set(rr.getPortafolio().getTituloPortafolio(),porcentajeNocontestadas);
+        	nocontestadas.set(rr.getPortafolio().getTituloPortafolio(),Double.parseDouble(df.format(porcentajeNocontestadas).toString().replace(",", ".")));
+        	//System.out.println("Para Correctas: NoContestadas " + rr.getPortafolio().getTituloPortafolio() + " % " + porcentajeNocontestadas);        	
         }
         
         barModel.addSeries(correctas);

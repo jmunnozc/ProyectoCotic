@@ -265,16 +265,18 @@ public class UsuarioBean implements Serializable {
 		inst.setCodigoInstitucion(usuario.getInstitucion().getCodigoInstitucion());
 		this.selectedUsuario.setInstitucion(inst);	
 		
-		Rolusuario rolusuario = new Rolusuario();
-		Rol rol = new Rol();
-		Usuario usu = new Usuario();
-		rol.setCodigoRol(2);
-		usu.setCodigoUsuario(this.selectedUsuario.getCodigoUsuario());
-		rolusuario.setUsuario(usu);
-		rolusuario.setRol(rol);
-		this.selectedUsuario.setRolusuario(rolusuario);
 
 		if (usuarioDao.grabarUsuario(this.selectedUsuario)) {
+			
+			Integer codigoUsuarioGrabado = usuarioDao.buscarCodigoUsuario(nuevoUsuario);
+			Rolusuario rolusuario = new Rolusuario();
+			Rol rol = new Rol();
+			Usuario usu = new Usuario();
+			rol.setCodigoRol(2);
+			usu.setCodigoUsuario(this.selectedUsuario.getCodigoUsuario());
+			rolusuario.setUsuario(usu);
+			rolusuario.setRol(rol);
+			this.selectedUsuario.setRolusuario(rolusuario);
 			usuarioDao.grabarRolUsuario(rolusuario);
 			msg = "Se creó correctamente el registro...";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);

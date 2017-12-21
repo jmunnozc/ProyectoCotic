@@ -453,4 +453,27 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		return flag;
 	}
 
+	@Override
+	public int buscarCodigoUsuario(String usuario) {
+		int codigoUsuario=0;
+		List<Usuario> listarUsuario = null;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		String hql = "FROM Usuario u "   	  
+				+ "WHERE u.usuario = '" + usuario + "'"; 
+				
+		try {
+			listarUsuario = session.createQuery(hql).list();
+
+			codigoUsuario = Integer.parseInt(listarUsuario.get(0).getCodigoUsuario().toString());
+			transaction.commit();
+			session.close();
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			transaction.rollback();
+		}
+		return codigoUsuario;
+	}
+
 }

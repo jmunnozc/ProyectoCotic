@@ -83,12 +83,12 @@
 									<p:column headerText="Última Fecha" style="width:60px;text-align: center">
 										<h:outputText value="#{cursosdetalle.fechaUltima}" />
 									</p:column>
-
+									
 									<p:rowExpansion>
 						                <f:facet name="header">DETALLE DE LOS CURSOS</f:facet>
 					                	<p:growl id="msgsCursosDetalle" showDetail="true" />
 					                	<p:panelGrid id="display" columns="2" cellpadding="0" cellspacing="0" columnClasses="label,value">
-											<p:dataTable id="tablaMostrarDetalleCursos" var="mostrarcursosdetalle" value="#{reporteUsuariosCursosDetalleBean.btnBuscarReporteCursoDetalleUnico(cursosdetalle.usuario.codigoUsuario, cursosdetalle.portafolio.codigoPortafolio)}" 
+											<p:dataTable id="tablaMostrarDetalleCursos" var="mostrarcursosdetalle" value="#{reporteUsuariosCursosDetalleBean.btnBuscarReporteCursoDetalleUnico(cursosPuestos.codigoUsuario, cursosdetalle.portafolio.codigoPortafolio)}" 
 											style="width:270px" emptyMessage="No hay datos del detalle del curso seleccionado...">
 												<p:column headerText="Aciertos" style="width:30px;text-align: center">
 													<h:outputText value="#{mostrarcursosdetalle.correctas} %" />
@@ -106,7 +106,6 @@
 											<p:chart type="line" model="#{reporteUsuariosCursosDetalleBean.lineModel}" style="width:280px; height:150px"/>
 										</p:panelGrid>
 					        		</p:rowExpansion>
-																		
 								</p:dataTable>
  
 								<p:fieldset>
