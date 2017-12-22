@@ -15,4 +15,5 @@
 	<lifecycle>
 		<!-- <phase-listener>pe.com.cotic.test.security.AuthorizationListener</phase-listener>  -->
 	</lifecycle>
+	
 </faces-config>
