@@ -30,6 +30,8 @@ import pe.com.cotic.test.util.HibernateUtil;
 public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCursosPuestosDao {
 
 	private Session session;
+	private Session sessionCurso;
+	private Session sessionDetalle;
 	
 /*	@Override
 	public List<Reporteusuarioscursospuestos> listarReporteUsuariosCursosPuestosxxx() {
@@ -173,25 +175,25 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 
 	@Override
 	public List<Reporteusuarioscursospuestos> listarReporteUsuariosCursosPuestos() {
-		System.out.println("listarReporteUsuariosCursosPuestos()");
+		System.out.println("[DaoImpl] listarReporteUsuariosCursosPuestos()");
 		//Cargar la info en la tabla para la visualizacion del reporte
 		//prepararTabla();
-		
 		Usuario usuario = null;
 		Usuarioportafolio usuarioPortafolio = null;
+		
 		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
 		List<Reporteusuarioscursospuestos> listarReporteUsuariosCursosPuestos = new ArrayList<Reporteusuarioscursospuestos>();
 		//List<Usuariospuesto> listarUsuariosPuestos = null;
-		session = HibernateUtil.getSessionFactory().openSession();
-		Transaction transaction = session.beginTransaction();
+		sessionCurso = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = sessionCurso.beginTransaction();
 		String hql = "SELECT rc.usuario.codigoUsuario as codigoUsuario, rc.portafolio.codigoPortafolio as codigoPortafolio, count(rd.flagAlternativaCorrecta) as total "
 				+	" FROM Respuestacabecera rc " 
 				+	" 	INNER JOIN rc.respuestadetalles rd " 
 				+	" WHERE rd.flagAlternativaCorrecta = 1 AND rc.usuario.institucion.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion()
 				+	" GROUP BY rc.usuario.codigoUsuario, rc.portafolio.codigoPortafolio "
-				+	" ORDER BY rc.portafolio.codigoPortafolio, count(rd.flagAlternativaCorrecta) desc";
+				+	" ORDER BY rc.usuario.codigoUsuario, rc.portafolio.codigoPortafolio, count(rd.flagAlternativaCorrecta) desc";
 		try {
-			Query query = session.createQuery(hql);
+			Query query = sessionCurso.createQuery(hql);
 			List<Usuariospuesto> listarUsuarioPuesto = new ArrayList<Usuariospuesto>();
 			List<Usuariospuesto> listarUsuario = new ArrayList<Usuariospuesto>();
 			List<Object[]> res = query.list();
@@ -263,7 +265,7 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 						+	" WHERE u.institucion.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion()
 						+ 	" 	AND p.nivel.codigoNivel = 3 AND u.codigoUsuario = " + listarUsuario.get(j).getCodigoUsuario() 
 						+	" GROUP BY u.codigoUsuario, u.apellidoPaterno, u.apellidoMaterno, u.nombres";
-				Query query2 = session.createQuery(hql2);				
+				Query query2 = sessionCurso.createQuery(hql2);				
 				List<Object[]> res2 = query2.list();
 				for (Object[] elements2: res2){
 					Reporteusuarioscursospuestos ucu = new Reporteusuarioscursospuestos();
@@ -277,7 +279,7 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 					String hql3 = "SELECT distinct rc.portafolio.codigoPortafolio "
 							+	" FROM Respuestacabecera rc " 
 							+	" WHERE rc.usuario.codigoUsuario = " + listarUsuario.get(j).getCodigoUsuario();
-					Query query3 = session.createQuery(hql3);
+					Query query3 = sessionCurso.createQuery(hql3);
 					List<Integer> res3 = query3.list();
 					ucu.setTotalCuestionariosContestados(res3.size());
 					
@@ -285,13 +287,13 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 					String hql4 = "SELECT max(rc.codigoRespuestaCabecera) "
 							+	" FROM Respuestacabecera rc " 
 							+	" WHERE rc.usuario.codigoUsuario = " + listarUsuario.get(j).getCodigoUsuario();
-					Query query4 = session.createQuery(hql4);
+					Query query4 = sessionCurso.createQuery(hql4);
 					List<Integer> res4 = query4.list();
 					for (Integer elements4: res4){
 						String hql5 = "SELECT rtc.fechaRespuesta "
 								+	" FROM Respuestacabecera rtc " 
 								+	" WHERE rtc.codigoRespuestaCabecera = " + elements4;
-						Query query5 = session.createQuery(hql5);
+						Query query5 = sessionCurso.createQuery(hql5);
 						List<String> res5 = query5.list();
 						for (String elements5: res5){
 							ucu.setFechaUltimoCuestionario(elements5.toString());	
@@ -304,15 +306,15 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 			}
 			
 			transaction.commit();
-			session.close();
+			sessionCurso.close();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			transaction.rollback();
-		}
+		} 
 
+					
+		return listarReporteUsuariosCursosPuestos;	
 		
-		return listarReporteUsuariosCursosPuestos;
-
 	}
 
 
@@ -350,11 +352,12 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 	@Override
 	//Trabajandolo para probarlo...
 	public List<Reportecursodetalle> ListarReporteUsuariosCursosDetalle(int codigoUsuario) {
+		System.out.println("ListarReporteUsuariosCursosDetalle()");
 		List<Reportecursodetalle> listarReporteUsuariosCursosDetalle = new ArrayList<Reportecursodetalle>();
 		Usuario usuario = null;		
 		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
-		session = HibernateUtil.getSessionFactory().openSession();
-		Transaction transaction = session.beginTransaction();
+		sessionDetalle = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = sessionDetalle.beginTransaction();
 		
 		String administrador = System.getProperty("usuario_administrador") != null ? System.getProperty("usuario_administrador") : "";
 		
@@ -365,12 +368,12 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 				+ "	AND up.usuario.codigoUsuario = " + codigoUsuario
 				+ " AND up.portafolioByCodigoPortafolio.usuario.institucion.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion();
 		try {
-			Query query = session.createQuery(hql);
+			Query query = sessionDetalle.createQuery(hql);
 			//List<Integer> res = query.list();
 			List<Object[]> res = query.list();
 			//System.out.println("Cuestionarios Asignados " + res.size() );
 			for (Object[] elements: res){
-				//System.out.println("--------- Inicia Portafolio " + elements);
+				//System.out.println("--------- Inicia Portafolio " + elements[0]);
 				Reportecursodetalle rcd = new Reportecursodetalle();
 				Portafolio pt = new Portafolio();
 				pt.setCodigoPortafolio(Integer.parseInt(elements[0].toString()));
@@ -383,7 +386,7 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 						+ "	AND rc.portafolio.codigoPortafolio = " + elements[0]
 						+ " ORDER BY rc.codigoRespuestaCabecera ";
 				try {
-					Query query1 = session.createQuery(hql1);
+					Query query1 = sessionDetalle.createQuery(hql1);
 					List<Integer> res1 = query1.list();
 					rcd.setUsuario(usuario);
 					rcd.setIntentos(res1.size());
@@ -403,7 +406,7 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 								+ "WHERE rc.usuario.codigoUsuario = " + codigoUsuario
 								+ "	AND rc.codigoRespuestaCabecera = " + elements1;
 						try {
-							Query query2 = session.createQuery(hql2);
+							Query query2 = sessionDetalle.createQuery(hql2);
 							List<Object[]> res2 = query2.list();
 							for (Object[] elements2: res2){
 								Reporteusuarioscursos ruc = new Reporteusuarioscursos();
@@ -413,8 +416,9 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 												+	"" + elements[0] + " as codigoPortafolio, 1 as cantidadPreguntas, pr.codigoPregunta, 0 as correctas, 0 as incorrectas, 1 as nocontestadas, " + usuario.getInstitucion().getCodigoInstitucion() + " as codigoInstitucion "
 												+	"FROM Portafolio p "
 												+	"	INNER JOIN p.preguntas pr "
-												+	"WHERE p.codigoPortafolio=1 AND pr.portafolio.codigoPortafolio=1 ";
-									Query query21 = session.createQuery(hql21);
+												+	"WHERE p.codigoPortafolio=" + elements[0]
+												+	"	AND pr.portafolio.codigoPortafolio=" + elements[0];
+									Query query21 = sessionDetalle.createQuery(hql21);
 									List<Object[]> res21 = query21.list();
 									for (Object[] elements21: res21){
 										ruc.setCodigoRespuestaCabecera(Integer.parseInt(elements21[0].toString()));
@@ -450,15 +454,16 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 								+	"" + elements[0] + " as codigoPortafolio, 1 as cantidadPreguntas, pr.codigoPregunta, 0 as correctas, 0 as incorrectas, 1 as nocontestadas, " + usuario.getInstitucion().getCodigoInstitucion() + " as codigoInstitucion "
 								+	"FROM Portafolio p "
 								+	"	INNER JOIN p.preguntas pr "
-								+	"WHERE p.codigoPortafolio=1 AND pr.portafolio.codigoPortafolio=1 AND " 
-								+	"	pr.codigoPregunta NOT IN ( "
+								+	"WHERE p.codigoPortafolio=" + elements[0]
+								+	"	AND pr.portafolio.codigoPortafolio=" + elements[0] 
+								+	"	AND pr.codigoPregunta NOT IN ( "
 								+	"			SELECT rd.pregunta.codigoPregunta "
 								+	"			FROM Respuestacabecera rc "
 								+	"				LEFT JOIN rc.respuestadetalles rd "
 								+	"				LEFT JOIN rc.usuario u "
 								+	"			WHERE rc.usuario.codigoUsuario=" + codigoUsuario + " AND rc.codigoRespuestaCabecera=" + elements1 + ")";
 						try {
-							Query query3 = session.createQuery(hql3);
+							Query query3 = sessionDetalle.createQuery(hql3);
 							List<Object[]> res3 = query3.list();
 							for (Object[] elements3: res3){
 								Reporteusuarioscursos ruc = new Reporteusuarioscursos();
@@ -498,7 +503,7 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 							ultimafecha=listarReporteUsuariosCursos.get(a).getFechaRespuesta();
 						}
 					}
-					System.out.println("Aciertos[" + aciertos + "] Erradas[" + erradas + "] No Contestadas[" + nocontestadas + "] Total Preguntas[" + cantidadpreguntas + "]" );
+					//System.out.println("Aciertos[" + aciertos + "] Erradas[" + erradas + "] No Contestadas[" + nocontestadas + "] Total Preguntas[" + cantidadpreguntas + "]" );
 					
 					aciertos = Double.parseDouble(df.format((aciertos/cantidadpreguntas)*100).toString().replace(",", "."));
 					erradas = Double.parseDouble(df.format((erradas/cantidadpreguntas)*100).toString().replace(",", "."));
@@ -523,6 +528,9 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			transaction.rollback();
+		} finally {
+			sessionDetalle.clear();
+			sessionDetalle.close();
 		}
 		
 		return listarReporteUsuariosCursosDetalle;
@@ -770,7 +778,7 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 					}
 				} catch (Exception e) {
 					//System.out.println(e.getMessage());
-				}
+				} 
 				
 				// Consulta Fecha Respuestas por Intento
 				String hql3 = "";

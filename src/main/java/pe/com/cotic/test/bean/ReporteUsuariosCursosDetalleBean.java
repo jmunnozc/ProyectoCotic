@@ -12,7 +12,6 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.LegendPlacement;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
@@ -27,6 +26,7 @@ import pe.com.cotic.test.modelo.Reporteusuarioscursospuestos;
 public class ReporteUsuariosCursosDetalleBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	public boolean loggedIn;
 	
 	private Reportecursodetalle reportecursodetalle;
 	private ReporteUsuariosCursosDetalleBean reporteusuarioscursosdetalle;
@@ -235,10 +235,14 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
 	public List<Reportecursodetalle> btnBuscarReporteCursoDetalle(Reporteusuarioscursospuestos reporteusuariocursospuestos) {
 		ReporteUsuariosCursosPuestosDao reporteusuarioscursospuestosDao = new ReporteUsuariosCursosPuestosDaoImpl();
 		String msg;
+		boolean consultado = true;
 		int codigoUsuario = reporteusuariocursospuestos.getCodigoUsuario();
-		
+		System.out.println("[Bean] btnBuscarReporteCursoDetalle()");
+		//if  ((Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("consultado"))
 		this.listarReportecursosdetalle = reporteusuarioscursospuestosDao.ListarReporteUsuariosCursosDetalle(codigoUsuario);
-				
+
+		
+		
 		if (this.listarReportecursosdetalle != null) {
 			/*msg = "Se muestra correctamente el listado...";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
@@ -273,4 +277,10 @@ public class ReporteUsuariosCursosDetalleBean implements Serializable {
 		return listarReportecursosdetalle;
 		
 	}
+	
+/*	public boolean verificaConsulta() {
+		RequestContext context = RequestContext.getCurrentInstance();
+		boolean consulta = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("loggedIn");
+		return true;
+	}*/
 }
