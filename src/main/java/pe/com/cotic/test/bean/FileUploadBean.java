@@ -44,7 +44,13 @@ public class FileUploadBean {
 	            	copyFile(file.getFileName(), file.getInputstream());
 	                FacesMessage message = new FacesMessage("Correcto", file.getFileName() + " fue subido.");
 	                FacesContext.getCurrentInstance().addMessage(null, message);
-	                cargaExcel(file.getFileName());
+	                
+	                File f = new File(ruta_destino + file.getFileName());
+	                if (f.exists()) {
+	                	cargaExcel(f);
+	                }
+	                
+	                
 	                message = new FacesMessage("Correcto", file.getFileName() + " fue cargado.");
 	                FacesContext.getCurrentInstance().addMessage(null, message);
             	} else {
@@ -96,10 +102,10 @@ public class FileUploadBean {
 	/*
 	 * Procesando archivo excel
 	 */
-	public void cargaExcel(String fileName) {
+	public void cargaExcel(File fileName) {
 		List cellData = new ArrayList();
 		try {
-			FileInputStream fileXls = new FileInputStream(new File(ruta_destino + file.getFileName()));
+			FileInputStream fileXls = new FileInputStream(fileName);
 			XSSFWorkbook workbook = new XSSFWorkbook(fileXls);
 			
 			XSSFSheet hssfSheet = workbook.getSheetAt(0);
@@ -122,11 +128,13 @@ public class FileUploadBean {
 				cellData.add(cellTemp);
 			}
 			
+			//Llamamos al método obtener y le pasamos el arreglo cellData			
+			obtener(cellData);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//Llamamos al método obtener y le pasamos el arreglo cellData
-		obtener(cellData);
+
 		
 	}
 	
@@ -136,6 +144,18 @@ public class FileUploadBean {
 			for (int j=0; j<cellTempList.size(); j++) {
 				XSSFCell hssfCell = (XSSFCell) cellTempList.get(j);
 				System.out.println("Valor: " + hssfCell.toString());
+				if (j==0) {
+					System.out.println("Validacion1 " + hssfCell.toString().toUpperCase());
+					if (!hssfCell.toString().toUpperCase().equals("NUEVO")) {
+						Integer.parseInt( "hola" );
+					}
+				}
+				if (j==1) {
+					System.out.println("Validacion2 " + hssfCell.toString().toUpperCase());
+					if (!hssfCell.toString().toUpperCase().equals("CUESTIONARIO")) {
+						Integer.parseInt( "hola" );
+					}
+				}
 			}
 		}
 	}
