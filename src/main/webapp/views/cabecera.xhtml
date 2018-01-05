@@ -27,10 +27,7 @@
 					icon="ui-icon-suitcase" />
 				<p:menuitem value="Pregunta"
 					url="#{appBean.basePath}pregunta/mantenimiento.jsf"
-					icon="ui-icon-help" />
-				<p:menuitem value="Pregunta Carga"
-					url="#{appBean.basePath}pregunta/carga.jsf"
-					icon="ui-icon-help" />					
+					icon="ui-icon-help" />				
 				<p:menuitem value="Alternativa"
 					url="#{appBean.basePath}alternativa/mantenimiento.jsf"
 					icon="ui-icon-contact" />
@@ -39,11 +36,16 @@
 					actionListener="#{usuarioBean.logout()}" icon="ui-icon-close"
 					oncomplete="manejarLogin(xhr, status, args)" />
 			</p:submenu>
+			<p:submenu label="Carga Archivos" icon="ui-icon-locked">
+				<p:menuitem value="Cuestionarios"
+					url="#{appBean.basePath}pregunta/carga.jsf"
+					icon="ui-icon-person" />
+			</p:submenu>
 			<p:submenu label="Seguridad" icon="ui-icon-locked">
 				<p:menuitem value="Usuarios"
 					url="#{appBean.basePath}usuario/mantenimiento.jsf"
 					icon="ui-icon-person" />
-			</p:submenu>
+			</p:submenu>			
 			<p:submenu label="Gestión" icon="ui-icon-locked">
 				<p:menuitem value="Registrar Sesión" url="#{appBean.basePath}gestor/registro.jsf" icon="ui-icon-person" />
 				<p:menuitem value="Asignar Nivel" url="#{appBean.basePath}gestor/asignacion.jsf" icon="ui-icon-person" />
