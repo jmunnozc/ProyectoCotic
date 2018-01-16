@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.faces.context.FacesContext;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -168,6 +169,28 @@ public class PortafolioDaoImpl implements PortafolioDao {
 		}*/
 	
 		return listarPortafolios;
+	}
+
+	@Override
+	public int ultimoPortafolio() {
+		int portafolio = 0;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		String hql = "SELECT MAX(p.codigoPortafolio) as totalPortafolio, 'total' as total "
+				+	" FROM Portafolio p ";
+		try {
+			Query query = session.createQuery(hql);			
+			if (!query.list().isEmpty()) {			
+				List<Object[]> res = query.list();
+				for (Object[] elements: res){
+					portafolio = Integer.parseInt(elements[0].toString());
+				}
+			}
+			session.close();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return portafolio;
 	}
 
 }

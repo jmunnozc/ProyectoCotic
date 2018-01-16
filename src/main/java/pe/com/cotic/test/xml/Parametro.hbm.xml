@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12/01/2018 05:18:12 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pe.com.cotic.test.modelo.Parametro" table="parametro" catalog="cotic">
+        <id name="codigoParametro" type="java.lang.Integer">
+            <column name="codigoParametro" />
+            <generator class="identity" />
+        </id>
+        <property name="descripcionParametro" type="string">
+            <column name="descripcionParametro" length="45" />
+        </property>
+        <property name="valorParametro" type="string">
+            <column name="valorParametro" length="45" />
+        </property>
+        <property name="estadoParametro" type="string">
+            <column name="estadoParametro" length="45" />
+        </property>
+        <property name="codigoInstitucion" type="java.lang.Integer">
+            <column name="codigoInstitucion" />
+        </property>
+    </class>
+</hibernate-mapping>

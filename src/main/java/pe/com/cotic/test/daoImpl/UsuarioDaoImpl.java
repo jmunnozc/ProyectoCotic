@@ -19,6 +19,7 @@ import pe.com.cotic.test.dao.UsuarioDao;
 import pe.com.cotic.test.modelo.Acceso;
 import pe.com.cotic.test.modelo.CambiaClave;
 import pe.com.cotic.test.modelo.Institucion;
+import pe.com.cotic.test.modelo.Parametro;
 import pe.com.cotic.test.modelo.Reportecurso;
 import pe.com.cotic.test.modelo.Rol;
 import pe.com.cotic.test.modelo.Rolusuario;
@@ -474,6 +475,49 @@ public class UsuarioDaoImpl implements UsuarioDao {
 			transaction.rollback();
 		}
 		return codigoUsuario;
+	}
+
+	@Override
+	public boolean totalUsuarios() {
+		Usuario usuario = null;
+		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+		boolean autorizado = false;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		String hql = "SELECT p.descripcionParametro, p.valorParametro "
+				+	" FROM Parametro p "
+				+	" WHERE p.codigoInstitucion = " +  usuario.getInstitucion().getCodigoInstitucion();											
+		try {
+			Query query = session.createQuery(hql);			
+			if (!query.list().isEmpty()) {			
+				List<Object[]> res = query.list();
+				for (Object[] elements: res){
+					System.out.println(elements[0] + " - " + elements[1]);
+					if (elements[0].equals("TOTAL_USUARIOS")) {
+						String hql1 = "SELECT count(u.usuario) as total, 'valor' as dato"
+								+	" FROM Usuario u "
+								+	" WHERE u.estado = 1  AND u.institucion.codigoInstitucion = " +  usuario.getInstitucion().getCodigoInstitucion();
+						Query query1 = session.createQuery(hql1);
+						if (!query1.list().isEmpty()) {
+							List<Object[]> res1 = query1.list();
+							for (Object[] elements1: res1){
+								System.out.println(elements1[0]);
+								if (Integer.parseInt(elements1[0].toString()) < Integer.parseInt(elements[1].toString())) {
+									autorizado = true;
+								}
+							}
+						}
+					}
+					if (autorizado) break;
+				}
+			}
+			session.close();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			transaction.rollback();
+			autorizado = false;
+		}
+		return autorizado;
 	}
 
 }

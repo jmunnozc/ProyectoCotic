@@ -15,4 +15,6 @@ public interface PreguntaDao {
 	public List<Portafolio> ListarPortafolios(Pregunta pregunta);
 	public List<Pregunta> buscarPreguntaXCodigo(Pregunta pregunta);
 	public List<Pregunta> buscarPreguntasPortafolio(Portafolio portafolio);
+	
+	public int ultimaPregunta();
 }

@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:head>
+	<link rel="stylesheet" type="text/css" href="resources/css/estilos.css"
+		media="screen" />
+	<link rel="stylesheet" type="text/css" href="resources/css/login.css"
+		media="screen" />
+	<link
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<script language="javascript" src="resources/js/jquery-1.11.3.min.js"></script>
+	<script language="javascript" src="resources/js/jquery.vide.js"></script>
+
+</h:head>
+
+<h:body style="text-align:center">
+
+	<div id="block" data-vide-bg="video/learning"
+		data-vide-options="position 0% 50%" />
+
+	<div id="centrado" class="conteiner">
+		<p:growl id="mensajes" showDetail="true" life="1000" />
+		<h:form id="dniForm">
+			<p:panel style="width:350px" styleClass="redColoredPanel" id="dniPnl">
+				<f:facet name="header">
+					<p:graphicImage url="resources/images/icons/icon_id_48x48.png" />Validando DNI
+         		</f:facet>
+				<h:panelGrid columns="2" cellpadding="6" cellspacing="4">
+					<h:outputLabel for="dni" value="Dni: " />
+					<p:inputText id="dni" value="#{fileUploadBean.dni}" label="dni"
+						required="false" a:placeholder="ingrese su dni" style="width:250px" />
+				</h:panelGrid>
+				<f:facet name="footer">
+					<p:commandButton id="dniButton" value="Validar"
+						action="#{fileUploadBean.documento()}" update=":mensajes"
+						oncomplete="manejarLogin(xhr, status, args)" icon="icon-login" />
+
+				</f:facet>
+
+			</p:panel>
+		</h:form>
+	</div>
+
+	<script type="text/javascript">
+  //<![CDATA[
+  function manejarLogin(xhr, status, args) {
+	if (args.loggedIn) {
+		alert("El DNI digitado es valido...");
+	} else {
+		alert("Se ha verificado el DNI digitado, es Invalido...");
+	}
+
+    if (!args.validationFailed && args.loggedIn) {
+      	location.href = "indexDni.jsf";
+    }else{
+  		location.href = "indexDni.jsf";
+    }
+  }
+//]]>
+</script>
+
+</h:body>
+</html>

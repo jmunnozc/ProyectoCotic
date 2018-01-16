@@ -172,5 +172,28 @@ public class PreguntaDaoImpl implements PreguntaDao {
 		return listarPreguntasPortafolio;
 	}
 
+	@Override
+	public int ultimaPregunta() {
+
+		int pregunta = 0;
+		session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		String hql = "SELECT MAX(pr.codigoPregunta) as totalPregunta, 'total' as total "
+				+	" FROM Pregunta pr ";
+		try {
+			Query query = session.createQuery(hql);			
+			if (!query.list().isEmpty()) {			
+				List<Object[]> res = query.list();
+				for (Object[] elements: res){
+					pregunta = Integer.parseInt(elements[0].toString());
+				}
+			}
+			session.close();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return pregunta;		
+	}
+
 
 }

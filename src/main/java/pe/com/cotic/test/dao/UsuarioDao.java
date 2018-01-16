@@ -27,4 +27,6 @@ public interface UsuarioDao {
 	
 	public List<Institucion> ListarInstituciones(Usuario usuario);
 	public List<Rol> ListarPerfil(Usuario usuario);
+	
+	public boolean totalUsuarios();
 }

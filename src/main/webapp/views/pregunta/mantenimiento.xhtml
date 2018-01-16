@@ -234,15 +234,15 @@
 					</p:dialog>
 				</h:form>
 
-				<h:form enctype="multipart/form-data">
+				<!-- h:form enctype="multipart/form-data">
 					<p:growl id="messages" showDetail="true" />
-					<p:fileUpload value="#{fileUploadBean.file}" mode="simple"/>
-					<p:commandButton value="Subir" actionListener="#{fileUploadBean.upload()}" ajax="false"/>
+					<p:fileUpload value="{fileUploadBean.file}" mode="simple"/>
+					<p:commandButton value="Subir" actionListener="{fileUploadBean.upload()}" ajax="false"/>
 					
 					<br />
 					
-     				<p:fileUpload value="#{fileUploadBean.file}" mode="advanced" cancelLabel="Cancelar" label="Seleccionar" uploadLabel="Subir" multiple="true" fileUploadListener="#{fileUploadBean.upload()}"/>
-				</h:form>	
+     				<p:fileUpload value="{fileUploadBean.file}" mode="advanced" cancelLabel="Cancelar" label="Seleccionar" uploadLabel="Subir" multiple="true" fileUploadListener="{fileUploadBean.upload()}"/>
+				</h:form -->	
 			</div>
 		</ui:define>
 <!-- 

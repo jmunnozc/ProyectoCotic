@@ -26,6 +26,7 @@
 		<mapping resource="pe/com/cotic/test/xml/Institucion.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Menu.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Nivel.hbm.xml" />
+		<mapping resource="pe/com/cotic/test/xml/Parametro.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Portafolio.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Pregunta.hbm.xml" />
 		<mapping resource="pe/com/cotic/test/xml/Respuestacabecera.hbm.xml" />

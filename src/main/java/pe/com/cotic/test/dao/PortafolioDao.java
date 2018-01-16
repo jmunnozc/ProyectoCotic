@@ -14,4 +14,5 @@ public interface PortafolioDao {
 	public boolean eliminarPortafolio(Portafolio portafolio);
 	
 	public List<Nivel> ListarNiveles(Portafolio portafolio);
+	public int ultimoPortafolio();
 }

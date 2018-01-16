@@ -246,43 +246,52 @@ public class UsuarioBean implements Serializable {
 		UsuarioDao usuarioDao = new UsuarioDaoImpl();
 		String msg;
 
-		usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
-		String nuevoUsuario = this.selectedUsuario.getNombres().substring(0, 1) + this.selectedUsuario.getApellidoPaterno();
-		this.selectedUsuario.setUsuario(nuevoUsuario.toUpperCase());
-		this.selectedUsuario.setClave("ADMIN");
-		this.selectedUsuario.setCorreo(this.selectedUsuario.getCorreo());
-		this.selectedUsuario.setNombres(this.selectedUsuario.getNombres().toUpperCase());
-		this.selectedUsuario.setApellidoPaterno(this.selectedUsuario.getApellidoPaterno().toUpperCase());
-		this.selectedUsuario.setApellidoMaterno(this.selectedUsuario.getApellidoMaterno().toUpperCase());
-		// Campos de Auditoria
-		Date today = new Date();
-		String fechaActual = new SimpleDateFormat("yyyy-MM-dd").format(today);
-		this.selectedUsuario.setFechaNacimiento(java.sql.Date.valueOf(fechaActual));
+		//Validar Cantidad de Usuarios Creados
+		boolean totalAutorizado = usuarioDao.totalUsuarios();
 		
-		this.selectedUsuario.setUsuarioCreacion(usuario.getCodigoUsuario().toString());
-		this.selectedUsuario.setFechaCreacion(java.sql.Date.valueOf(fechaActual));
-		Institucion inst = new Institucion();
-		inst.setCodigoInstitucion(usuario.getInstitucion().getCodigoInstitucion());
-		this.selectedUsuario.setInstitucion(inst);	
-		
-
-		if (usuarioDao.grabarUsuario(this.selectedUsuario)) {
+		if (totalAutorizado) {
+			usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+			String nuevoUsuario = this.selectedUsuario.getNombres().substring(0, 1) + this.selectedUsuario.getApellidoPaterno();
+			this.selectedUsuario.setUsuario(nuevoUsuario.toUpperCase());
+			this.selectedUsuario.setClave("ADMIN");
+			this.selectedUsuario.setCorreo(this.selectedUsuario.getCorreo());
+			this.selectedUsuario.setNombres(this.selectedUsuario.getNombres().toUpperCase());
+			this.selectedUsuario.setApellidoPaterno(this.selectedUsuario.getApellidoPaterno().toUpperCase());
+			this.selectedUsuario.setApellidoMaterno(this.selectedUsuario.getApellidoMaterno().toUpperCase());
+			// Campos de Auditoria
+			Date today = new Date();
+			String fechaActual = new SimpleDateFormat("yyyy-MM-dd").format(today);
+			this.selectedUsuario.setFechaNacimiento(java.sql.Date.valueOf(fechaActual));
 			
-			Integer codigoUsuarioGrabado = usuarioDao.buscarCodigoUsuario(nuevoUsuario);
-			Rolusuario rolusuario = new Rolusuario();
-			Rol rol = new Rol();
-			Usuario usu = new Usuario();
-			rol.setCodigoRol(2);
-			usu.setCodigoUsuario(this.selectedUsuario.getCodigoUsuario());
-			rolusuario.setUsuario(usu);
-			rolusuario.setRol(rol);
-			this.selectedUsuario.setRolusuario(rolusuario);
-			usuarioDao.grabarRolUsuario(rolusuario);
-			msg = "Se creó correctamente el registro...";
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
-			FacesContext.getCurrentInstance().addMessage(null, message);
+			this.selectedUsuario.setUsuarioCreacion(usuario.getCodigoUsuario().toString());
+			this.selectedUsuario.setFechaCreacion(java.sql.Date.valueOf(fechaActual));
+			Institucion inst = new Institucion();
+			inst.setCodigoInstitucion(usuario.getInstitucion().getCodigoInstitucion());
+			this.selectedUsuario.setInstitucion(inst);	
+			
+	
+			if (usuarioDao.grabarUsuario(this.selectedUsuario)) {
+				
+				Integer codigoUsuarioGrabado = usuarioDao.buscarCodigoUsuario(nuevoUsuario);
+				Rolusuario rolusuario = new Rolusuario();
+				Rol rol = new Rol();
+				Usuario usu = new Usuario();
+				rol.setCodigoRol(2);
+				usu.setCodigoUsuario(this.selectedUsuario.getCodigoUsuario());
+				rolusuario.setUsuario(usu);
+				rolusuario.setRol(rol);
+				this.selectedUsuario.setRolusuario(rolusuario);
+				usuarioDao.grabarRolUsuario(rolusuario);
+				msg = "Se creó correctamente el registro...";
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+				FacesContext.getCurrentInstance().addMessage(null, message);
+			} else {
+				msg = "Error al crear el registro...";
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
+				FacesContext.getCurrentInstance().addMessage(null, message);
+			}
 		} else {
-			msg = "Error al crear el registro...";
+			msg = "Error al crear el usuario, la cantidad de usuarios llego al limite, comuníquese con su administrador...";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
