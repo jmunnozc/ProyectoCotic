@@ -1,6 +1,6 @@
 package pe.com.cotic.test.modelo;
 
-public class Usuariospuesto {
+public class Usuariospuesto implements Comparable<Usuariospuesto> {
 
 	private Integer codigoUsuario;
 	private Integer codigoPortafolio;
@@ -82,6 +82,22 @@ public class Usuariospuesto {
 
 	public void setPuestoUsuario(Integer puestoUsuario) {
 		this.puestoUsuario = puestoUsuario;
+	}
+
+	@Override
+	public int compareTo(Usuariospuesto o) {
+		return total.compareTo(o.getTotal());
+	}
+	
+	@Override
+	public String toString() {
+		return "Usuariospuesto [codigoUsuario=" + codigoUsuario
+				+ ", codigoPortafolio=" + codigoPortafolio
+				+ ", codigoRespuestaCabecera=" + codigoRespuestaCabecera
+				+ ", codigoRespuestaDetalle=" + codigoRespuestaDetalle
+				+ ", codigoPregunta=" + codigoPregunta + ", codigoAlternativa="
+				+ codigoAlternativa + ", flagAlternativa=" + flagAlternativa
+				+ ", total=" + total + ", puestoUsuario=" + puestoUsuario + "]";
 	}
 	
 }

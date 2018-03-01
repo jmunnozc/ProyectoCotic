@@ -1,5 +1,6 @@
 package pe.com.cotic.test.daoImpl;
 
+import java.io.Console;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Time;
 import java.text.DateFormat;
@@ -46,12 +47,17 @@ public class UsuarioDaoImpl implements UsuarioDao {
 			String hql = "SELECT u, rr.rol.descripcionRol "
 					+	" FROM Usuario u " 
 					+	" 	INNER JOIN FETCH u.institucion i "
-					+	" 	INNER JOIN FETCH u.rolusuarios rr " 	  
-					+	" WHERE correo=:user AND clave=:pass";							
-			//String hql = "FROM Usuario WHERE correo=:user AND clave=:pass";			
+					+	" 	INNER JOIN FETCH u.rolusuarios rr " 
+					+	" WHERE correo='" + usuario.getUsuario().toUpperCase() + "'" 
+					+	" 	AND clave='" + Seguridad.fn_sEncrypting("PASSCANGA", usuario.getClave().toUpperCase()) + "'"; 
+					/*+	" WHERE correo=:user AND clave=:pass";*/							
+			//String hql = "FROM Usuario WHERE correo=:user AND clave=:pass";
+			
+			System.out.println("USUARIO : " + usuario.getUsuario().toUpperCase() + "      PASSWORD : " + Seguridad.fn_sEncrypting("PASSCANGA", usuario.getClave()));
+			
 			Query query = session.createQuery(hql);
-			query.setString("user", usuario.getUsuario().toUpperCase());
-			query.setString("pass", Seguridad.fn_sEncrypting("PASSCANGA", usuario.getClave().toUpperCase()));
+			/*query.setString("user", usuario.getUsuario().toUpperCase());
+			query.setString("pass", Seguridad.fn_sEncrypting("PASSCANGA", usuario.getClave().toUpperCase()));*/
 			
 			if (!query.list().isEmpty()) {
 				//us = (Usuario) query.list().get(0);				
@@ -213,6 +219,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		Transaction transaction = session.beginTransaction();
 		try {
 			usuario.setClave(Seguridad.fn_sEncrypting("PASSCANGA", usuario.getClave().toUpperCase()));
+			usuario.setEstado(1);
 			
 			session.save(usuario);
 			transaction.commit();

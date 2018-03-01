@@ -12,6 +12,7 @@ import java.util.Set;
 
 import javax.faces.context.FacesContext;
 
+import org.apache.poi.util.SystemOutLogger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -189,81 +190,129 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 		String hql = "SELECT rc.usuario.codigoUsuario as codigoUsuario, rc.portafolio.codigoPortafolio as codigoPortafolio, count(rd.flagAlternativaCorrecta) as total "
 				+	" FROM Respuestacabecera rc " 
 				+	" 	INNER JOIN rc.respuestadetalles rd " 
+				+	" 	INNER JOIN rc.usuario u "
 				+	" WHERE rd.flagAlternativaCorrecta = 1 AND rc.usuario.institucion.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion()
+				+	"    AND u.estado = 1 "	
 				+	" GROUP BY rc.usuario.codigoUsuario, rc.portafolio.codigoPortafolio "
 				+	" ORDER BY rc.usuario.codigoUsuario, rc.portafolio.codigoPortafolio, count(rd.flagAlternativaCorrecta) desc";
 		try {
 			Query query = sessionCurso.createQuery(hql);
-			List<Usuariospuesto> listarUsuarioPuesto = new ArrayList<Usuariospuesto>();
-			List<Usuariospuesto> listarUsuario = new ArrayList<Usuariospuesto>();
+			
 			List<Object[]> res = query.list();
 			int contadorPuesto=1;
-			for (Object[] elements: res){
-				Usuariospuesto up = new Usuariospuesto();
-				up.setCodigoUsuario(Integer.parseInt(elements[0].toString()));
-				up.setCodigoPortafolio(Integer.parseInt(elements[1].toString()));
-				up.setTotal(Integer.parseInt(elements[2].toString()));
-				if (listarUsuarioPuesto.size()==0) {
-					up.setPuestoUsuario(contadorPuesto++);
-					listarUsuarioPuesto.add(up);
-				} else if (listarUsuarioPuesto.get(listarUsuarioPuesto.size()-1).getCodigoPortafolio()==Integer.parseInt(elements[1].toString())) {
-					up.setPuestoUsuario(contadorPuesto++);
-					listarUsuarioPuesto.add(up);
-				} else if (listarUsuarioPuesto.get(listarUsuarioPuesto.size()-1).getCodigoPortafolio()!=Integer.parseInt(elements[1].toString())) {
-					contadorPuesto=1;
-					up.setPuestoUsuario(contadorPuesto++);
-					listarUsuarioPuesto.add(up);
-				} else {					
-					contadorPuesto=1;
-				}
-				if (listarUsuario.size()==0){
-					listarUsuario.add(up);
+		
+			//Obteniendo PORTAFOLIOS únicos
+			List<Portafolio> lstPortafolio = new ArrayList<Portafolio>();
+			for (Object[] elements: res){				
+				Portafolio por = new Portafolio();
+				por.setCodigoPortafolio(Integer.parseInt(elements[1].toString()));
+				if (lstPortafolio.size()==0) {
+					lstPortafolio.add(por);	
 				} else {
-					int contador=0;
-					for (int usu=0; usu<listarUsuario.size(); usu++) {
-						if (listarUsuario.get(usu).getCodigoUsuario()==up.getCodigoUsuario()) {
-							contador++;
-						}
+					boolean existe = false;
+					for (int b=0; b<lstPortafolio.size(); b++) {
+						if (por.getCodigoPortafolio() == lstPortafolio.get(b).getCodigoPortafolio())
+							existe = true;
 					}
-					if (contador==0) {
-						listarUsuario.add(up);
-					}					
-				}
-				
+					if (!existe) {
+						lstPortafolio.add(por);
+					}
+				}				
 			}
 			
-			/*for (int a=0; a<listarUsuarioPuesto.size(); a++) {				
-				if (a==0) {
-					System.out.println("----------------------------------------------");	
-				} else if (listarUsuarioPuesto.get(a).getCodigoPortafolio()!=listarUsuarioPuesto.get(a-1).getCodigoPortafolio()) {
-					System.out.println("----------------------------------------------");
+			//Ordenar ranking de usuarios por cada portafolio
+			List<Usuariospuesto> listarUsuarioPuesto = new ArrayList<Usuariospuesto>();			
+			for (int a=0; a<lstPortafolio.size(); a++) {
+				List<Usuariospuesto> lstTmpUsuarioPuesto = new ArrayList<Usuariospuesto>();
+				for (Object[] elements: res){
+					if ( Integer.parseInt(elements[1].toString()) == lstPortafolio.get(a).getCodigoPortafolio() ) {
+						Usuariospuesto tmpusupue = new Usuariospuesto();
+						tmpusupue.setCodigoPortafolio(Integer.parseInt(elements[1].toString()));
+						tmpusupue.setCodigoUsuario(Integer.parseInt(elements[0].toString()));
+						tmpusupue.setTotal(Integer.parseInt(elements[2].toString()));
+						lstTmpUsuarioPuesto.add(tmpusupue);
+					}
 				}
-				System.out.println("[" + listarUsuarioPuesto.get(a).getCodigoPortafolio() + "] [" + listarUsuarioPuesto.get(a).getPuestoUsuario() + "] [" + listarUsuarioPuesto.get(a).getCodigoUsuario() + "]");
+				Collections.sort(lstTmpUsuarioPuesto,Collections.reverseOrder()); //Ordenando en forma Descendente
+				//System.out.println("Portafolio: " + lstPortafolio.get(a).getCodigoPortafolio());
+				int contadorRanking = 0;
+				for (Usuariospuesto elemento:lstTmpUsuarioPuesto) {
+					lstTmpUsuarioPuesto.get(contadorRanking).setPuestoUsuario(contadorRanking+1);
+					//System.out.println(elemento);
+					contadorRanking++;
+				}
+				//System.out.println("-----------------------------------------------------------------");
+				contadorRanking = 0;
+				for (Usuariospuesto elemento:lstTmpUsuarioPuesto) {
+					Usuariospuesto usupue = new Usuariospuesto();
+					usupue.setCodigoUsuario(lstTmpUsuarioPuesto.get(contadorRanking).getCodigoUsuario());
+					usupue.setCodigoPortafolio(lstTmpUsuarioPuesto.get(contadorRanking).getCodigoPortafolio());
+					usupue.setTotal(lstTmpUsuarioPuesto.get(contadorRanking).getTotal());
+					usupue.setPuestoUsuario(lstTmpUsuarioPuesto.get(contadorRanking).getPuestoUsuario());
+					listarUsuarioPuesto.add(usupue);
+					contadorRanking++;
+				}
+
+			}
+			
+			/*for (Usuariospuesto elemento: listarUsuarioPuesto) {
+				System.out.println(elemento);
 			}*/
+
+			
+			//Obteniendo USUARIOS únicos
+			List<Usuario> listarUsuario = new ArrayList<Usuario>();
+			int contadorUsuario=0;
+			for (Usuariospuesto elements: listarUsuarioPuesto){
+				Usuario usu = new Usuario();
+				usu.setCodigoUsuario(listarUsuarioPuesto.get(contadorUsuario).getCodigoUsuario());
+				if (listarUsuario.size()==0) {
+					listarUsuario.add(usu);
+				} else {
+					boolean existe = false;
+					for (int b=0; b<listarUsuario.size(); b++) {
+						if ( Integer.parseInt(usu.getCodigoUsuario().toString()) == Integer.parseInt(listarUsuario.get(b).getCodigoUsuario().toString()) )
+							existe = true;
+					}
+					if (!existe) {
+						listarUsuario.add(usu);
+					}
+				}
+				contadorUsuario++;
+			}
+			
 			
 			for (int j=0; j<listarUsuario.size();j++) {
 				//System.out.println("Usuario: " + listarUsuario.get(j).getCodigoUsuario());
 				List<Usuariospuesto> listarUsuariosPuestos = new ArrayList<Usuariospuesto>();
-				for (int k=0; k<listarUsuarioPuesto.size(); k++) {
-					Usuariospuesto upo = new Usuariospuesto();
-					upo.setCodigoUsuario(listarUsuarioPuesto.get(k).getCodigoUsuario());
-					upo.setCodigoPortafolio(listarUsuarioPuesto.get(k).getCodigoPortafolio());
-					upo.setPuestoUsuario(listarUsuarioPuesto.get(k).getPuestoUsuario());
-					if (listarUsuario.get(j).getCodigoUsuario() == listarUsuarioPuesto.get(k).getCodigoUsuario()) {						
-						//System.out.println("Codigo1: " + listarUsuario.get(j).getCodigoUsuario() + " Codigo2: " + listarUsuarioPuesto.get(k).getCodigoUsuario() + " Puesto: " + listarUsuarioPuesto.get(k).getCodigoPortafolio() + " - " + listarUsuarioPuesto.get(k).getPuestoUsuario());
+				int contarUsuarioPuesto=0;
+				for (Usuariospuesto elements: listarUsuarioPuesto){
+					if ( listarUsuario.get(j).getCodigoUsuario() == listarUsuarioPuesto.get(contarUsuarioPuesto).getCodigoUsuario() ) {
+						Usuariospuesto upo = new Usuariospuesto();
+						upo.setCodigoUsuario(listarUsuarioPuesto.get(contarUsuarioPuesto).getCodigoUsuario());
+						upo.setCodigoPortafolio(listarUsuarioPuesto.get(contarUsuarioPuesto).getCodigoPortafolio());
+						//upo.setPuestoUsuario(listarUsuarioPuesto.get(contarUsuarioPuesto).getPuestoUsuario());						
+						upo.setTotal(listarUsuarioPuesto.get(contarUsuarioPuesto).getPuestoUsuario());
 						listarUsuariosPuestos.add(upo);
 					}
+					contarUsuarioPuesto++;
 				}
-				Set<Integer> hs = new HashSet<Integer>();
+				Collections.sort(listarUsuariosPuestos); //Ordenando en forma Descendente
+				
+				System.out.println("Puesto Máximo: " + listarUsuariosPuestos.get(0).getTotal());
+				System.out.println("Puesto Mínimo: " + listarUsuariosPuestos.get(listarUsuariosPuestos.size()-1).getTotal());
+
+				/*Set<Integer> hs = new HashSet<Integer>();
 				for (int l=0; l<listarUsuariosPuestos.size(); l++) {
 					hs.add(listarUsuariosPuestos.get(l).getPuestoUsuario());					
-				}
+				}*/
 				
 				
 				String hql2 = "SELECT u.codigoUsuario as codigoUsuario, concat(concat(concat(concat(u.apellidoPaterno,' '),u.apellidoMaterno),', '),u.nombres) as fullNombre, count(p.portafolioByCodigoPortafolio.codigoPortafolio) as portafolios "
 						+	" FROM Usuario u INNER JOIN u.usuarioportafolios p " 
 						+	" WHERE u.institucion.codigoInstitucion = " + usuario.getInstitucion().getCodigoInstitucion()
 						+ 	" 	AND p.nivel.codigoNivel = 3 AND u.codigoUsuario = " + listarUsuario.get(j).getCodigoUsuario() 
+						+   "   AND u.estado = 1 "
 						+	" GROUP BY u.codigoUsuario, u.apellidoPaterno, u.apellidoMaterno, u.nombres";
 				Query query2 = sessionCurso.createQuery(hql2);				
 				List<Object[]> res2 = query2.list();
@@ -272,8 +321,10 @@ public class ReporteUsuariosCursosPuestosDaoImpl implements ReporteUsuariosCurso
 					ucu.setCodigoUsuario(Integer.parseInt(elements2[0].toString()));
 					ucu.setFullNombre(elements2[1].toString());
 					ucu.setTotalCuestionarios(Integer.parseInt(elements2[2].toString()));
-					ucu.setUbicacionPrimera(Collections.min(hs));
-					ucu.setUbicacionUltima(Collections.max(hs));
+					ucu.setUbicacionPrimera(listarUsuariosPuestos.get(0).getTotal());
+					ucu.setUbicacionUltima(listarUsuariosPuestos.get(listarUsuariosPuestos.size()-1).getTotal());
+					/*ucu.setUbicacionPrimera(Collections.min(hs));
+					ucu.setUbicacionUltima(Collections.max(hs));*/
 					
 					//Cantidad de cuestionarios contestados
 					String hql3 = "SELECT distinct rc.portafolio.codigoPortafolio "

@@ -393,6 +393,7 @@ public class FileUploadBean {
 	
 	
 	public boolean ValidaIdentificacionPeru(String identificationDocument) {
+		FacesMessage message;
 		boolean respuesta = false;
 		if ( (!identificationDocument.isEmpty()) || (identificationDocument!=null))  {
 			int addition = 0;
@@ -409,12 +410,14 @@ public class FileUploadBean {
 			addition = 11 - (addition % 11);
 			if (addition == 11) addition = 0;
 		
-			char last = identificationDocument.charAt(identificationDocumentLength-1);
+			char last = identificationDocument.charAt(identificationDocumentLength-1);			
 			if (Character.isDigit(last)) {
 				char[] hashNumbers = { '6', '7', '8', '9', '0', '1', '1', '2', '3', '4', '5' };
+				System.out.println("DNI [: " + identificationDocument.substring(0, identificationDocumentLength - 1) + "] y su código seria: [" + hashNumbers[addition] + "]");
 				if (hashNumbers[addition]==last) respuesta = true;
 			} else if (Character.isLetter(last)) {
 				char[] hashLetters = { 'K', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
+				System.out.println("DNI [: " + identificationDocument.substring(0, identificationDocumentLength - 1) + "] y su código seria: [" + hashLetters[addition] + "]");
 				if (hashLetters[addition]==last) respuesta = true;
 			}
 		}		
