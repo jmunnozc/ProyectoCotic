@@ -376,28 +376,38 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		Usuario us = null;
 		boolean flag = false;
 		session = HibernateUtil.getSessionFactory().openSession();
-		Transaction transaction = session.beginTransaction();		
-		String hql = "UPDATE Usuario "
+		Transaction transaction = session.beginTransaction();	
+		/*String hql = "UPDATE Usuario "
 				+	" SET clave =:pass "  	  
-				+	" WHERE codigoUsuario=:user";
+				+	" WHERE codigoUsuario=:user";*/
+		
+		String hql = null;
+		try {
+			hql = "UPDATE Usuario "
+			+	" SET clave = '" + Seguridad.fn_sEncrypting("PASSCANGA", "ADMIN") + "'"
+			+	" WHERE codigoUsuario=" + usuario.getCodigoUsuario();
+		} catch (NoSuchAlgorithmException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 				
 		String hql1 = "SELECT u, rr.rol.descripcionRol "
 				+	" FROM Usuario u " 
 				+	" 	INNER JOIN FETCH u.institucion i "
 				+	" 	INNER JOIN FETCH u.rolusuarios rr " 	  
-				+	" WHERE u.codigoUsuario=:cu";									
+				+	" WHERE u.codigoUsuario=" + usuario.getCodigoUsuario();									
 		
 		try {
 			//session.update(usuario);		
 			Query query = session.createQuery(hql);
-			query.setInteger("user", usuario.getCodigoUsuario());
-			query.setString("pass", Seguridad.fn_sEncrypting("PASSCANGA", usuario.getClave().toUpperCase()));	
+			/*query.setInteger("user", usuario.getCodigoUsuario());
+			query.setString("pass", Seguridad.fn_sEncrypting("PASSCANGA", usuario.getClave().toUpperCase()));*/	
 			int result = query.executeUpdate();
 			session.getTransaction().commit();
 			//transaction.commit();
 			
 			Query query1 = session.createQuery(hql1);
-			query1.setInteger("cu", usuario.getCodigoUsuario());
+			//query1.setInteger("cu", usuario.getCodigoUsuario());
 			
 			if (!query1.list().isEmpty()) {			
 				List<Object[]> res = query1.list();
